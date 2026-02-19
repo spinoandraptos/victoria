@@ -1,22 +1,23 @@
 - !<Qubit>
   name: qubit
-  int_freq: 7.960000E+07
-  lo_name: lo_qubit
+  int_freq: -5.000000E+07
+  lo_name: opx1000
   mixer_offsets:
-    I: 0.0070546144735999395
-    Q: 0.005051575438119471
-    G: 0.2041032314300537
-    P: 0.18648304939270022
+    I: 0.0
+    Q: 0.0
+    G: 0.0
+    P: 0.0
+  octave_mixed: true
   operations:
     qubit_constant_pulse: !<ConstantPulse>
       name: qubit_constant_pulse
-      I_ampx: 0.032
+      I_ampx: 1.5
       Q_ampx: 0.0
       digital_marker: null
-      length: 1000
+      length: 10000
       pad: 0
-      total_I_amp: 0.0064
-      total_length: 1000
+      total_I_amp: 0.30000000000000004
+      total_length: 10000
     qubit_constant_pi_pulse: !<ConstantPulse>
       name: qubit_constant_pi_pulse
       I_ampx: 0.595
@@ -75,74 +76,239 @@
       total_I_amp: 0.27999999999999997
       total_length: 40
   ports:
-    I: 1
-    Q: 2
+    I:
+    - 2
+    - 7
   rf_switch: null
   rf_switch_on: false
-- !<Qubit>
-  name: qubitEF
-  int_freq: -1.270000E+08
-  lo_name: lo_qubit
+- !<Cavity>
+  name: cav
+  int_freq: -6.830000E+07
+  lo_name: opx1000
   mixer_offsets:
-    I: 0.0071526846615597595
-    Q: 0.005089394142851233
-    G: 0.18711491525173193
-    P: -0.10331471562385564
+    I: -0.003281430326023839
+    Q: 0.007301341287165995
+    G: 0.1829767245231779
+    P: -0.15609249742628886
+  octave_mixed: true
   operations:
-    qubitEF_constant_pulse: !<ConstantPulse>
-      name: qubitEF_constant_pulse
-      I_ampx: 0.0496
+    alice_constant: !<ConstantPulse>
+      name: alice_constant
+      I_ampx: 2.4
       Q_ampx: 0.0
       digital_marker: null
-      length: 500
+      length: 400
       pad: 0
-      total_I_amp: 0.00992
-      total_length: 500
-    qubitEF_constant_pi_pulse: !<ConstantPulse>
-      name: qubitEF_constant_pi_pulse
-      I_ampx: 0.467
+      total_I_amp: 0.48
+      total_length: 400
+    a_d_large: !<GaussianPulse>
+      name: a_d_large
+      I_ampx: 1.5
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 800
+      total_I_ampx: 0.30000000000000004
+      total_length: 3200
+    a_ecd3: !<GaussianPulse>
+      name: a_ecd3
+      I_ampx: 1.5316
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 180
+      total_I_ampx: 0.30632000000000004
+      total_length: 720
+    a_ecd3_ramp: !<RampedConstantPulse>
+      name: a_ecd3_ramp
+      I_ampx: 1.4077
       Q_ampx: 0.0
       digital_marker: null
       length: 52
       pad: 0
-      total_I_amp: 0.09340000000000001
-      total_length: 52
-    qubitEF_gaussian_pulse: !<GaussianPulse>
-      name: qubitEF_gaussian_pulse
-      I_ampx: 0.032
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.28154
+      total_length: 68
+    a_ecd3_ramp2: !<RampedConstantPulse>
+      name: a_ecd3_ramp2
+      I_ampx: 2.4
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 92
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.48
+      total_length: 108
+    a_ecd3_ramp56: !<RampedConstantPulse>
+      name: a_ecd3_ramp56
+      I_ampx: 1.82582
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 40
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.36516400000000004
+      total_length: 56
+    a_ecd3_ramp216: !<RampedConstantPulse>
+      name: a_ecd3_ramp216
+      I_ampx: 1.95042715
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 200
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.39008543000000007
+      total_length: 216
+    a_ecd3_ramp432: !<RampedConstantPulse>
+      name: a_ecd3_ramp432
+      I_ampx: 1.95042715
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 416
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.39008543000000007
+      total_length: 432
+    a_ecd3_ramp864: !<RampedConstantPulse>
+      name: a_ecd3_ramp864
+      I_ampx: 1.95042715
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 848
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.39008543000000007
+      total_length: 864
+    a_ecd3_ramp160_d3p4: !<RampedConstantPulse>
+      name: a_ecd3_ramp160_d3p4
+      I_ampx: 1.6827109999999998
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 144
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.3365422
+      total_length: 160
+    a_amp_out: !<GaussianPulse>
+      name: a_amp_out
+      I_ampx: 1.5
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 250
+      total_I_ampx: 0.30000000000000004
+      total_length: 1000
+    a_d1p5_ramp: !<RampedConstantPulse>
+      name: a_d1p5_ramp
+      I_ampx: 1.632673152
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 72
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.3265346304
+      total_length: 88
+    a_d2: !<GaussianPulse>
+      name: a_d2
+      I_ampx: 0.21166666666666667
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 16
+      total_I_ampx: 0.042333333333333334
+      total_length: 64
+    a_d5_ramp: !<RampedConstantPulse>
+      name: a_d5_ramp
+      I_ampx: 1.8
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 600
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.36000000000000004
+      total_length: 616
+    a_d7_ramp: !<RampedConstantPulse>
+      name: a_d7_ramp
+      I_ampx: 1.8
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 848
+      pad: 0
+      ramp: 8
+      rampfn: cos
+      total_I_amp: 0.36000000000000004
+      total_length: 864
+    a_4d86: !<GaussianPulse>
+      name: a_4d86
+      I_ampx: 0.5196992400000001
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 16
+      total_I_ampx: 0.10393984800000003
+      total_length: 64
+    a_d40: !<GaussianPulse>
+      name: a_d40
+      I_ampx: 1.1794777600000002
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 60
+      total_I_ampx: 0.23589555200000004
+      total_length: 240
+    a_d10: !<GaussianPulse>
+      name: a_d10
+      I_ampx: 0.0882842634730539
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 200
-      total_I_ampx: 0.0064
+      total_I_ampx: 0.017656852694610783
       total_length: 800
-    qubitEF_cos_ramp_pulse: !<RampedConstantPulse>
-      name: qubitEF_cos_ramp_pulse
-      I_ampx: 1.4
+    alice_tiny_pulse: !<ConstantPulse>
+      name: alice_tiny_pulse
+      I_ampx: !!float '1e-05'
       Q_ampx: 0.0
       digital_marker: null
-      length: 20
+      length: 100
       pad: 0
-      ramp: 10
-      rampfn: cos
-      total_I_amp: 0.27999999999999997
-      total_length: 40
+      total_I_amp: 2.0000000000000003e-06
+      total_length: 100
   ports:
-    I: 1
-    Q: 2
+    I:
+    - 2
+    - 2
   rf_switch: null
   rf_switch_on: false
 - !<Readout>
   name: rr
-  int_freq: 5.000000E+07
-  lo_name: lo_rr
+  int_freq: -5.000000E+07
+  lo_name: opx1000
   mixer_offsets:
     I: 0.0
     Q: 0.0
-    G: 0.17265625
-    P: 0.03281250000000001
-    out: -0.020806603064903846
+    G: 0.0
+    P: 0.0
+    out1: 0
+    out2: 0
+    out: 0.0
+  octave_mixed: false
   operations:
     rr_constant_pulse: !<ConstantPulse>
       name: rr_constant_pulse
@@ -172,52 +338,27 @@
         samples:
         - - 1
           - 0
-      has_optimized_weights: true
+      has_optimized_weights: false
       length: 2000
       pad: 600
-      threshold: 0.000624145668837496
+      threshold: null
       total_I_amp: 0.05
       total_length: 2600
-      weights: C:\Users\qcrew\project-template\config\weights\20230721_145912_weights.npz
+      weights:
+      - 1.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - -1.0
   ports:
-    I: 3
-    Q: 4
-    out: 1
+    I:
+    - 2
+    - 1
+    out1:
+    - 2
+    - 1
   rf_switch: null
   rf_switch_on: false
   smearing: 0
-  tof: 272
-- !<Cavity>
-  name: cav
-  int_freq: 7.164000E+07
-  lo_name: lo_cav
-  mixer_offsets:
-    I: 0.017144775390625002
-    Q: -0.006228637695312497
-    G: 0.18436107337474825
-    P: 0.14532665610313417
-  operations:
-    cavity_constant_pulse: !<ConstantPulse>
-      name: cavity_constant_pulse
-      I_ampx: 0.2
-      Q_ampx: 0.0
-      digital_marker: null
-      length: 1000
-      pad: 0
-      total_I_amp: 0.04000000000000001
-      total_length: 1000
-    cavity_gaussian_pulse: !<GaussianPulse>
-      name: cavity_gaussian_pulse
-      I_ampx: 0.032
-      Q_ampx: 0.0
-      chop: 4
-      digital_marker: null
-      pad: 0
-      sigma: 200
-      total_I_ampx: 0.0064
-      total_length: 800
-  ports:
-    I: 7
-    Q: 8
-  rf_switch: null
-  rf_switch_on: false
+  tof: 300

@@ -1,9 +1,14 @@
-""" """
+import sys
+# The directory containing the 'config' folder
+FOLDER = "C:/Users/qcrew/Documents/eunice/"
+
+# Add the FOLDER itself to sys.path, not the file path
+if FOLDER not in sys.path:
+    sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
 from qcore import Experiment, qua, Sweep
-
 
 class RRSpec(Experiment):
     """Readout resonator spectroscopy"""
@@ -26,8 +31,11 @@ class RRSpec(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
+        #qua.reset_phase(self.resonator)
         qua.update_frequency(self.resonator, self.resonator_frequency)
-        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
+        self.resonator.measure(
+            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
+        )
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -49,8 +57,8 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 50000,
-        "ro_ampx": 1,
+        "wait_time": 10_000,
+        # "ro_ampx": 1,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -60,32 +68,40 @@ if __name__ == "__main__":
     ################################### 1D SWEEP #######################################
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
-
+    N.num = 100_000
+ 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = 45e6
-    FREQ.stop = 51e6
-    FREQ.num = 101
-
-    # sweeps = [N, FREQ]
+    FREQ.start = -100e6
+    FREQ.stop = 100e6
+    FREQ.num = 401
 
     ################################### 2D SWEEP #######################################
 
-    # RO_AMPX = Sweep(name="ro_ampx", points=[1])
-    sweeps = [N, FREQ]
+    RO_AMPX = Sweep(
+        name="ro_ampx",
+        points=[1.0, 1.01]#0.25,0.5,0.75]
+    ) 
+    sweeps = [N, RO_AMPX, FREQ]
+    # sweeps = [N, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
 
     PHASE.inputs = ("I", "Q", "resonator_frequency")
-    PHASE.datafn_args = {"delay": 2.792e-7}
+    PHASE.datafn_args = {"delay": -3.298e-7}
 
-    MAG.fitfn = "lorentzian"
-    
+    # MAG.fitfn = "lorentzian"
+    # MAG.axes = sweeps
+
+    I.plot = True
+    Q.plot = True
+    PHASE.plot = True
+
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
+    # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
     expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

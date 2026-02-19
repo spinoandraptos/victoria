@@ -1,12 +1,16 @@
-- !<LMS>
-  id: 25332
-  name: lo_qubit
-- !<LMS>
-  id: 25331
-  name: lo_rr
-#- !<SA124>
-#  id: 20234564
-#  name: sa
-- !<LMS>
-  id: 25330
-  name: lo_cav
+# - !<LMS>
+#   id: 25332
+#   name: lo_qubit
+# - !<LMS>
+#   id: 25331
+#   name: lo_rr
+# #- !<SA124>
+# #  id: 20234564
+# #  name: sa
+# - !<LMS>
+#   id: 25330
+#   name: lo_cav
+- !<OPX1000>
+  name: opx1000
+  id: 192.168.111.199
+  cluster_name: Cluster_1

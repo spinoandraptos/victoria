@@ -1,22 +1,24 @@
 """ """
 
 from qcore import Dataset, Sweep, Stage
+from pathlib import Path
 
 ################################# PROJECT FOLDER PATH ##################################
 # to obtain Resources (Instruments, Modes, Pulses) from and save data file to
+# MODES_CONFIG = Path(__file__).resolve().parent / "config/modes.yml"
 
-FOLDER = "C:/Users/qcrew/project-template/"
-
+FOLDER = "C:/Users/qcrew/Documents/eunice/"
 MODES_CONFIG = FOLDER + "config/modes.yml"
 
-######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
 
+######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
+print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
-    QUBIT, QUBITEF, RR, CAV = stage.get("qubit", "qubitEF", "rr", "cav")
-    LO_QUBIT, LO_RR, LO_CAV = stage.get("lo_qubit", "lo_rr", "lo_cav")
+    QUBIT, RR, CAV = stage.get("qubit", "rr", "cav")
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
 
 ################## DEFINE REUSABLE SWEEP (INDEPENDENT) VARIABLES #######################
+
 
 # averaging sweep "N"
 N = Sweep(
@@ -33,24 +35,36 @@ FREQ = Sweep(
     units="Hz",
 )
 
+LENGTH = Sweep(
+    name="len",
+    dtype=int,
+    units="ns",
+)
+
+# DC_CURR = Sweep(
+#     name="curr",
+#     dtype=int,
+#     units="mA",
+# )
+
 ################## DEFINE REUSABLE DATASET (DEPENDENT) VARIABLES #######################
 
 I = Dataset(
     name="I",
-    save=False,
+    save=True,
     plot=True,
     # fitfn="exp_decay",
 )
 
 Q = Dataset(
     name="Q",
-    save=False,
+    save=True,
     plot=True,
 )
 
 ADC = Dataset(
     name="adc",
-    stream=RR.ports["out"],
+    stream=RR.ports["out1"][1],  # out for old
     save=False,
     plot=True,
     plot_args={
@@ -71,10 +85,10 @@ ADC_FFT = Dataset(
 
 MAG = Dataset(
     name="Magnitude",
-    save=False,
+    save=True,
     plot=True,
     datafn="mag",
-    #fitfn="exp_decay_sine",
+    # fitfn="exp_decay_sine",
 )
 
 PHASE = Dataset(
@@ -84,4 +98,11 @@ PHASE = Dataset(
     datafn="phase",
     datafn_args={"delay": 2.792e-7, "freq": RR.int_freq, "unwrap": True},
     # fitfn="atan",
+)
+
+SINGLE_SHOT = Dataset(
+    name="single_shot",
+    save=True,
+    plot=True,
+    # fitfn="exp_decay",
 )
