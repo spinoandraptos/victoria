@@ -1,5 +1,13 @@
 """ """
+""" """
+import sys
+# The directory containing the 'config' folder
+FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
+# Add the FOLDER itself to sys.path, not the file path
+if FOLDER not in sys.path:
+    sys.path.insert(0, FOLDER)
+    
 from config.experiment_config import FOLDER, N, ADC, ADC_FFT, READOUT_PULSE
 
 from qcore import Experiment, qua, Sweep
@@ -14,9 +22,10 @@ class TimeOfFlight(Experiment):
 
     def sequence(self):
         """the QUA pulse sequence for a Time Of Flight experiment"""
-        qua.reset_phase(self.resonator)
+        # qua.reset_phase(self.resonator)
         self.resonator.measure(self.readout_pulse, stream=self.adc, ampx=self.ro_ampx)
         qua.wait(self.wait_time, self.resonator)
+        
 
 
 if __name__ == "__main__":
@@ -37,9 +46,9 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5000,
-        "ro_ampx": 1.0,
-        "fetch_interval": 4,
+        "wait_time": 10_000,
+        "ro_ampx": 1,
+        "fetch_interval": 5,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -49,7 +58,7 @@ if __name__ == "__main__":
     # NOTE expts streaming raw adc data e.g. time of flight do not support >= 2D sweeps
 
     # set number of repetitions for this Experiment run
-    N.num = 200
+    N.num = 30_000
     sweeps = [N]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
@@ -57,18 +66,17 @@ if __name__ == "__main__":
 
     # must initialize axes based on expected shape of raw data for ADC datasets
     ADC.initialize(axes=[N.num, READOUT_PULSE.total_length])
-
-    freqs = Sweep(
-        name="Frequency",
-        start=0,
-        stop=0.5,
-        step=1 / READOUT_PULSE.total_length,
-        units="GHz",
-    )
-    freqs.initialize()
-    N.initialize()
-    ADC_FFT.initialize(axes=[N, freqs])
-    datasets = [ADC, ADC_FFT]
+    # freqs = Sweep(
+    #     name="Frequency",
+    #     start=0.0,
+    #     stop=0.5,
+    #     step=1 / READOUT_PULSE.total_length,
+    #     units="GHz",
+    # )
+    # freqs.initialize()
+    # N.initialize()
+    # ADC_FFT.initialize(axes=[N, freqs])
+    datasets = [ADC]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 

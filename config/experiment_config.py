@@ -14,7 +14,7 @@ MODES_CONFIG = FOLDER + "config/modes.yml"
 ######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
 print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
-    QUBIT, RR, CAV = stage.get("qubit", "rr", "cav")
+    QUBIT, RR, CAVITY, SNAIL, CAVITY_M, QUBIT_EF= stage.get("qubit", "rr", "cavity", "snail", "cavity_m", "qubit_ef")
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
 
 ################## DEFINE REUSABLE SWEEP (INDEPENDENT) VARIABLES #######################
@@ -76,7 +76,7 @@ ADC = Dataset(
 
 ADC_FFT = Dataset(
     name="adc_fft",
-    save=False,
+    save=True,
     plot=True,
     datafn="fft",
     datafn_args={"length": READOUT_PULSE.total_length},

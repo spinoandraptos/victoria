@@ -1,4 +1,13 @@
 """ Calibrate DC offset for optimized readout """
+""" Readout integration weights training for single-shot readout """
+import sys
+# The directory containing the 'config' folder
+FOLDER = "C:/Users/qcrew/Documents/eunice/"
+
+# Add the FOLDER itself to sys.path, not the file path
+if FOLDER not in sys.path:
+    sys.path.insert(0, FOLDER)
+""" Readout integration weights training for single-shot readout """
 
 from qcore import Stage
 from qcore.instruments import QM

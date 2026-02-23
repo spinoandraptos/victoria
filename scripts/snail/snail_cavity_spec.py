@@ -1,12 +1,26 @@
 """ """
+""" """
+import sys
+# The directory containing the 'config' folder
+FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
+# Add the FOLDER itself to sys.path, not the file path
+if FOLDER not in sys.path:
+    sys.path.insert(0, FOLDER)
+
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
 from qcore import Experiment, qua, Sweep
+from qm import qua as qm_qua
+from qcore.helpers import Stage
+from config.experiment_config import MODES_CONFIG
+import numpy as np
+from tqdm import tqdm
+import time
 
 
-class Rabi(Experiment):
-    """Power Rabi"""
+class SnailSpec(Experiment):
+    """Snail spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -18,7 +32,7 @@ class Rabi(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["qubit_pulse_amplitude"]
+    primary_sweeps = ["snail_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -26,9 +40,26 @@ class Rabi(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
+       
+        qua.update_frequency(self.snail, self.snail_frequency)
+        self.snail.play(self.snail_pulse, ampx = self.snail_ampx)
+        qua.align()
+        
+        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
+        qua.align(self.cavity, self.qubit)
+        # qua.wait(32, self.qubit)
+        self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
-        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
+        qua.align()
+        self.resonator.measure(
+            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
+        )
+        if self.plot_single_shot:  # assign state to G or E
+            qm_qua.assign(
+                self.single_shot,
+                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
+            )
+
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -40,7 +71,9 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
+        "cavity": "cavity",
         "qubit": "qubit",
+        "snail":"snail",
         "resonator": "rr",
     }
 
@@ -49,15 +82,22 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_pulse",
+        "cavity_pulse": "cav_constant_1000",
+        "qubit_pulse": "qubit_constant_pi_520",
+        "snail_pulse": "snail_constant_pulse",
         "readout_pulse": "rr_readout_pulse",
     }
 
-    ############################## CONTROL PARAMETERS ##################################
+    ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 50000,
+        "wait_time": 10_000,
         "ro_ampx": 1,
+        "cav_ampx": 1,
+        "snail_ampx": 1,
+        "fetch_interval": 1,
+        "plot_single_shot": False,
+        
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -65,21 +105,37 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 50000
+    N.num = 10000
 
-    # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.8, stop=1.8, num=201)
-    sweeps = [N, QD_AMPX]
-
+    # set the qubit frequency sweep for this Experiment run
+    
+    FREQ.name = "snail_frequency"
+    FREQ.start =-100e6
+    FREQ.stop =-0.5e6 
+    FREQ.num = 201
+    
+    PHASE.plot = True
+    MAG.plot = True
+    Q.plot = True
+    I.plot = True
+    SINGLE_SHOT.plot = False
+    
+    sweeps = [N, FREQ]
+    
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    I.fitfn, Q.fitfn, MAG.fitfn = "sine", "sine", "sine"
+    I.fitfn = "gaussian"
+    Q.fitfn = "gaussian"
+    MAG.fitfn = "gaussian"
+    PHASE.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    # PHASE.plot = False
+    
+   
     datasets = [I, Q, MAG, PHASE]
-
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = Rabi(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = SnailSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    
+    # expt.run(simulate=True)
     expt.run()
