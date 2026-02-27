@@ -35,7 +35,9 @@ class CavitySWAP2D_freq_len(Experiment):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
-        
+        qua.reset_phase(self.snail)
+        qua.reset_frame(self.snail)
+        qua.align()
         self.cavity.play(self.cavity_drive)
         qua.align(self.cavity, self.snail)
         qua.update_frequency(self.snail, self.snail_frequency)
@@ -69,8 +71,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_160", #"cav_constant_40",
-        "qubit_pulse": "qubit_constant_pi_260", #"qubit_constant_pi_200",
+        "cavity_drive": "cav_constant_200", #"cav_constant_40",
+        "qubit_pulse": "qubit_constant_pi_520", #"qubit_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
         "snail_pulse": "snail_constant_pulse_20",
     }
@@ -92,7 +94,7 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=4, stop=1000, step=32, dtype=int)
+    DEL = Sweep(name="length_snail", start=4, stop=300, step=16, dtype=int)
     # SNAIL_AMPX = Sweep(name="snail_ampx", start=0, stop=0.2, step=0.01, dtype=float)
     FREQ.name = "snail_frequency"
     FREQ.start = -80e6

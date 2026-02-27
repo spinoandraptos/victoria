@@ -38,9 +38,9 @@ class CavitySWAP1D_len_amp(Experiment):
         qua.reset_phase(self.snail)
         qua.reset_frame(self.snail)
         qua.align()
-        self.cavity.play(self.cavity_drive, ampx=self.snail_ampx)
+        self.cavity.play(self.cavity_drive, ampx=1)
         qua.align(self.cavity, self.snail)
-        self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= 0.1) #
+        self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx) #
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":30000, #30000,
+        "wait_time":300000, #30000,
         "ro_ampx": 1,
     }
 
@@ -88,16 +88,16 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 500000
+    N.num = 100000
 
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=4, stop=2000, step=4, dtype=int)
+    DEL = Sweep(name="length_snail", start=4, stop=200, step=4, dtype=int)
     SNAIL_AMPX = Sweep(
         name="snail_ampx",
         points=[
-           0.0, 1.0 # 0.05, 0.1
+           0.05, 0.1 # 0.05, 0.1
         ],
     )
     sweeps = [N, SNAIL_AMPX, DEL]

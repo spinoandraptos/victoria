@@ -1,5 +1,5 @@
 
-# Single QUA script generated at 2026-02-23 19:41:56.709533
+# Single QUA script generated at 2026-02-24 11:24:24.878175
 # QUA library version: 1.2.3
 
 
@@ -8,44 +8,42 @@ from qm.qua import *
 
 with program() as prog:
     v1 = declare(int, )
-    v2 = declare(fixed, )
+    v2 = declare(int, )
     v3 = declare(int, )
     v4 = declare(fixed, )
     v5 = declare(fixed, )
-    a1 = declare(fixed, value=[0.0, 1.0])
-    with for_(v1,1,(v1<500001),(v1+1)):
+    with for_(v1,1,(v1<50001),(v1+1)):
         r1 = declare_stream()
         save(v1, r1)
-        with for_each_((v2),(a1)):
+        with for_(v2,-80000000,(v2<-54744898),(v2+510204)):
             r2 = declare_stream()
             save(v2, r2)
-            with for_(v3,4,(v3<402),(v3+4)):
+            with for_(v3,4,(v3<122),(v3+4)):
                 r3 = declare_stream()
                 save(v3, r3)
                 reset_if_phase("cavity")
                 reset_frame("cavity")
-                reset_if_phase("snail")
-                reset_frame("snail")
                 align()
-                play("cavity_drive"*amp(v2), "cavity")
+                play("cavity_drive"*amp(0), "cavity")
                 align("cavity", "snail")
-                play("snail_pulse"*amp(0.1), "snail", duration=v3)
+                update_frequency("snail", v2, "Hz", False)
+                play("snail_pulse"*amp(0.08), "snail", duration=v3)
                 align("snail", "qubit")
                 play("qubit_pulse"*amp(1.0), "qubit")
                 align("qubit", "rr")
                 measure("readout_pulse"*amp(1), "rr", dual_demod.full("cos", "sin", v4), dual_demod.full("minus_sin", "cos", v5))
-                wait(7500, "rr")
+                wait(375000, "rr")
                 r4 = declare_stream()
                 save(v4, r4)
                 r5 = declare_stream()
                 save(v5, r5)
     with stream_processing():
-        r2.buffer(2).save("snail_ampx")
-        r3.buffer(100).save("length_snail")
-        r4.buffer(2, 100).save_all("I")
-        r4.buffer(2, 100).average().save("I_avg")
-        r5.buffer(2, 100).save_all("Q")
-        r5.buffer(2, 100).average().save("Q_avg")
+        r2.buffer(50).save("snail_frequency")
+        r3.buffer(30).save("length_snail")
+        r4.buffer(50, 30).save_all("I")
+        r4.buffer(50, 30).average().save("I_avg")
+        r5.buffer(50, 30).save_all("Q")
+        r5.buffer(50, 30).average().save("Q_avg")
 
 config = {
     "version": 1,

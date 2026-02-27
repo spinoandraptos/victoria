@@ -89,16 +89,19 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 500000
+    N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
         # set the qubit frequency sweep for this Experiment run
     FREQ.name = "snail_frequency"
-    FREQ.start = -200e6
-    FREQ.stop = -0.5e6
-    FREQ.num = 101
+    # FREQ.start = -200e6
+    # FREQ.stop = -0.5e6
+    # FREQ.num = 101
+    FREQ.start = -80e6
+    FREQ.stop = -55e6
+    FREQ.num = 35
     
     SNAIL_AMPX = Sweep(
     name="snail_ampx",
@@ -114,10 +117,10 @@ if __name__ == "__main__":
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    MAG.fitfn = "cohstate_decay"
-    PHASE.fitfn = "cohstate_decay"
-    I.fitfn = "cohstate_decay"
-    Q.fitfn = "cohstate_decay"
+    # MAG.fitfn = "cohstate_decay"
+    # PHASE.fitfn = "cohstate_decay"
+    # I.fitfn = "cohstate_decay"
+    # Q.fitfn = "cohstate_decay"
 
     # MAG.axes = sweeps[1:]
     # PHASE.axes = sweeps[1:]
@@ -128,4 +131,5 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     expt = CavitySWAP1D_freq_amp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
+    # expt.run()
+    expt.run(simulate=True)

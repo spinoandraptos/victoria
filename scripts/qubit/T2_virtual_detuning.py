@@ -81,16 +81,16 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
     pulses = {
-        "qubit_drive": "qubit_constant_pi2_52",
+        "qubit_drive": "qubit_gaussian_pi2_clara",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10_000,
+        "wait_time": 110_000,
         "ro_ampx": 1,
-        "detuning":1.0e6,
+        "detuning":0.7e6,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=16, stop=10000, step=100, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop=20000, step=100, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

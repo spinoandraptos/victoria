@@ -78,9 +78,9 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_200",
+        "cav_displacement": "cav_constant_40",
         # "qubit_pi_pulse": "qubit_pi_9",
-        "qubit_selective_pi": "qubit_constant_pi_520",
+        "qubit_selective_pi": "qubit_gaussian_pi_520",
         "readout_pulse": "rr_readout_pulse",
     }
 

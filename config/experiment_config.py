@@ -14,7 +14,8 @@ MODES_CONFIG = FOLDER + "config/modes.yml"
 ######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
 print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
-    QUBIT, RR, CAVITY, SNAIL, CAVITY_M, QUBIT_EF= stage.get("qubit", "rr", "cavity", "snail", "cavity_m", "qubit_ef")
+    # QUBIT, RR, CAVITY, SNAIL, CAVITY_M, QUBIT_EF= stage.get("qubit", "rr", "cavity", "snail", "cavity_m", "qubit_ef")
+    QUBIT, RR, CAVITY, SNAIL, CAVITY_M= stage.get("qubit", "rr", "cavity", "snail", "cavity_m")
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
 
 ################## DEFINE REUSABLE SWEEP (INDEPENDENT) VARIABLES #######################
