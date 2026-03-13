@@ -7,15 +7,15 @@ from pathlib import Path
 # to obtain Resources (Instruments, Modes, Pulses) from and save data file to
 # MODES_CONFIG = Path(__file__).resolve().parent / "config/modes.yml"
 
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
+FOLDER = "C:\\Users\\qcrew2\\Documents\\Candace\\eunice\\"
 MODES_CONFIG = FOLDER + "config/modes.yml"
 
 
 ######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
-print("YAY")
+# print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
     # QUBIT, RR, CAVITY, SNAIL, CAVITY_M, QUBIT_EF= stage.get("qubit", "rr", "cavity", "snail", "cavity_m", "qubit_ef")
-    QUBIT, RR, CAVITY, SNAIL, CAVITY_M= stage.get("qubit", "rr", "cavity", "snail", "cavity_m")
+    QUBIT, RR, CAVITY= stage.get("qubit", "rr", "cavity")
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
 
 ################## DEFINE REUSABLE SWEEP (INDEPENDENT) VARIABLES #######################

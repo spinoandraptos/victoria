@@ -1,13 +1,6 @@
 """ """
 import sys
 from datetime import datetime
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
 from qcore import Experiment, qua, Sweep
@@ -15,7 +8,6 @@ from qm import qua as qm_qua
 from qcore.helpers import Stage
 from config.experiment_config import MODES_CONFIG
 import numpy as np
-from tqdm import tqdm
 import time
 
 
@@ -54,13 +46,13 @@ if __name__ == "__main__":
     # key: name of the Mode as defined by the Experiment subclass
     # value: name of the Mode as defined by the user in modes.yml
 
-    modes = {"resonator": "rr_MR"}
+    modes = {"resonator": "rr"}
 
     ################################### PULSE MAP ######################################
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
 
-    pulses = {"readout_pulse": "rr_MR_readout_pulse"}
+    pulses = {"readout_pulse": "rr_readout_pulse"}
 
     ############################## CONTROL PARAMETERS ##################################
 
@@ -79,8 +71,8 @@ if __name__ == "__main__":
     
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -60e6
-    FREQ.stop = -40e6
+    FREQ.start = -51e6
+    FREQ.stop = -49e6
     FREQ.num = 101
 
     PHASE.plot = False
@@ -100,9 +92,9 @@ if __name__ == "__main__":
    
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    flux_start = 0e-3
-    flux_end = 190e-3
-    flux_step = 5e-3
+    flux_start = -100e-3
+    flux_end = -190e-3
+    flux_step = -10e-3
     flux_points = np.arange(flux_start, flux_end+flux_step, flux_step)
 
     with Stage(configpath=MODES_CONFIG, remote=True) as stage:
@@ -111,7 +103,7 @@ if __name__ == "__main__":
 
       for flux_point in flux_points:
         
-        (yoko, opx1000) = stage.get("yoko2", "opx1000")
+        (yoko, opx1000) = stage.get("yoko1", "opx1000")
         yoko.output=True
         yoko.ramp(flux_point, step=1e-4)
         

@@ -1,6 +1,6 @@
 
-# Single QUA script generated at 2026-02-19 16:58:33.884425
-# QUA library version: 1.2.3
+# Single QUA script generated at 2026-03-13 15:56:31.285322
+# QUA library version: 1.2.6
 
 
 from qm import CompilerOptionArguments
@@ -8,172 +8,92 @@ from qm.qua import *
 
 with program() as prog:
     v1 = declare(int, )
-    v2 = declare(fixed, )
-    with for_(v1,1,(v1<30001),(v1+1)):
+    v2 = declare(int, )
+    v3 = declare(fixed, )
+    v4 = declare(fixed, )
+    with for_(v1,1,(v1<100001),(v1+1)):
         r1 = declare_stream()
         save(v1, r1)
-        reset_if_phase("rr")
-        atr_r2 = declare_stream(adc_trace=True)
-        measure("readout_pulse"*amp(1), "rr", adc_stream=atr_r2)
-        wait(2500, "rr")
+        with for_(v2,-200000000,(v2<200200000),(v2+400000)):
+            r2 = declare_stream()
+            save(v2, r2)
+            update_frequency("rr", v2, "Hz", False)
+            measure("readout_pulse"*amp(1), "rr", dual_demod.full("cos", "sin", v3), dual_demod.full("minus_sin", "cos", v4))
+            wait(2500, "rr")
+            r3 = declare_stream()
+            save(v3, r3)
+            r4 = declare_stream()
+            save(v4, r4)
     with stream_processing():
-        atr_r2.input1().save_all("adc")
-        atr_r2.input1().average().save("adc_avg")
+        r2.buffer(1001).save("resonator_frequency")
+        r3.buffer(1001).save_all("I")
+        r3.buffer(1001).average().save("I_avg")
+        r4.buffer(1001).save_all("Q")
+        r4.buffer(1001).average().save("Q_avg")
 
 config = {
-    "version": 1,
     "controllers": {
         "con1": {
             "type": "opx1000",
             "fems": {
-                "2": {
-                    "analog_outputs": {
-                        "1": {
-                            "full_scale_power_dbm": -11,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 7932700000.0,
-                                },
-                            },
-                            "band": 3,
-                            "delay": 20,
-                        },
-                        "7": {
-                            "full_scale_power_dbm": 1,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 6335800000.0,
-                                },
-                            },
-                            "band": 2,
-                        },
-                    },
-                    "analog_inputs": {
-                        "1": {
-                            "gain_db": 0,
-                            "downconverter_frequency": 7932700000.0,
-                            "band": 3,
-                        },
-                    },
-                    "type": "MW",
-                },
-                "1": {
-                    "type": "MW",
-                    "analog_outputs": {},
-                    "analog_inputs": {},
-                },
-            },
-        },
-    },
-    "elements": {
-        "rr": {
-            "MWInput": {
-                "port": ['con1', 2, 1],
-                "upconverter": 1,
-            },
-            "MWOutput": {
-                "port": ['con1', 2, 1],
-            },
-            "intermediate_frequency": -50000000,
-            "time_of_flight": 300,
-            "smearing": 0,
-            "operations": {
-                "readout_pulse": "rr.rr_readout_pulse",
-            },
-        },
-    },
-    "pulses": {
-        "rr.rr_readout_pulse": {
-            "operation": "measurement",
-            "length": 2800,
-            "waveforms": {
-                "I": "rr.rr_readout_pulse.waveform.I",
-                "Q": "rr.rr_readout_pulse.waveform.Q",
-            },
-            "digital_marker": "rr.rr_readout_pulse.ADC_ON",
-            "integration_weights": {
-                "cos": "rr.rr_readout_pulse.cos",
-                "sin": "rr.rr_readout_pulse.sin",
-                "minus_sin": "rr.rr_readout_pulse.minus_sin",
-            },
-        },
-    },
-    "waveforms": {
-        "rr.rr_readout_pulse.waveform.I": {
-            "type": "arbitrary",
-            "samples": [0.016] * 1000 + [0.0] * 1800,
-        },
-        "rr.rr_readout_pulse.waveform.Q": {
-            "type": "constant",
-            "sample": 0.0,
-        },
-    },
-    "digital_waveforms": {
-        "rr.rr_readout_pulse.ADC_ON": {
-            "samples": [[1, 0]],
-        },
-    },
-    "integration_weights": {
-        "rr.rr_readout_pulse.cos": {
-            "cosine": [[1.0, 2800]],
-            "sine": [[0.0, 2800]],
-        },
-        "rr.rr_readout_pulse.sin": {
-            "cosine": [[0.0, 2800]],
-            "sine": [[1.0, 2800]],
-        },
-        "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [[0.0, 2800]],
-            "sine": [[-1.0, 2800]],
-        },
-    },
-}
-
-loaded_config = {
-    "controllers": {
-        "con1": {
-            "type": "opx1000",
-            "fems": {
-                "2": {
+                "8": {
                     "type": "MW",
                     "analog_outputs": {
-                        "1": {
+                        "8": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": -11,
                             "band": 3,
-                            "delay": 20,
+                            "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7932700000.0,
+                                    "frequency": 7831635520.0,
                                 },
                             },
                         },
-                        "7": {
+                        "2": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 1,
+                            "full_scale_power_dbm": 16,
+                            "band": 3,
+                            "delay": 0,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 7463300000.0,
+                                },
+                            },
+                        },
+                        "4": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 16,
                             "band": 2,
                             "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6335800000.0,
+                                    "frequency": 5935800000.0,
                                 },
                             },
                         },
                     },
                     "analog_inputs": {
-                        "1": {
+                        "2": {
                             "band": 3,
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7932700000.0,
+                            "downconverter_frequency": 7831635520.0,
                         },
                     },
                 },
                 "1": {
                     "type": "MW",
+                },
+                "3": {
+                    "type": "MW",
+                },
+                "6": {
+                    "type": "LF",
                 },
             },
         },
@@ -196,11 +116,11 @@ loaded_config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 2, 1),
+                "port": ('con1', 8, 8),
                 "upconverter": 1,
             },
             "MWOutput": {
-                "port": ('con1', 2, 1),
+                "port": ('con1', 8, 2),
             },
             "smearing": 0,
             "time_of_flight": 300,
@@ -209,7 +129,7 @@ loaded_config = {
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 2800,
+            "length": 5600,
             "waveforms": {
                 "I": "rr.rr_readout_pulse.waveform.I",
                 "Q": "rr.rr_readout_pulse.waveform.Q",
@@ -226,7 +146,7 @@ loaded_config = {
     "waveforms": {
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.016] * 1000 + [0.0] * 1800,
+            "samples": [0.2] * 5000 + [0.0] * 600,
             "is_overridable": False,
             "max_allowed_error": 0.0001,
         },
@@ -241,17 +161,163 @@ loaded_config = {
         },
     },
     "integration_weights": {
-        "rr.rr_readout_pulse.cos": {
-            "cosine": [(1.0, 2800)],
-            "sine": [(0.0, 2800)],
-        },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(0.0, 2800)],
-            "sine": [(1.0, 2800)],
+            "cosine": [(0.0, 5600)],
+            "sine": [(1.0, 5600)],
+        },
+        "rr.rr_readout_pulse.cos": {
+            "cosine": [(1.0, 5600)],
+            "sine": [(0.0, 5600)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(0.0, 2800)],
-            "sine": [(-1.0, 2800)],
+            "cosine": [(0.0, 5600)],
+            "sine": [(-1.0, 5600)],
+        },
+    },
+    "mixers": {},
+}
+
+loaded_config = {
+    "controllers": {
+        "con1": {
+            "type": "opx1000",
+            "fems": {
+                "8": {
+                    "type": "MW",
+                    "analog_outputs": {
+                        "8": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": -11,
+                            "band": 3,
+                            "delay": 0,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 7831635520.0,
+                                },
+                            },
+                        },
+                        "2": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 16,
+                            "band": 3,
+                            "delay": 0,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 7463300000.0,
+                                },
+                            },
+                        },
+                        "4": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 16,
+                            "band": 2,
+                            "delay": 0,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 5935800000.0,
+                                },
+                            },
+                        },
+                    },
+                    "analog_inputs": {
+                        "2": {
+                            "band": 3,
+                            "shareable": False,
+                            "gain_db": 0,
+                            "sampling_rate": 1000000000.0,
+                            "downconverter_frequency": 7831635520.0,
+                        },
+                    },
+                },
+                "1": {
+                    "type": "MW",
+                },
+                "3": {
+                    "type": "MW",
+                },
+                "6": {
+                    "type": "LF",
+                },
+            },
+        },
+    },
+    "oscillators": {},
+    "elements": {
+        "rr": {
+            "digitalInputs": {},
+            "digitalOutputs": {},
+            "outputs": {},
+            "operations": {
+                "readout_pulse": "rr.rr_readout_pulse",
+            },
+            "hold_offset": {
+                "duration": 0,
+            },
+            "sticky": {
+                "analog": False,
+                "digital": False,
+                "duration": 4,
+            },
+            "MWInput": {
+                "port": ('con1', 8, 8),
+                "upconverter": 1,
+            },
+            "MWOutput": {
+                "port": ('con1', 8, 2),
+            },
+            "smearing": 0,
+            "time_of_flight": 300,
+            "intermediate_frequency": -50000000.0,
+        },
+    },
+    "pulses": {
+        "rr.rr_readout_pulse": {
+            "length": 5600,
+            "waveforms": {
+                "I": "rr.rr_readout_pulse.waveform.I",
+                "Q": "rr.rr_readout_pulse.waveform.Q",
+            },
+            "integration_weights": {
+                "cos": "rr.rr_readout_pulse.cos",
+                "sin": "rr.rr_readout_pulse.sin",
+                "minus_sin": "rr.rr_readout_pulse.minus_sin",
+            },
+            "operation": "measurement",
+            "digital_marker": "rr.rr_readout_pulse.ADC_ON",
+        },
+    },
+    "waveforms": {
+        "rr.rr_readout_pulse.waveform.I": {
+            "type": "arbitrary",
+            "samples": [0.2] * 5000 + [0.0] * 600,
+            "is_overridable": False,
+            "max_allowed_error": 0.0001,
+        },
+        "rr.rr_readout_pulse.waveform.Q": {
+            "type": "constant",
+            "sample": 0.0,
+        },
+    },
+    "digital_waveforms": {
+        "rr.rr_readout_pulse.ADC_ON": {
+            "samples": [(1, 0)],
+        },
+    },
+    "integration_weights": {
+        "rr.rr_readout_pulse.sin": {
+            "cosine": [(0.0, 5600)],
+            "sine": [(1.0, 5600)],
+        },
+        "rr.rr_readout_pulse.cos": {
+            "cosine": [(1.0, 5600)],
+            "sine": [(0.0, 5600)],
+        },
+        "rr.rr_readout_pulse.minus_sin": {
+            "cosine": [(0.0, 5600)],
+            "sine": [(-1.0, 5600)],
         },
     },
     "mixers": {},

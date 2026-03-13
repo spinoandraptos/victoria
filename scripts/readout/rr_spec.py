@@ -1,11 +1,4 @@
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
 from qcore import Experiment, qua, Sweep
@@ -72,9 +65,9 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -52e6
-    FREQ.stop = -48e6
-    FREQ.num = 101
+    FREQ.start = -200e6
+    FREQ.stop = 200e6
+    FREQ.num = 1001
 
     ################################### 2D SWEEP #######################################
 

@@ -1,18 +1,12 @@
 """ """
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
 from qcore import Experiment, qua, Sweep
 
 
-class RRSpec(Experiment):
+class RRSpecAmp(Experiment):
     """Readout resonator spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -74,16 +68,16 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -60e6
-    FREQ.stop = -40e6
-    FREQ.num = 101
+    FREQ.start = -100e6
+    FREQ.stop = -0.2e6
+    FREQ.num = 201
 
     ################################### 2D SWEEP #######################################
 
     RO_AMPX = Sweep(
         name="ro_ampx",
         # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-        points=[0.01, 0.05, 0.1, 0.2, 0.5, 0.8]#0.25,0.5,0.75]
+        points=[0.01, 0.05, 0.1, 0.3, 0.5]#0.25,0.5,0.75]
     ) 
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]
@@ -106,5 +100,5 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
-    expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = RRSpecAmp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

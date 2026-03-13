@@ -1,11 +1,4 @@
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
 
 from qcore import Experiment, qua, Sweep
@@ -60,14 +53,14 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_1500",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "qubit_drive": "qubit_constant_pulse",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10000,
+        "wait_time": 5000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -77,7 +70,7 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this E xperiment run
-    N.num = 50000
+    N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"

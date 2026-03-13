@@ -10,10 +10,10 @@
 # - !<LMS>
 #   id: 25330
 #   name: lo_cav
-# - !<GS200>
-#   id: 90X823743
-#   name: yoko2
+- !<GS200>
+  id: 91x336839
+  name: yoko1
 - !<OPX1000>
   name: opx1000
-  id: 192.168.111.199
+  id: 192.168.111.181
   cluster_name: Cluster_1

@@ -1,12 +1,6 @@
 """ """
 """ """
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
@@ -15,7 +9,6 @@ from qm import qua as qm_qua
 from qcore.helpers import Stage
 from config.experiment_config import MODES_CONFIG
 import numpy as np
-from tqdm import tqdm
 import time
 
 
@@ -83,7 +76,7 @@ if __name__ == "__main__":
 
     pulses = {
         "cavity_pulse": "cav_constant_1000",
-        "qubit_pulse": "qubit_constant_pi_260",
+        "qubit_pulse": "qubit_constant_pi_400",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -108,9 +101,9 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-70e6
-    FREQ.stop =-30e6 
-    FREQ.num = 101
+    FREQ.start =-60e6
+    FREQ.stop =-44e6 
+    FREQ.num = 51
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
@@ -138,9 +131,9 @@ if __name__ == "__main__":
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     
-    cavity = ["charlie"]
+    # cavity = ["charlie"]
 
-    freq_sweep_ranges = np.arange(start=-100, stop=-10, step = 20)
+    # freq_sweep_ranges = np.arange(start=-100, stop=-10, step = 20)
     # for cav in cavity:
     #     if cav == "alice":
     #         modes["cavity"]="alice"
