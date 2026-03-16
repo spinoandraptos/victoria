@@ -66,7 +66,7 @@ if __name__ == "__main__":
     FREQ.name = "resonator_frequency"
     FREQ.start = 49e6
     FREQ.stop = 51e6
-    FREQ.num = 101
+    FREQ.num = 51
 
     # sweeps = [N, FREQ]
 

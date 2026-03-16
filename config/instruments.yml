@@ -1,6 +1,6 @@
-# - !<GS200>
-#   id: 91x336839
-#   name: yoko1
+- !<GS200>
+  id: 91x336839
+  name: yoko1
 - !<LMS>
   id: 25334
   name: lo_qubit

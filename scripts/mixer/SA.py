@@ -38,8 +38,8 @@ def get_sweep(mode, lo, sa, qm, sa_pulse, **kwargs):
 
 
 if __name__ == "__main__":
-    mode = CAV
-    mode_lo = LO_CAV
+    mode = QUBIT
+    mode_lo = LO_QUBIT
 
     sweep_parameters = {  # set sweep parameters
         "center": mode_lo.frequency,  # 1e9,
