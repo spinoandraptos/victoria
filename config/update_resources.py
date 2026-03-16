@@ -52,12 +52,12 @@ if __name__ == "__main__":
                         "fems": {
                             8: {
                                 "analog_outputs": {
-                                    8: {
-                                        "full_scale_power_dbm": -11, #only in increments of 3s -11 1
+                                    1: {
+                                        "full_scale_power_dbm": 16, #only in increments of 3s -11 1
                                         "upconverters": {1: {"frequency":  rr_LO}},
                                         "band":3,
                                     },
-                                    2: {
+                                    3: {
                                         "full_scale_power_dbm": 16, #-11 to 16
                                         "upconverters": {1: {"frequency": cav_LO}},
                                         "band":3,
@@ -78,7 +78,7 @@ if __name__ == "__main__":
                                     #     "full_scale_power_dbm": 16, 
                                     #     "upconverters": {1: {"frequency": qubit_LO}},
                                     # },
-                                    4: {
+                                    5: {
                                         "full_scale_power_dbm": 16, 
                                         "upconverters": {1: {"frequency": qubit_LO}},
                                         "band":2,
@@ -89,7 +89,7 @@ if __name__ == "__main__":
                                     # },
                                 },
                                 "analog_inputs": {
-                                    2: {
+                                    1: {
                                         "downconverter_frequency": rr_LO,
                                         "band":3
                                         },  # for down-conversion
@@ -107,7 +107,7 @@ if __name__ == "__main__":
             name="rr",
             lo_name="opx1000",  # either octave or labbrick
             ports={
-                "I": [8,8], "out1": [8,2] # [2, 1],[2,1]
+                "I": [8,1], "out1": [8,1] # [2, 1],[2,1]
             },  # OPX has two separate inputs (I, Q), from the Octave
             # ports={"I": 1, "Q": 2, "out": 1}, # OPX has I,Q combined in 1 input, from Labbrick downconversion
             int_freq=rr_IF,
@@ -133,7 +133,7 @@ if __name__ == "__main__":
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
                 length=5000,#600,  # 2000,
-                I_ampx=1,
+                I_ampx=1.95, #1,
                 pad=600, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 # weights=r"C:\Users\qcrew\Documents\eunice\config\weights\20260219_174734_weights.npz"
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         cavity.configure(
             name="cavity",
             lo_name="opx1000",
-            ports={"I": [8,2]},
+            ports={"I": [8,3]},
             int_freq=cav_IF,
             rf_switch=None, #alice_rf,
             rf_switch_on=False,
@@ -166,7 +166,7 @@ if __name__ == "__main__":
         qubit.configure(
             name="qubit",
             lo_name="opx1000",
-            ports={"I": [8,4]},
+            ports={"I": [8,5]},
             # int_freq=177.3065e6,
             int_freq=qubit_IF,
             rf_switch=None,

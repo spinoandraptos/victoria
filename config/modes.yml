@@ -78,7 +78,7 @@
   ports:
     I:
     - 8
-    - 4
+    - 5
   rf_switch: null
   rf_switch_on: false
 - !<Cavity>
@@ -113,7 +113,7 @@
   ports:
     I:
     - 8
-    - 2
+    - 3
   rf_switch: null
   rf_switch_on: false
 - !<Readout>
@@ -174,10 +174,10 @@
   ports:
     I:
     - 8
-    - 8
+    - 1
     out1:
     - 8
-    - 2
+    - 1
   rf_switch: null
   rf_switch_on: false
   smearing: 0

@@ -6,8 +6,8 @@
             "fems": {
                 "8": {
                     "analog_outputs": {
-                        "8": {
-                            "full_scale_power_dbm": -11,
+                        "1": {
+                            "full_scale_power_dbm": 16,
                             "upconverters": {
                                 "1": {
                                     "frequency": 7831635520.0
@@ -15,7 +15,7 @@
                             },
                             "band": 3
                         },
-                        "2": {
+                        "3": {
                             "full_scale_power_dbm": 16,
                             "upconverters": {
                                 "1": {
@@ -24,7 +24,7 @@
                             },
                             "band": 3
                         },
-                        "4": {
+                        "5": {
                             "full_scale_power_dbm": 16,
                             "upconverters": {
                                 "1": {
@@ -35,7 +35,7 @@
                         }
                     },
                     "analog_inputs": {
-                        "2": {
+                        "1": {
                             "gain_db": 0,
                             "downconverter_frequency": 7831635520.0,
                             "band": 3
@@ -65,7 +65,7 @@
                 "port": [
                     "con1",
                     8,
-                    8
+                    1
                 ],
                 "upconverter": 1
             },
@@ -73,7 +73,7 @@
                 "port": [
                     "con1",
                     8,
-                    2
+                    1
                 ]
             },
             "intermediate_frequency": -50000000,

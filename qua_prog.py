@@ -1,5 +1,5 @@
 
-# Single QUA script generated at 2026-03-13 15:56:31.285322
+# Single QUA script generated at 2026-03-16 14:21:26.324276
 # QUA library version: 1.2.6
 
 
@@ -39,9 +39,9 @@ config = {
                 "8": {
                     "type": "MW",
                     "analog_outputs": {
-                        "8": {
+                        "1": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": -11,
+                            "full_scale_power_dbm": 16,
                             "band": 3,
                             "delay": 0,
                             "shareable": False,
@@ -51,7 +51,7 @@ config = {
                                 },
                             },
                         },
-                        "2": {
+                        "3": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 16,
                             "band": 3,
@@ -63,7 +63,7 @@ config = {
                                 },
                             },
                         },
-                        "4": {
+                        "5": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 16,
                             "band": 2,
@@ -77,7 +77,7 @@ config = {
                         },
                     },
                     "analog_inputs": {
-                        "2": {
+                        "1": {
                             "band": 3,
                             "shareable": False,
                             "gain_db": 0,
@@ -116,11 +116,11 @@ config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 8, 8),
+                "port": ('con1', 8, 1),
                 "upconverter": 1,
             },
             "MWOutput": {
-                "port": ('con1', 8, 2),
+                "port": ('con1', 8, 1),
             },
             "smearing": 0,
             "time_of_flight": 300,
@@ -185,9 +185,9 @@ loaded_config = {
                 "8": {
                     "type": "MW",
                     "analog_outputs": {
-                        "8": {
+                        "1": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": -11,
+                            "full_scale_power_dbm": 16,
                             "band": 3,
                             "delay": 0,
                             "shareable": False,
@@ -197,7 +197,7 @@ loaded_config = {
                                 },
                             },
                         },
-                        "2": {
+                        "3": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 16,
                             "band": 3,
@@ -209,7 +209,7 @@ loaded_config = {
                                 },
                             },
                         },
-                        "4": {
+                        "5": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 16,
                             "band": 2,
@@ -223,7 +223,7 @@ loaded_config = {
                         },
                     },
                     "analog_inputs": {
-                        "2": {
+                        "1": {
                             "band": 3,
                             "shareable": False,
                             "gain_db": 0,
@@ -262,11 +262,11 @@ loaded_config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 8, 8),
+                "port": ('con1', 8, 1),
                 "upconverter": 1,
             },
             "MWOutput": {
-                "port": ('con1', 8, 2),
+                "port": ('con1', 8, 1),
             },
             "smearing": 0,
             "time_of_flight": 300,
