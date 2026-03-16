@@ -1,10 +1,10 @@
 import sys
 # The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
+# FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
+# # Add the FOLDER itself to sys.path, not the file path
+# if FOLDER not in sys.path:
+#     sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
@@ -35,9 +35,8 @@ class RRSpecCHI(Experiment):
         qua.update_frequency(self.resonator, self.resonator_frequency)
         self.qubit.play(self.qubit_drive, ampx=self.qubit_drive_ampx)
         qua.align(self.qubit, self.resonator)
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
+
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -57,7 +56,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_100",
+        "qubit_drive": "qubit_constant_pi_pulse_100",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -65,7 +64,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10_000,
+        "wait_time": 8_000,
         "ro_ampx": 1,
     }
 
@@ -80,9 +79,9 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -60e6
-    FREQ.stop = -40e6
-    FREQ.num = 201
+    FREQ.start = -50.5e6
+    FREQ.stop = -49.5e6
+    FREQ.num = 101
     
     QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 

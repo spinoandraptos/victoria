@@ -1,16 +1,7 @@
 """ """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-    
-    
 from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
-import qm
 
 
 class QubitT1(Experiment):
@@ -35,13 +26,14 @@ class QubitT1(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         self.qubit.play(self.qubit_drive)
+        # self.qubit.play(self.qubit_drive)
+        # self.qubit.play(self.qubit_drive)
+        # self.qubit.play(self.qubit_drive)
+        # self.qubit.play(self.qubit_drive)
         qua.wait(self.time_delay, self.qubit)
         qua.align(self.qubit, self.resonator)
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
-        qua.align()
-        qua.wait(self.wait_time)
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
+        qua.wait(self.wait_time, self.resonator)
 
 
 if __name__ == "__main__":
@@ -61,15 +53,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_100",
+        "qubit_drive": "qubit_constant_pi_pulse_400",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 50_000,
-        "ro_ampx": 1.0,
+        "wait_time": 8_000,
+        "ro_ampx": 1,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -77,11 +69,11 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 100000
+    N.num = 50000
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=16, stop=10_000, step=200, dtype=int)
+    DEL = Sweep(name="time_delay", start=4, stop=10_000, step=12, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
@@ -89,16 +81,10 @@ if __name__ == "__main__":
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     # PHASE.plot = False
-
-    MAG.fitfn = "exp_decay"
-    Q.fitfn = "exp_decay"
     I.fitfn = "exp_decay"
-    # MAG.fitfn = "exp_decay"
+    Q.fitfn = "exp_decay"
+    MAG.fitfn = "exp_decay"
     PHASE.fitfn = "exp_decay"
-    I.plot = True
-    PHASE.plot = True
-    #I.plot = True
-    Q.plot = True
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################

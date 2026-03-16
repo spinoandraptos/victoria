@@ -55,15 +55,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_pi_pulse": "qubit_constant_pi_pulse",
-        "qubitEF_drive": "qubitEF_constant_pulse",
+        "qubit_pi_pulse": "qubit_constant_pi_pulse_16",
+        "qubitEF_drive": "qubitEF_constant_pulse_10000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 200000,
+        "wait_time": 8000,
         "ro_ampx": 1,
     }
 
@@ -76,19 +76,23 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubitEF_frequency"
-    FREQ.start = -135e6
-    FREQ.stop = -120e6
-    FREQ.step = 0.05e6
+    FREQ.start = -200e6
+    FREQ.stop = 200e6
+    FREQ.num = 101
 
     sweeps = [N, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
 
-    MAG.axes = sweeps[1:]
-    PHASE.axes = sweeps[1:]
+    
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     PHASE.plot = False
+    
+    MAG.fitfn = "gaussian"
+    I.fitfn = "gaussian"
+    Q.fitfn = "gaussian"
+    
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################

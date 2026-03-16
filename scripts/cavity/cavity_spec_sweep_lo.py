@@ -73,15 +73,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cavity_constant_pulse",
-        "qubit_pulse": "qubit_constant_pi_pulse_400",
+        "cavity_pulse": "cavity_constant_pulse_10000",
+        "qubit_pulse": "qubit_constant_pi_pulse_300",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 600_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -101,16 +101,16 @@ if __name__ == "__main__":
     FREQ.name = "cavity_frequency"
     FREQ.start =-200e6
     FREQ.stop =200e6 
-    FREQ.num = 501
+    FREQ.num = 2001
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
     #     points=[0.0, 1.0],
     # )
-    PHASE.plot = True
-    MAG.plot = True
-    Q.plot = True
-    I.plot = True
+    PHASE.plot = False
+    MAG.plot = False
+    Q.plot = False
+    I.plot = False
     SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
@@ -118,36 +118,28 @@ if __name__ == "__main__":
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    I.fitfn = "gaussian"
-    Q.fitfn = "gaussian"
-    MAG.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
+    # I.fitfn = "gaussian"
+    # Q.fitfn = "gaussian"
+    # MAG.fitfn = "gaussian"
+    # PHASE.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     
    
     datasets = [I, Q, MAG, PHASE]
-    ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    
-    # cavity = ["charlie"]
+    lo_cav_values = np.arange(6.7e9, 7.9e9 + 400e6, 400e6)
 
-    # freq_sweep_ranges = np.arange(start=-100, stop=-10, step = 20)
-    # for cav in cavity:
-    #     if cav == "alice":
-    #         modes["cavity"]="alice"
-    #         pulses["cavity_pulse"]="a_d_large"
-    #     elif cav == "bob":
-    #         modes["cavity"]="bob"
-    #         pulses["cavity_pulse"]="bob_constant"
-    #     elif cav == "charlie":
-    #         modes["cavity"]="charlie"
-    #         pulses["cavity_pulse"]="charlie_constant"
-    #     for i in range(len(freq_sweep_ranges)-1):
-    #         FREQ.name = "cavity_frequency"
-    #         FREQ.start =freq_sweep_ranges[i]*1e6
-    #         FREQ.stop =freq_sweep_ranges[i+1]*1e6
-    #         FREQ.num = 151
-    #         sweeps = [N, FREQ]
-    expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
-            # time.sleep(60)
+    # Generate the linearly spaced values
+    # LO_list = flux_values
+    with Stage(configpath=MODES_CONFIG, remote=True) as stage:
+        lo_qubit, lo_rr, lo_cav = stage.get("lo_qubit", "lo_rr", "lo_cav")
+        
+        for index_q in range(len(lo_cav_values)):
+            lo_cav.frequency = lo_cav_values[index_q]
+            lo_cav.power = 15.0
+            lo_cav.output = True
+            expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+            expt.run()
+            # expt.run(simulate=True)
+            time.sleep(1)  # Sleeps for 1 second; adjust as needed
+        
