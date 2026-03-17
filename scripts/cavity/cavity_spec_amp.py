@@ -99,9 +99,9 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =50e6
-    FREQ.stop =60e6 
-    FREQ.num = 81
+    FREQ.start =-200e6
+    FREQ.stop =200e6 
+    FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     
     RO_AMPX = Sweep(
         name="cav_ampx",
-        points=[0.6,0.8,0.9,1.0,1.2]#0.25,0.5,0.75]
+        points=[0.5,1.2]#0.25,0.5,0.75]
     ) 
     sweeps = [N, RO_AMPX, FREQ]
     #SINGLE_SHOT.plot_args["plot_type"] = "image"

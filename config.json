@@ -9,12 +9,6 @@
                 "8": {
                     "offset": -0.006228637695312497
                 },
-                "1": {
-                    "offset": 0.0070546144735999395
-                },
-                "2": {
-                    "offset": 0.005051575438119471
-                },
                 "5": {
                     "offset": 0.0
                 },
@@ -44,27 +38,9 @@
                 "lo_frequency": 6665900000,
                 "mixer": "mixer_78"
             },
-            "intermediate_frequency": 53200000,
+            "intermediate_frequency": 53400000,
             "operations": {
-                "cavity_pulse": "cav.cavity_constant_pulse_5000_weaker"
-            }
-        },
-        "qubit": {
-            "mixInputs": {
-                "I": [
-                    "con1",
-                    1
-                ],
-                "Q": [
-                    "con1",
-                    2
-                ],
-                "lo_frequency": 6195000000,
-                "mixer": "mixer_12"
-            },
-            "intermediate_frequency": 68000000,
-            "operations": {
-                "qubit_pulse": "qubit.qubit_constant_pi_pulse_400"
+                "qubit_drive": "cav.cavity_constant_pi_800"
             }
         },
         "rr": {
@@ -97,25 +73,13 @@
     "mixers": {
         "mixer_78": [
             {
-                "intermediate_frequency": 53200000,
+                "intermediate_frequency": 53400000,
                 "lo_frequency": 6665900000,
                 "correction": [
                     0.8720115627090465,
                     0.18532169822217195,
                     0.12762627412904967,
                     1.2662178283697718
-                ]
-            }
-        ],
-        "mixer_12": [
-            {
-                "intermediate_frequency": 68000000,
-                "lo_frequency": 6195000000,
-                "correction": [
-                    0.8763427734259319,
-                    0.25014736807116766,
-                    0.16534419700682,
-                    1.325809083530416
                 ]
             }
         ],
@@ -133,20 +97,12 @@
         ]
     },
     "pulses": {
-        "cav.cavity_constant_pulse_5000_weaker": {
+        "cav.cavity_constant_pi_800": {
             "operation": "control",
-            "length": 5000,
+            "length": 800,
             "waveforms": {
-                "I": "cav.cavity_constant_pulse_5000_weaker.waveform.I",
-                "Q": "cav.cavity_constant_pulse_5000_weaker.waveform.Q"
-            }
-        },
-        "qubit.qubit_constant_pi_pulse_400": {
-            "operation": "control",
-            "length": 400,
-            "waveforms": {
-                "I": "qubit.qubit_constant_pi_pulse_400.waveform.I",
-                "Q": "qubit.qubit_constant_pi_pulse_400.waveform.Q"
+                "I": "cav.cavity_constant_pi_800.waveform.I",
+                "Q": "cav.cavity_constant_pi_800.waveform.Q"
             }
         },
         "rr.rr_readout_pulse": {
@@ -165,19 +121,11 @@
         }
     },
     "waveforms": {
-        "cav.cavity_constant_pulse_5000_weaker.waveform.I": {
+        "cav.cavity_constant_pi_800.waveform.I": {
             "type": "constant",
-            "sample": 0.12
+            "sample": 0.2
         },
-        "cav.cavity_constant_pulse_5000_weaker.waveform.Q": {
-            "type": "constant",
-            "sample": 0.0
-        },
-        "qubit.qubit_constant_pi_pulse_400.waveform.I": {
-            "type": "constant",
-            "sample": 0.0029411764705882353
-        },
-        "qubit.qubit_constant_pi_pulse_400.waveform.Q": {
+        "cav.cavity_constant_pi_800.waveform.Q": {
             "type": "constant",
             "sample": 0.0
         },

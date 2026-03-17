@@ -333,7 +333,7 @@
   tof: 272
 - !<Cavity>
   name: cav
-  int_freq: 5.320000E+07
+  int_freq: 5.340000E+07
   lo_name: lo_cav
   mixer_offsets:
     I: 0.017144775390625002
@@ -362,12 +362,12 @@
       total_length: 10000
     cavity_constant_pulse_5000_weaker: !<ConstantPulse>
       name: cavity_constant_pulse_5000_weaker
-      I_ampx: 0.6
+      I_ampx: 1.2
       Q_ampx: 0.0
       digital_marker: null
       length: 5000
       pad: 0
-      total_I_amp: 0.12
+      total_I_amp: 0.24
       total_length: 5000
     cavity_constant_pi_400: !<ConstantPulse>
       name: cavity_constant_pi_400
@@ -378,6 +378,33 @@
       pad: 0
       total_I_amp: 0.39
       total_length: 400
+    cavity_constant_pi_100: !<ConstantPulse>
+      name: cavity_constant_pi_100
+      I_ampx: 1
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 100
+      pad: 0
+      total_I_amp: 0.2
+      total_length: 100
+    cavity_constant_pi_52: !<ConstantPulse>
+      name: cavity_constant_pi_52
+      I_ampx: 1
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 52
+      pad: 0
+      total_I_amp: 0.2
+      total_length: 52
+    cavity_constant_pi_800: !<ConstantPulse>
+      name: cavity_constant_pi_800
+      I_ampx: 1
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 800
+      pad: 0
+      total_I_amp: 0.2
+      total_length: 800
     cavity_gaussian_pulse: !<GaussianPulse>
       name: cavity_gaussian_pulse
       I_ampx: 0.032

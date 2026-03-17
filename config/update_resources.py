@@ -235,7 +235,7 @@ if __name__ == "__main__":
             name="cav",
             lo_name="lo_cav",
             ports={"I": 7, "Q": 8},
-            int_freq=53.2e6,
+            int_freq=53.4e6,
         )
 
         cav.operations = [
@@ -252,7 +252,27 @@ if __name__ == "__main__":
              ConstantPulse(
                 name="cavity_constant_pulse_5000_weaker",
                 length=5000,
-                I_ampx=0.6,
+                I_ampx=1.2,
+            ),
+            ConstantPulse(
+                name="cavity_constant_pi_400",
+                length=400,
+                I_ampx=1,#0.2,
+            ),
+            ConstantPulse(
+                name="cavity_constant_pi_100",
+                length=100,
+                I_ampx=1,#0.2,
+            ),
+            ConstantPulse(
+                name="cavity_constant_pi_52",
+                length=52,
+                I_ampx=1,#0.2,
+            ),
+            ConstantPulse(
+                name="cavity_constant_pi_800",
+                length=800,
+                I_ampx=1,#0.2,
             ),
             ConstantPulse(
                 name="cavity_constant_pi_400",

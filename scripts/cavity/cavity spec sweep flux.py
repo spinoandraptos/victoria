@@ -84,14 +84,14 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 3000
+    N.num = 5000
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =50e6
-    FREQ.stop =60e6 
-    FREQ.num = 81
+    FREQ.start =20e6
+    FREQ.stop =100e6 
+    FREQ.num = 101
 
     PHASE.plot = False
     MAG.plot = False
@@ -125,3 +125,6 @@ if __name__ == "__main__":
             yoko.ramp(flux, step=0.1e-3)
             expt = CavitySpecFlux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
             expt.run()
+
+    yoko.output=True
+    yoko.ramp(0e-3, step=0.1e-3)
