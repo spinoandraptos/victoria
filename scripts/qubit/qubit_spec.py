@@ -57,7 +57,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5000,
+        "wait_time": 70_000,
         "ro_ampx": 1,
     }
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = -200e6
+    FREQ.start = 0.2e6
     FREQ.stop = 200e6
     FREQ.num = 101
 

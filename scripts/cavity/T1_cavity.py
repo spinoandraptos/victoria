@@ -1,11 +1,11 @@
-""" """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
+# """ """
+# import sys
+# # The directory containing the 'config' folder
+# FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
+# # Add the FOLDER itself to sys.path, not the file path
+# if FOLDER not in sys.path:
+#     sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR, SINGLE_SHOT
 from qcore import Experiment, qua, Sweep
@@ -42,7 +42,7 @@ class CavityT1(Experiment):
         # qua.align(self.cavity, self.qubit)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
-        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type='dual')
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
         if self.plot_single_shot:  # assign state to G or E
             qm_qua.assign(
                 self.single_shot,
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "cavity": "cavity",#"cav",
+        "cavity": "cav",#"cav",
         "qubit": "qubit",
         "resonator": "rr",
         
@@ -70,15 +70,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_100",
-        "qubit_pulse": "qubit_constant_pi_400",
+        "cavity_drive": "cav_const_1",
+        "qubit_pulse": "qubit_constant_selective_pi_pulse",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 80000,
+        "wait_time": 100000,
         "ro_ampx": 1,
         "plot_single_shot": False,
     }

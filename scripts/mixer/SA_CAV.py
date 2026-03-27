@@ -55,4 +55,4 @@ if __name__ == "__main__":
             qm = QM(modes=(mode,), oscillators=(mode_lo,), opx=opx)
             pulses = {p.name: p for p in mode.operations.values()}
             sa_pulse = pulses["spectrum_analysis_constant_pulse"]
-            get_sweep(mode, mode_lo, SA, qm, sa_pulse, **sweep_parameters)
+            get_sweep(mode, mode_lo, SA_CAV, qm, sa_pulse, **sweep_parameters)

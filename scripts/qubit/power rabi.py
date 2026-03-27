@@ -28,6 +28,7 @@ class Rabi(Experiment):
         # qua.reset_phase(self.qubit)
         # qua.reset_frame(self.qubit)
         """QUA sequence that defines this Experiment subclass"""
+        # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         qua.align(self.qubit, self.resonator)
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
@@ -51,14 +52,14 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_pulse_400",
+        "qubit_drive": "qubit_constant_pi_pulse_320",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 8000,
+        "wait_time": 70_000,
         "ro_ampx": 1,
     }
 
@@ -70,7 +71,7 @@ if __name__ == "__main__":
     N.num = 100000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.95, stop=1.95, num=31)
+    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1, stop=1, num=31)
     sweeps = [N, QD_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

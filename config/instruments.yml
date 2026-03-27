@@ -1,6 +1,6 @@
-- !<GS200>
-  id: 91x336839
-  name: yoko1
+# - !<GS200>
+#   id: 91x336839
+#   name: yoko1
 - !<LMS>
   id: 25334
   name: lo_qubit
@@ -10,6 +10,9 @@
 - !<SA124>
  id: 19184645
  name: sa
+- !<SA124>
+ id: 20234154
+ name: sa_cav
 - !<LMS>
   id: 25331
   name: lo_cav

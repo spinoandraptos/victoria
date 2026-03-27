@@ -1,11 +1,11 @@
-""" """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
+# """ """
+# import sys
+# # The directory containing the 'config' folder
+# FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
+# # Add the FOLDER itself to sys.path, not the file path
+# if FOLDER not in sys.path:
+#     sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, I, Q, SINGLE_SHOT, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
@@ -24,7 +24,7 @@ class QubitT2(Experiment):
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
     # they must be specified at experiment runtime
-    primary_datasets = ["I", "Q", "single_shot"]
+    primary_datasets = ["I", "Q"]
 
     ############################## DEFINE PRIMARY SWEEPS ###############################
     # these Sweeps are uniquely associated with the Experiment subclass
@@ -54,9 +54,7 @@ class QubitT2(Experiment):
         self.qubit.play(self.qubit_drive, phase=self.phase)
         qua.align(self.qubit, self.resonator)
         #qua.wait(16, self.resonator) # to align rr after qubit, although this is not
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
         if self.plot_single_shot:  # assign state to G or E
             qm_qua.assign(
                 self.single_shot,
@@ -81,7 +79,7 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
     pulses = {
-        "qubit_drive": "qubit_gaussian_pi2_clara",
+        "qubit_drive": "qubit_constant_pi2_pulse_32",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -90,7 +88,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 110_000,
         "ro_ampx": 1,
-        "detuning":0.7e6,
+        "detuning":1e6,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,
@@ -111,7 +109,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=16, stop=20000, step=100, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop=3000, step=40, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
@@ -126,12 +124,12 @@ if __name__ == "__main__":
     # SINGLE_SHOT.fitfn = "exp_decay_sine"
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
 
-    MAG.plot = False
-    PHASE.plot = False
+    MAG.plot = True
+    PHASE.plot = True
     I.plot = True
     Q.plot = True
     SINGLE_SHOT.plot = False
-    datasets = [I, Q, SINGLE_SHOT]
+    datasets = [I, Q, MAG,PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     # while True:

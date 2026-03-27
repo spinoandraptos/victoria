@@ -50,7 +50,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5_000,
+        "wait_time": 10_000,
         # "ro_ampx": 1,
     }
 
@@ -65,15 +65,15 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = 40e6
-    FREQ.stop = 60e6
+    FREQ.start = -60e6
+    FREQ.stop = -40e6
     FREQ.num = 101
 
     ################################### 2D SWEEP #######################################
 
     RO_AMPX = Sweep(
         name="ro_ampx",
-        points=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6]#0.25,0.5,0.75]
+        points=[0.1, 0.4,0.5, 0.6,0.7,0.8,0.9, 1]#0.25,0.5,0.75]
     ) 
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]
