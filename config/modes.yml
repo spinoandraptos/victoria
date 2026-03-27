@@ -11,12 +11,12 @@
   operations:
     qubit_constant_pulse: !<ConstantPulse>
       name: qubit_constant_pulse
-      I_ampx: 1.5
+      I_ampx: 1.95
       Q_ampx: 0.0
       digital_marker: null
       length: 10000
       pad: 0
-      total_I_amp: 0.30000000000000004
+      total_I_amp: 0.39
       total_length: 10000
     qubit_constant_pi_160: !<ConstantPulse>
       name: qubit_constant_pi_160
@@ -78,7 +78,7 @@
   ports:
     I:
     - 8
-    - 5
+    - 3
   rf_switch: null
   rf_switch_on: false
 - !<Cavity>
@@ -151,7 +151,7 @@
       total_length: 600
     rr_readout_pulse: !<ConstantReadoutPulse>
       name: rr_readout_pulse
-      I_ampx: 1
+      I_ampx: 1.95
       Q_ampx: 0.0
       digital_marker: !<DigitalWaveform>
         name: ADC_ON
@@ -159,11 +159,11 @@
         - - 1
           - 0
       has_optimized_weights: false
-      length: 5000
-      pad: 600
+      length: 400
+      pad: 300
       threshold: null
-      total_I_amp: 0.2
-      total_length: 5600
+      total_I_amp: 0.39
+      total_length: 700
       weights:
       - 1.0
       - 0.0

@@ -22,10 +22,10 @@ if __name__ == "__main__":
     # NOTE adding digital markers to test RF switch to RR
     with Stage(configpath=MODES_CONFIG, remote=True) as stage:
         
-        (opx1000, qubit, rr, cavity, yoko1) = stage.get("opx1000", "qubit", "rr", "cavity", "yoko1")
+        (opx1000, qubit, rr, cavity) = stage.get("opx1000", "qubit", "rr", "cavity")
         
-        yoko1.output = True
-        yoko1.ramp(stop=0e-3, start=None, step=0.1e-3)
+        # yoko1.output = True
+        # yoko1.ramp(stop=0e-3, start=None, step=0.1e-3)
     
         # rr_LO = 7.88e9+32e6+21e6-0.3e6-2e6-0.6e6-0.15e6
         # rr_IF = -53e6
@@ -36,10 +36,10 @@ if __name__ == "__main__":
         # cav_LO = 6.7e9 + 53.4e6+19e6-1E6#-20e6#6.6e9+50e6
         # cav_IF = -53.5e6
     
-        rr_LO =7.78163552e9+50e6#7.787955E9+50E6+0.2e6-6E6#7.88e9+32e6+21e6-0.3e6
+        rr_LO =7.16e9+50e6+50e6#7.787955E9+50E6+0.2e6-6E6#7.88e9+32e6+21e6-0.3e6
         rr_IF = -50e6
         
-        qubit_LO = 6e9+96.7e6+250e6-11e6+0.1e6+400e6-200e6-200e6-400e6#+70e6-1.7e6
+        qubit_LO = 5e9-400e6#+800e6#6e9+96.7e6+250e6-11e6+0.1e6+400e6-200e6-200e6-400e6#+70e6-1.7e6
         qubit_IF = -160e6
 
         
@@ -53,14 +53,14 @@ if __name__ == "__main__":
                             8: {
                                 "analog_outputs": {
                                     1: {
-                                        "full_scale_power_dbm": 16, #only in increments of 3s -11 1
+                                        "full_scale_power_dbm": 11, #only in increments of 3s -11 1
                                         "upconverters": {1: {"frequency":  rr_LO}},
                                         "band":3,
                                     },
                                     3: {
                                         "full_scale_power_dbm": 16, #-11 to 16
-                                        "upconverters": {1: {"frequency": cav_LO}},
-                                        "band":3,
+                                        "upconverters": {1: {"frequency": qubit_LO}},
+                                        "band":2,
                                     },
                                     # 3: {
                                     #     "full_scale_power_dbm": 4,
@@ -78,11 +78,11 @@ if __name__ == "__main__":
                                     #     "full_scale_power_dbm": 16, 
                                     #     "upconverters": {1: {"frequency": qubit_LO}},
                                     # },
-                                    5: {
-                                        "full_scale_power_dbm": 16, 
-                                        "upconverters": {1: {"frequency": qubit_LO}},
-                                        "band":2,
-                                    },
+                                    # 5: {
+                                    #     "full_scale_power_dbm": 16, 
+                                    #     "upconverters": {1: {"frequency": qubit_LO}},
+                                    #     "band":2,
+                                    # },
                                     # 8: {
                                     #     "full_scale_power_dbm": -8, #-5,
                                     #     "upconverters": {1: {"frequency": rr_LO}},
@@ -132,41 +132,41 @@ if __name__ == "__main__":
             ),
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
-                length=5000,#600,  # 2000,
+                length=400,#600,  # 2000,
                 I_ampx=1.95, #1,
-                pad=600, #1200, #
+                pad=300, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 # weights=r"C:\Users\qcrew\Documents\eunice\config\weights\20260219_174734_weights.npz"
             ),
         ]
 
-        cavity.configure(
-            name="cavity",
-            lo_name="opx1000",
-            ports={"I": [8,3]},
-            int_freq=cav_IF,
-            rf_switch=None, #alice_rf,
-            rf_switch_on=False,
-        )
+        # cavity.configure(
+        #     name="cavity",
+        #     lo_name="opx1000",
+        #     ports={"I": [8,3]},
+        #     int_freq=cav_IF,
+        #     rf_switch=None, #alice_rf,
+        #     rf_switch_on=False,
+        # )
         
-        cavity.operations = [
-                ConstantPulse(
-                name="cav_constant_10000",
-                length=10000,
-                I_ampx=2.0,
-            ),
-                ConstantPulse(
-                name="cav_constant_400",
-                length=400,
-                I_ampx=2/2,
-            ),
-        ]
+        # cavity.operations = [
+        #         ConstantPulse(
+        #         name="cav_constant_10000",
+        #         length=10000,
+        #         I_ampx=2.0,
+        #     ),
+        #         ConstantPulse(
+        #         name="cav_constant_400",
+        #         length=400,
+        #         I_ampx=2/2,
+        #     ),
+        # ]
         
 
         qubit.configure(
             name="qubit",
             lo_name="opx1000",
-            ports={"I": [8,5]},
+            ports={"I": [8,3]},
             # int_freq=177.3065e6,
             int_freq=qubit_IF,
             rf_switch=None,
@@ -177,7 +177,7 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="qubit_constant_pulse",
                 length=10000,
-                I_ampx=1.5,
+                I_ampx=1.95,
             ),
             ConstantPulse(
                 name="qubit_constant_pi_160",
