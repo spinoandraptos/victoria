@@ -1,13 +1,13 @@
 """ Calibrate DC offset for optimized readout """
 """ Readout integration weights training for single-shot readout """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
+# import sys
+# # The directory containing the 'config' folder
+# FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-""" Readout integration weights training for single-shot readout """
+# # Add the FOLDER itself to sys.path, not the file path
+# if FOLDER not in sys.path:
+#     sys.path.insert(0, FOLDER)
+# """ Readout integration weights training for single-shot readout """
 
 from qcore import Stage
 from qcore.instruments import QM
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     with Stage(configpath=MODES_CONFIG, remote=True) as stage:
 
-        rr, lo_rr = stage.get("rr", "lo_rr")
+        rr, lo_rr = stage.get("rr", "opx1000")
         
         dc_offset_pulse_name = "rr_readout_pulse"
 

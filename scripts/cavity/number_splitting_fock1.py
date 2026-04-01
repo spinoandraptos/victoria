@@ -1,7 +1,6 @@
 """ """
 """ """
 import sys
-
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
 from qcore import Experiment, qua, Sweep
@@ -12,8 +11,8 @@ import numpy as np
 import time
 
 
-class CavitySpec(Experiment):
-    """Cavity spectroscopy"""
+class NumberSplittingFOCK1(Experiment):
+    """Number splitting"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -25,7 +24,7 @@ class CavitySpec(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["cavity_frequency"]
+    primary_sweeps = ["qubit_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -33,27 +32,19 @@ class CavitySpec(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.cavity)
-        #qua.reset_frame(self.cavity)
-       
+        # Generate state in the cavity
+        self.qubit.play(self.qubit_pi_pulse)
+        qua.align(self.qubit, self.qubit_ef)
+        self.qubit_ef.play(self.qubit_ef_drive) 
+        qua.align(self.qubit_ef, self.drive)
         
-        # There are two cavity modes here, please check which mode is used.
-        qua.update_frequency(self.cavity, self.cavity_frequency)
-        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
-        qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
+        self.drive.play(self.stark_drive) # fixed freq #, ampx=2.0 max
+        # Selective pi pulse
+        qua.update_frequency(self.qubit, self.qubit_frequency)
         self.qubit.play(self.qubit_pulse)
-        qua.align(self.qubit, self.resonator)
         qua.align()
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
-        if self.plot_single_shot:  # assign state to G or E
-            qm_qua.assign(
-                self.single_shot,
-                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
-            )
-
+        # Measurement
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -65,9 +56,11 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "cavity": "cavity",
         "qubit": "qubit",
+        "qubit_ef": "qubit_EF",
         "resonator": "rr",
+        "drive": "drive",
+        
     }
 
     ################################### PULSE MAP ######################################
@@ -75,20 +68,21 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_10000",
-        "qubit_pulse": "qubit_constant_pi_300",
+        "stark_drive": "drive_constant_pi_72",
+        "qubit_pi_pulse": "qubit_constant_pi_52",
+        "qubit_ef_drive": "qubitEF_constant_pi_52",
+        "qubit_pulse": "qubit_constant_pi_600",
         "readout_pulse": "rr_readout_pulse",
+        
     }
 
-    ############################## CONTROL PARAMETERS ############# #####################
+    ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 1000_000,#6e6,
         "ro_ampx": 1,
-        "cav_ampx": 1,
-        "fetch_interval": 1,
-        "plot_single_shot": False,
-        
+        # "plot_single_shot": True,
+        "qubit_drive_ampx": 1
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -96,60 +90,37 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
+    N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    
-    FREQ.name = "cavity_frequency"
-    FREQ.start =-200e6
-    FREQ.stop =200e6 
-    FREQ.num = 401
-    #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
-    # QB_AMPX = Sweep(
-    #     name="qb_ampx",
-    #     points=[0.0, 1.0],
-    # )
-    PHASE.plot = True
-    MAG.plot = True
-    Q.plot = True
-    I.plot = True
-    SINGLE_SHOT.plot = False
-    
+    FREQ.name = "qubit_frequency"
+    FREQ.start =110e6  # 40e6
+    FREQ.stop = 130e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.num = 101
+
+    # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
+
+    # sweeps = [N, FREQ]
+    #QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1.0, 1.5]) #needs to be floating point numbers 
     sweeps = [N, FREQ]
-    #SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
+
+    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
+    PHASE.plot = True
+    I.plot = True
+    Q.plot = True
+    MAG.plot = True
+
     I.fitfn = "gaussian"
     Q.fitfn = "gaussian"
     MAG.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
-
-    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    
-   
     datasets = [I, Q, MAG, PHASE]
-    ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    
-    # cavity = ["charlie"]
+    # SINGLE_SHOT.fitfn = 'double_gaussian'
+    #SINGLE_SHOT.plot_args = {"plot_err": False}
 
-    # freq_sweep_ranges = np.arange(start=-100, stop=-10, step = 20)
-    # for cav in cavity:
-    #     if cav == "alice":
-    #         modes["cavity"]="alice"
-    #         pulses["cavity_pulse"]="a_d_large"
-    #     elif cav == "bob":
-    #         modes["cavity"]="bob"
-    #         pulses["cavity_pulse"]="bob_constant"
-    #     elif cav == "charlie":
-    #         modes["cavity"]="charlie"
-    #         pulses["cavity_pulse"]="charlie_constant"
-    #     for i in range(len(freq_sweep_ranges)-1):
-    #         FREQ.name = "cavity_frequency"
-    #         FREQ.start =freq_sweep_ranges[i]*1e6
-    #         FREQ.stop =freq_sweep_ranges[i+1]*1e6
-    #         FREQ.num = 151
-    #         sweeps = [N, FREQ]
-    expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    ######################## INITIALIZE AND RUN EXPERIMENT #############################
+
+    expt = NumberSplittingFOCK1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
-            # time.sleep(60)

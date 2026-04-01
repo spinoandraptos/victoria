@@ -1,13 +1,4 @@
-""" """
-""" """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-    
 from config.experiment_config import FOLDER, N, ADC, ADC_FFT, READOUT_PULSE
 
 from qcore import Experiment, qua, Sweep
@@ -66,16 +57,6 @@ if __name__ == "__main__":
 
     # must initialize axes based on expected shape of raw data for ADC datasets
     ADC.initialize(axes=[N.num, READOUT_PULSE.total_length])
-    # freqs = Sweep(
-    #     name="Frequency",
-    #     start=0.0,
-    #     stop=0.5,
-    #     step=1 / READOUT_PULSE.total_length,
-    #     units="GHz",
-    # )
-    # freqs.initialize()
-    # N.initialize()
-    # ADC_FFT.initialize(axes=[N, freqs])
     datasets = [ADC]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################

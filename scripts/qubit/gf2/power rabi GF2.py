@@ -5,7 +5,7 @@ from qm import qua as qm_qua
 from qcore import Experiment, qua, Sweep
 
 
-class Rabi(Experiment):
+class RabiGF2(Experiment):
     """Power Rabi"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -25,8 +25,8 @@ class Rabi(Experiment):
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
 
     def sequence(self):
-        qua.reset_phase(self.qubit)
-        qua.reset_frame(self.qubit)
+        # qua.reset_phase(self.qubit_gf2)
+        # qua.reset_frame(self.qubit_gf2)
         # qua.initialize_qubit(self.resonator,
         #                     self.readout_pulse,
         #                     demod_type="dual",
@@ -38,10 +38,11 @@ class Rabi(Experiment):
         # qua.reset_frame(self.qubit)
         # qua.align()
         """QUA sequence that defines this Experiment subclass"""
+        # self.drive.play(self.stark_drive)
+        self.qubit_gf2.play(self.qubit_gf2_drive, ampx=self.qubit_pulse_amplitude)
         # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
-        self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
      
-        qua.align(self.qubit, self.resonator)
+        qua.align(self.qubit_gf2, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -61,7 +62,8 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "qubit": "qubit",
+        "drive": "drive",
+        "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
     }
 
@@ -70,8 +72,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_400",
-        #"test_pulse": "su_qubit_pi_8",
+        # "stark_drive": "drive_constant_pi_300",
+        "qubit_gf2_drive": "qubitGF_gaussian_pi_64",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -92,7 +94,7 @@ if __name__ == "__main__":
     N.num = 100_000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.95, stop=1.95, num=31)
+    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.5, stop=1.5, num=31)
     sweeps = [N, QD_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
@@ -102,6 +104,7 @@ if __name__ == "__main__":
         "sine",
         "sine",
         "sine",
+        # "sine_gf",
         # "sine_gf",
         # "sine_gf",
         # "sine_gf",
@@ -117,6 +120,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = Rabi(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = RabiGF2(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run(simulate=True)
     expt.run()

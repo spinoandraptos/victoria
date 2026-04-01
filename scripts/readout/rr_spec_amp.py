@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
     FREQ.start = -60e6
-    FREQ.stop = -52e6
+    FREQ.stop = -40e6
     FREQ.num = 51
 
     ################################### 2D SWEEP #######################################
@@ -77,7 +77,8 @@ if __name__ == "__main__":
     RO_AMPX = Sweep(
         name="ro_ampx",
         # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-        points=[0.01, 0.02, 0.03, 0.04, 0.05,]#0.25,0.5,0.75]
+        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+        points=[0.01, 0.02, 0.03, 0.04, 0.05, 0.1]#0.25,0.5,0.75]
     ) 
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]

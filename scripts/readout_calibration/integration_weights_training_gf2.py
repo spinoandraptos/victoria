@@ -13,7 +13,7 @@ from qcore.scripts.readout_training_octave import ReadoutTrainerOctave
 from config.experiment_config import MODES_CONFIG, FOLDER
 from config.experiment_config import (
     RR,
-    QUBIT,
+    qubit_GF2,
 )
 
 if __name__ == "__main__":
@@ -23,20 +23,20 @@ if __name__ == "__main__":
 
         #(octave, opx_one) = stage.get("octave1", "opx_one")
         (opx1000,) = stage.get("opx1000")
-        qm = QM(modes=(RR, QUBIT), oscillators=(opx1000,), opx=opx1000)
+        qm = QM(modes=(RR, qubit_GF2), oscillators=(opx1000,), opx=opx1000)
         # Save file with today's date
         date_str = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_weights.npz")
         file_path = Path(FOLDER) / "config/weights" / date_str
 
         params = {
             "reps": 20_000,
-            "wait_time": 110_000,  # ns
+            "wait_time": 10_000,  # ns
             "readout_pulse": "rr_readout_pulse",  # pulse name used to readout
-            "qubit_pi_pulse": "qubit_constant_pi_52",  # pulse name used to excite qubit
+            "qubit_pi_pulse": "qubitGF_constant_pi_16",  # pulse name used to excite qubit
             "weights_file_path": file_path,
         }
 
-        ro_trainer = ReadoutTrainerOctave(RR, QUBIT, qm, **params)
+        ro_trainer = ReadoutTrainerOctave(RR, qubit_GF2, qm, **params)
         ro_trainer.train_weights()
 
         ## Make sure to run this script every time the readout pulse is changed!!

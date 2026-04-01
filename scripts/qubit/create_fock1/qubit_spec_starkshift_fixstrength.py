@@ -1,17 +1,11 @@
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, FREQ2
 
 from qcore import Experiment, qua, Sweep
+import numpy as np
 
-class RRSpec_crosskerr(Experiment):
-    """Readout resonator spectroscopy"""
+class QubitSpec_Stark(Experiment):
+    """Qubit spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -23,7 +17,7 @@ class RRSpec_crosskerr(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["resonator_frequency"]
+    primary_sweeps = ["qubit_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -31,10 +25,12 @@ class RRSpec_crosskerr(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.resonator)
-        qua.update_frequency(self.resonator, self.resonator_frequency)
-        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
-        qua.align() 
+        qua.reset_phase(self.resonator)
+        qua.update_frequency(self.qubit, self.qubit_frequency)
+        qua.update_frequency(self.drive, self.drive_frequency)
+        self.drive.play(self.stark_drive) # fixed freq #, ampx=2.0 max
+        self.qubit.play(self.qubit_pi)
+        qua.align()
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -48,59 +44,74 @@ if __name__ == "__main__":
     # key: name of the Mode as defined by the Experiment subclass
     # value: name of the Mode as defined by the user in modes.yml
 
-    modes = {"resonator": "rr", "cavity": "cavity"}
+    modes = {
+        "qubit": "qubit",
+        "resonator": "rr",
+        "drive": "drive",
+    }
 
     ################################### PULSE MAP ######################################
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
 
-    pulses = {"readout_pulse": "rr_readout_pulse", "cav_displacement": "cav_constant_40",}
+    pulses = {
+        "stark_drive": "drive_constant_pi_300",
+        "qubit_pi": "qubit_constant_pi_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "readout_pulse": "rr_readout_pulse",
+    }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 800_000,
-        "ro_ampx": 1,
+        "wait_time": 5000,
+        "ro_ampx": 1.0,
+        "qubit_drive_ampx": 1,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
     # must include an outermost averaging Sweep named "N"
     # must include all primary sweeps defined by the Experiment subclass
 
-    ################################### 1D SWEEP #######################################
+    # set number of repetitions for this E xperiment run
+    N.num = 500000
 
-    # set number of repetitions for this Experiment run
-    N.num = 100_000
- 
     # set the qubit frequency sweep for this Experiment run
-    FREQ.name = "resonator_frequency"
-    FREQ.start = -55e6
-    FREQ.stop = -45e6
-    FREQ.num = 101
+    FREQ.name = "qubit_frequency"
+    FREQ.start =90e6  # 40e6
+    FREQ.stop = 160e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.num = 201
+    
+    FREQ2.name = "drive_frequency"
+    FREQ2.start =-60e6  # 40e6
+    FREQ2.stop = -40e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ2.num = 11
 
-    ################################### 2D SWEEP #######################################
-    # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0, stop=0.2, step=0.2)
-    sweeps = [N, CAV_AMP, FREQ]
-    # sweeps = [N, FREQ]
+    
+    # Q_AMPX = Sweep(
+    #     name="q_ampx",
+    #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+    #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+    #     points=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]#0.25,0.5,0.75]
+    # ) 
+    
+
+    sweeps = [N, FREQ, FREQ2]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
 
-    PHASE.inputs = ("I", "Q", "resonator_frequency")
-    PHASE.datafn_args = {"delay": -3.298e-7}
-
-    MAG.fitfn = "lorentzian"
-    # MAG.axes = sweeps
-
-    I.plot = True
-    Q.plot = True
-    PHASE.plot = True
-
-    datasets = [I, Q, MAG, PHASE]
+    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
+    PHASE.plot = False
+    MAG.plot = False
+    # Q.plot = False
+    I.plot = False
+    #I.plot = True
+    Q.plot_args["plot_type"] = "image"
+    #I.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot = True
+    datasets = [I, Q, PHASE, MAG]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-
-    # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
-    expt = RRSpec_crosskerr(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
+    expt = QubitSpec_Stark(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run(simulate=False) #simulate=False
