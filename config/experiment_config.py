@@ -14,9 +14,9 @@ MODES_CONFIG = FOLDER + "config/modes.yml"
 ######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
 # print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
-    QUBIT, RR, SA, CAV, SA_CAV = stage.get("qubit", "rr", "sa", "cav", "sa_cav")
-    LO_QUBIT, LO_RR, LO_CAV = stage.get(
-        "lo_qubit", "lo_rr", "lo_cav"
+    QUBIT, RR, SA = stage.get("qubit", "rr", "sa")
+    LO_QUBIT, LO_RR = stage.get(
+        "lo_qubit", "lo_rr"
     )
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
 

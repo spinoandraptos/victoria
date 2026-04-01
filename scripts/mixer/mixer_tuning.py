@@ -12,15 +12,15 @@ if __name__ == "__main__":
     with Stage(configpath=MODES_CONFIG, remote=True) as stage:
         #################### RETRIEVE RESOURCES FROM THE STAGE #########################
 
-        SA, QUBIT, RR, CAV, SA_CAV = stage.get("sa", "qubit", "rr", "cav", "sa_cav")
+        SA, QUBIT, RR = stage.get("sa", "qubit", "rr")
 
         ########### INITIALIZE THE MIXER TUNER WITH THE SPECTRUM ANALYZER ##############
 
-        mixer_tuner = MixerTuner(SA_CAV, FOLDER)
+        mixer_tuner = MixerTuner(SA, FOLDER)
 
         ############ SET THE MODE WHOSE LO OR SB LEAKAGE IS TO BE TUNED ################
 
-        mode = CAV
+        mode = RR
 
         ########################### MINIMIZE LO LEAKAGE ################################
 

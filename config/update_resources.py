@@ -17,13 +17,13 @@ if __name__ == "__main__":
 
     with Stage(configpath=MODES_CONFIG, remote=True) as stage:
         # RETRIEVE INSTRUMENTS AND MODES
-        lo_qubit, lo_rr, lo_cav = stage.get(
-            "lo_qubit", "lo_rr", "lo_cav"
+        lo_qubit, lo_rr = stage.get(
+            "lo_qubit", "lo_rr"
         )
-        qubit, rr, sa, cav = stage.get("qubit", "rr", "sa", "cav")
+        qubit, rr, sa = stage.get("qubit", "rr", "sa")
 
         # CONFIGURE THE RR PROPERTIES AND OPERATIONS
-        lo_rr.frequency = 7.6149e9 +0.15e6 + 50e6
+        lo_rr.frequency = 7.34351e9
         lo_rr.power = 15.0
         lo_rr.output = True
 
@@ -31,28 +31,17 @@ if __name__ == "__main__":
             name="rr",
             lo_name="lo_rr",
             ports={"I": 5, "Q": 6, "out": 1},
-            int_freq=-49.4e6,
+            int_freq=-50e6,
             tof=272,
         )
 
         rr.operations = [
-            # ConstantReadoutPulse(
-            #     name="rr_readout_pulse",
-            #     length=400,  # 400, #400, #400,  # 10000,
-            #     I_ampx=0.25,  # 1,
-            #     pad=400,
-            #     digital_marker=DigitalWaveform("ADC_ON"),
-            #     # threshold= 0.0004282540982746491,
-            #     # weights="C:/Users/qcrew/Desktop/qcrew/qcrew/config/weights/20230720_142024_opt_weights.npz",
-            # ),
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
-                length=600,  # 400,  # 400, #400,  # 10000,
-                I_ampx=1.95,#1.95*0.1,  # 0.014,  # 0.02,  # 0.25,
-                pad=300,
+                length=400,#600,  # 2000,
+                I_ampx=1,
+                pad=300, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
-                # threshold= 0.0004282540982746491,
-                # weights=r"C:\Users\qcrew\Documents\eunice\config\weights\20260212_133929_weights.npz",
             ),
             ConstantPulse(
                 name="spectrum_analysis_constant_pulse",
@@ -63,7 +52,7 @@ if __name__ == "__main__":
         ]
 
         # CONFIGURE THE QUBIT PROPERTIES AND OPERATIONS
-        lo_qubit.frequency = 5.7e9-200E6
+        lo_qubit.frequency = 6e9
         lo_qubit.power = 15.0
         lo_qubit.output = True
 
@@ -72,7 +61,7 @@ if __name__ == "__main__":
             name="qubit",
             lo_name="lo_qubit",
             ports={"I": 1, "Q": 2},
-            int_freq=113e6,
+            int_freq=53e6-580e3,
         )
 
         qubit.operations = [
@@ -177,78 +166,5 @@ if __name__ == "__main__":
                 rampfn="cos",
                 length=20,
                 I_ampx=1.4,
-            ),
-        ]
-
-        # CONFIGURE THE CAVITY PROPERTIES AND OPERATIONS
-
-        lo_cav.frequency = 7.14e9+50e6#+400e6  # +50e3 # -50e3 # 3e9 in anapico channel 3
-        lo_cav.power = 15.0  # 15.0
-        lo_cav.output = True
-
-        cav.configure(
-            name="cav",
-            lo_name="lo_cav",
-            ports={
-                "I": 7,
-                "Q": 8,
-            },
-            int_freq=-110e6,  # +5e6,  # -31.545e6,
-        )
-
-        cav.operations = [
-            ConstantPulse(
-                name="cav_constant_pulse_100000",
-                length=100000,
-                I_ampx=1.95,
-            ),
-            ConstantPulse(
-                name="cav_const_1",
-                length=160,
-                I_ampx=1.95,
-            ),
-            ConstantPulse(
-                name="cav_cohstate_long",
-                length=160,
-                I_ampx=1.9,
-            ),
-            ConstantPulse(
-                name="cav_cohstate_superlong",
-                length=10000,
-                I_ampx=1.9,
-            ),
-            GaussianPulse(
-                name="cav_gaussian_shortest",
-                sigma=8,
-                chop=4,
-                I_ampx=1.9,
-                Q_ampx=0.0,
-            ),
-            GaussianPulse(
-                name="cav_gaussian_long",
-                sigma=40,
-                chop=4,
-                I_ampx=0.5,
-                Q_ampx=0.0,
-            ),
-            GaussianPulse(
-                name="ECD_gaussian_1",
-                sigma=40,
-                chop=4,
-                I_ampx=0.2,
-                Q_ampx=0.0,
-            ),
-            GaussianPulse(
-                name="cav_gaussian_short",
-                sigma=40,
-                chop=4,
-                I_ampx=0.3,
-                Q_ampx=0.0,
-            ),
-            ConstantPulse(
-                name="spectrum_analysis_constant_pulse",
-                length=1000,  # 2000,
-                I_ampx=1.0,
-                pad=0
             ),
         ]

@@ -13,9 +13,9 @@
 - !<SA124>
  id: 20234154
  name: sa_cav
-- !<LMS>
-  id: 25331
-  name: lo_cav
+# - !<LMS>
+#   id: 25331
+#   name: lo_cav
 - !<OPXPlus>
   name: opx_plus
   id: 192.168.111.147
