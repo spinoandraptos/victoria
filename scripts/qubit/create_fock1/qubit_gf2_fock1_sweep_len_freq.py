@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_ramp_pi_96",
+        "stark_drive": "drive_ramp_pi_400",
         "qubit_gf2_drive": "qubitGF_gaussian_pi_64",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -82,10 +82,10 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "drive_frequency"
-    FREQ.start = 90e6  # 40e6
+    FREQ.start = -100e6  # 40e6
     FREQ.stop = 100e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 21
-    DEL = Sweep(name="length_drive", start=16, stop=800, step=32, dtype=int)
+    FREQ.num = 101
+    DEL = Sweep(name="length_drive", start=16, stop=600, step=32, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6
     # FREQ2.stop = -40e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
@@ -108,10 +108,10 @@ if __name__ == "__main__":
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     PHASE.plot = False
     MAG.plot = False
-    # Q.plot = False
-    I.plot = False
+    Q.plot = False
+    # I.plot = False
     #I.plot = True
-    Q.plot_args["plot_type"] = "image"
+    # Q.plot_args["plot_type"] = "image"
     I.plot_args["plot_type"] = "image"
     # SINGLE_SHOT.plot_args["plot_type"] = "image"
     # SINGLE_SHOT.plot = True

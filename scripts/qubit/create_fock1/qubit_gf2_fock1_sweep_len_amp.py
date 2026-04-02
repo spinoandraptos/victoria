@@ -30,7 +30,7 @@ class qubit_gf2_fock1_sweep_len_ampx(Experiment):
         # qua.update_frequency(self.qubit, self.qubit_frequency)
         # qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
         qua.align()
         # qua.update_frequency(self.drive) 
         # self.qubit_ef.play(self.qubit_ef_drive) 
@@ -64,8 +64,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_ramp_pi_96",
-        "qubit_gf2_drive": "qubitGF_gaussian_pi_64",
+        "stark_drive": "drive_ramp_pi_400",
+        "qubit_gf2_drive": "qubitGF_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=4, stop=600, step=12, dtype=int)
+    DEL = Sweep(name="length_drive", start=4, stop=300, step=4, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         name="d_ampx",
         # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
         #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[0.0,0.3 , 0.5, 1, ]#0.25,0.5,0.75]
+        points=[0.0, 0.5, 1 ]#0.25,0.5,0.75]
     ) 
     
 

@@ -1,12 +1,11 @@
-""" """
 import sys
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, SINGLE_SHOT
-from qm import qua as qm_qua
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
+
 from qcore import Experiment, qua, Sweep
+import numpy as np
 
-
-class RabiGF2_Stark(Experiment):
-    """Power Rabi"""
+class QubitSpec_ge_Stark(Experiment):
+    """Qubit spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -18,39 +17,25 @@ class RabiGF2_Stark(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["qubit_pulse_amplitude"]
+    primary_sweeps = ["qubit_ge_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
 
+
     def sequence(self):
-        qua.reset_phase(self.qubit_gf2)
-        qua.reset_frame(self.qubit_gf2)
-        # qua.initialize_qubit(self.resonator,
-        #                     self.readout_pulse,
-        #                     demod_type="dual",
-        #                     threshold_g=self.readout_pulse.threshold,
-        #                     wait_time=self.initialize_wait_time,
-        #                     n_consecutive=15)
-        # qua.align()
-        # qua.reset_phase(self.qubit)
-        # qua.reset_frame(self.qubit)
-        # qua.align()
         """QUA sequence that defines this Experiment subclass"""
-        self.drive.play(self.stark_drive)
-        self.qubit_gf2.play(self.qubit_gf2_drive, ampx=self.qubit_pulse_amplitude)
-        # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
-     
-        qua.align(self.drive ,self.qubit_gf2, self.resonator)
+        # qua.reset_phase(self.resonator)
+        qua.update_frequency(self.qubit, self.qubit_ge_frequency)
+        #qua.update_frequency(self.resonator, self.resonator_frequency)
+        qua.align()
+        self.drive.play(self.stark_drive, ampx=self.q_ampx) # fixed freq
+        self.qubit.play(self.qubit_drive, ampx=self.qubit_drive_ampx)
+        qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
-        if self.plot_single_shot:  # assign state to G or E
-            qm_qua.assign(
-                self.single_shot,
-                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
-            )
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -63,7 +48,7 @@ if __name__ == "__main__":
 
     modes = {
         "drive": "drive",
-        "qubit_gf2": "qubit_GF2",
+        "qubit": "qubit",
         "resonator": "rr",
     }
 
@@ -73,53 +58,67 @@ if __name__ == "__main__":
 
     pulses = {
         "stark_drive": "drive_gaussian_pulse_300",
-        "qubit_gf2_drive": "qubitGF_gaussian_pulse_300",
+        "qubit_drive": "qubit_gaussian_pi_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":8000,
-        # "initialize_wait_time": 5000,
-        "ro_ampx": 1,
-        "plot_single_shot": False,
+        "wait_time": 5000,
+        "ro_ampx": 1.0,
+        "qubit_drive_ampx": 1,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
     # must include an outermost averaging Sweep named "N"
     # must include all primary sweeps defined by the Experiment subclass
 
-    # set number of repetitions for this Experiment run
-    N.num = 100_000
+    # set number of repetitions for this E xperiment run
+    N.num = 500000
 
-    # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.5, stop=1.5, num=31)
-    sweeps = [N, QD_AMPX]
+    # set the qubit frequency sweep for this Experiment run
+    FREQ.name = "qubit_ge_frequency"
+    FREQ.start =-200e6  # 40e6
+    FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.num = 201
+
+    
+    Q_AMPX = Sweep(
+        name="q_ampx",
+        # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+        points=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0 ]#0.25,0.5,0.75]
+    ) 
+    
+
+    sweeps = [N, FREQ, Q_AMPX]
+    # sweeps = [N, Q_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    I.fitfn, Q.fitfn, MAG.fitfn, SINGLE_SHOT.fitfn = (
-        "sine",
-        "sine",
-        "sine",
-        "sine",
-        # "sine_gf",
-        # "sine_gf",
-        # "sine_gf",
-        # "sine_gf",
-    )
 
-    PHASE.datafn_args = {"delay": -3.298e-7, "freq": RR.int_freq}
-    MAG.plot = True
-    PHASE.plot = True
-    I.plot = True
-    Q.plot = True
-    SINGLE_SHOT.plot = False
+    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
+    PHASE.plot = False
+    MAG.plot = False
+    # Q.plot = False
+    I.plot = False
+    #I.plot = True
+    Q.plot_args["plot_type"] = "image"
+    I.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot = True
+    # PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
+    # PHASE.plot = True
+    # I.plot = True
+    # Q.plot = True
+    # MAG.plot = True
+
+    # I.fitfn = "gaussian"
+    # Q.fitfn = "gaussian"
+    # MAG.fitfn = "gaussian"
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-
-    expt = RabiGF2_Stark(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    # expt.run(simulate=True)
-    expt.run()
+    expt = QubitSpec_ge_Stark(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run(simulate=False) #simulate=False

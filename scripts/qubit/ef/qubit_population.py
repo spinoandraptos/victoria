@@ -55,15 +55,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_pi_pulse": "qubit_constant_pi_52",
-        "qubitEF_pi_pulse": "qubitEF_constant_pi_52",
+        "qubit_pi_pulse": "qubit_gaussian_pi_16",
+        "qubitEF_pi_pulse": "qubitEF_gaussian_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 50000,
+        "wait_time": 5000,
         "ro_ampx": 1,
     }
 
@@ -87,13 +87,13 @@ if __name__ == "__main__":
     # MAG.axes = sweeps[1:]
     # PHASE.axes = sweeps[1:]
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    PHASE.plot = False
+    # PHASE.plot = False
     datasets = [I, Q, MAG, PHASE]
-    I.fitfn, Q.fitfn, MAG.fitfn = (
+    I.fitfn, Q.fitfn, MAG.fitfn, PHASE.fitfn = (
         "sine",
         "sine",
         "sine",
-        # "sine",
+        "sine",
         # "sine_gf",
         # "sine_gf",
         # "sine_gf",

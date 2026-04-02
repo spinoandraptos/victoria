@@ -30,15 +30,16 @@ class qubit_gf2_fock1_sweep_freq(Experiment):
         # qua.update_frequency(self.qubit, self.qubit_frequency)
         # qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive)
+        # self.qubit_gf2.play(self.qubit_gf2_drive, ampx=self.d_ampx)
         qua.align()
         qua.update_frequency(self.drive, self.drive_frequency)
         # self.qubit_ef.play(self.qubit_ef_drive) 
         # qua.align(self.qubit_ef, self.drive)
         
-        self.drive.play(self.stark_drive, ampx=self.d_ampx) # fixed freq #, ampx=2.0 max , duration=self.length_drive
+        self.drive.play(self.stark_drive, ampx=1.0) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
         # self.qubit.play(self.qubit_pi)
+        qua.wait(self.time_delay, self.resonator)
         qua.align()
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -65,14 +66,15 @@ if __name__ == "__main__":
 
     pulses = {
         "stark_drive": "drive_ramp_pi_96",
-        "qubit_gf2_drive": "qubitGF_gaussian_pi_64",
+        "qubit_gf2_drive": "qubitGF_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,
+        "wait_time2": 80,
+        "wait_time": 1000_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -86,9 +88,9 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "drive_frequency"
-    FREQ.start = -200e6  # 40e6
-    FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 201
+    FREQ.start = -100e6  # 40e6
+    FREQ.stop = -20e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.num = 101
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6
@@ -96,15 +98,15 @@ if __name__ == "__main__":
     # FREQ2.num = 101
 
     
-    D_AMPX = Sweep(
-        name="d_ampx",
-        # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[0.0,0.5, 1, ]#0.25,0.5,0.75]
-    ) 
-    
+    # D_AMPX = Sweep(
+    #     name="d_ampx",
+    #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+    #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+    #     points=[0.0,  1.0]#0.25,0.5,0.75]
+    # ) 
+    DEL = Sweep(name="time_delay", start=16, stop=80, step=40, dtype=int)
 
-    sweeps = [N,  D_AMPX, FREQ]
+    sweeps = [N,  DEL, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass

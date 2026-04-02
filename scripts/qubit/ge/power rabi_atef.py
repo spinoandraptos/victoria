@@ -42,7 +42,7 @@ class Rabi(Experiment):
         # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         qua.align(self.qubit, self.qubit_ef)
         
-        self.qubit_ef.play(self.qubit_ef_drive, ampx=self.qubit_pulse_amplitude)
+        self.qubit_ef.play(self.qubit_ef_drive, ampx=1.0)
         # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
      
         qua.align(self.qubit_ef, self.resonator)
@@ -77,8 +77,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_300",
-        "qubit_ef_drive": "qubitEF_constant_pi_16",
+        "qubit_drive": "qubit_constant_pi_1000",
+        "qubit_ef_drive": "qubitEF_gaussian_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 

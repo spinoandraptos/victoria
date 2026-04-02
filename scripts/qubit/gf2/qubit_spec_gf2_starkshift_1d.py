@@ -57,8 +57,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_gaussian_pi_64",
-        "qubit_gf2_drive": "qubitGF_gaussian_pi_64",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "stark_drive": "drive_gaussian_pulse_300",
+        "qubit_gf2_drive": "qubitGF_gaussian_pulse_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 

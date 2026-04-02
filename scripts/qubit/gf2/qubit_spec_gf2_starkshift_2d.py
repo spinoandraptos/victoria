@@ -57,15 +57,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_gaussian_pi_64",
-        "qubit_gf2_drive": "qubitGF_gaussian_pi_64",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "stark_drive": "drive_gaussian_pulse_300",
+        "qubit_gf2_drive": "qubitGF_gaussian_pulse_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5000,
+        "wait_time": 50000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     FREQ.name = "qubit_gf2_frequency"
     FREQ.start =-200e6  # 40e6
     FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 51
+    FREQ.num = 101
 
     
     Q_AMPX = Sweep(

@@ -29,7 +29,7 @@ class Wigner_1d(Experiment):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase()
 
-        self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
+        self.cavity.play(self.cavityB_pulse_short, ampx=(self.cavity_drive_I, -self.cavity_drive_Q, self.cavity_drive_Q, self.cavity_drive_I), phase=0.0)  # displacement in I direction
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
         qua.align(self.cavity,self.qubit)
@@ -85,9 +85,10 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 1e6,
         "ro_ampx": 1,
-        # "cavity_ampx": 1,
+        "delay": 508,
         "fetch_interval": 1,
         "plot_single_shot": False,
+        "cavity_drive_I": 0.0,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -98,18 +99,18 @@ if __name__ == "__main__":
     N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
-    DELAY = Sweep(
-        name="delay",
-        dtype=int,
-        start=4,
-        stop=1000,
-        step=16,
-    )
+    # DELAY = Sweep(
+    #     name="delay",
+    #     dtype=int,
+    #     start=4,
+    #     stop=1000,
+    #     step=16,
+    # )
     
-    CAVITY_AMPX = Sweep(name="cavity_ampx", points=[1.0, 1.6])
+    CAVITY_AMPX = Sweep(name="cavity_drive_Q", start=-1.8, stop=1.8, num = 101)
 
 
-    sweeps = [N, CAVITY_AMPX ,DELAY]
+    sweeps = [N, CAVITY_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass

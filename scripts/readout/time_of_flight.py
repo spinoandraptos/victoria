@@ -13,7 +13,7 @@ class TimeOfFlight(Experiment):
 
     def sequence(self):
         """the QUA pulse sequence for a Time Of Flight experiment"""
-        # qua.reset_phase(self.resonator)
+        qua.reset_phase(self.resonator)
         self.resonator.measure(self.readout_pulse, stream=self.adc, ampx=self.ro_ampx)
         qua.wait(self.wait_time, self.resonator)
         
@@ -37,9 +37,9 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10_000,
+        "wait_time": 5_000,
         "ro_ampx": 1,
-        "fetch_interval": 5,
+        "fetch_interval": 15,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -56,6 +56,7 @@ if __name__ == "__main__":
     # must include all primary datasets defined by the Experiment subclass
 
     # must initialize axes based on expected shape of raw data for ADC datasets
+    N.initialize()
     ADC.initialize(axes=[N.num, READOUT_PULSE.total_length])
     datasets = [ADC]
 

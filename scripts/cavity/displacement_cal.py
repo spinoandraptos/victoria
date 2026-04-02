@@ -80,7 +80,7 @@ if __name__ == "__main__":
     pulses = {
         "cav_displacement": "cav_constant_40",
         # "qubit_pi_pulse": "qubit_pi_9",
-        "qubit_selective_pi": "qubit_constant_pi_300",
+        "qubit_selective_pi": "qubit_constant_pi_600",
         "readout_pulse": "rr_readout_pulse",
     }
 
