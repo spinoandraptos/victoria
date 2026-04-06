@@ -24,7 +24,7 @@ class QubitT2(Experiment):
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
     # they must be specified at experiment runtime
-    primary_datasets = ["I", "Q", "single_shot"]
+    primary_datasets = ["I", "Q"]
 
     ############################## DEFINE PRIMARY SWEEPS ###############################
     # these Sweeps are uniquely associated with the Experiment subclass
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
     pulses = {
-        "qubit_drive": "qubit_constant_pi2_52",
+        "qubit_drive": "qubit_gaussian_pi2_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 110_000,
         "ro_ampx": 1,
-        "detuning":1e6,
+        "detuning":2e6,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=4, stop=3000, step=20, dtype=int)
+    DEL = Sweep(name="time_delay", start=4, stop=6000, step=80, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
@@ -126,12 +126,12 @@ if __name__ == "__main__":
     # SINGLE_SHOT.fitfn = "exp_decay_sine"
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
 
-    MAG.plot = False
+    MAG.plot = True
     PHASE.plot = False
     I.plot = True
     Q.plot = True
     SINGLE_SHOT.plot = False
-    datasets = [I, Q, SINGLE_SHOT]
+    datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     # while True:

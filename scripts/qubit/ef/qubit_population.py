@@ -63,7 +63,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5000,
+        "wait_time":100000,
         "ro_ampx": 1,
     }
 
@@ -72,10 +72,10 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 50000
+    N.num = 500000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubitEF_pulse_amplitude", start=-1.8, stop=1.8, num=51)
+    QD_AMPX = Sweep(name="qubitEF_pulse_amplitude", start=-1.4, stop=1.4, num=51)
     QD_AMPY = Sweep(name="qubitGE_pulse_amplitude", points=[0.0, 1.0])
     sweeps = [N, QD_AMPY, QD_AMPX]
     

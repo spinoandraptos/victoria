@@ -72,7 +72,7 @@ Q = Dataset(
 ADC = Dataset(
     name="adc",
     stream=RR.ports["out1"][1],  # out for old
-    save=False,
+    save=True,
     plot=True,
     plot_args={
         "plot_type": "line",

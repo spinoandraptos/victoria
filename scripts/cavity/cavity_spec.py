@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     pulses = {
         "cavity_pulse": "cav_constant_10000",
-        "qubit_pulse": "qubit_constant_pi_600",
+        "qubit_pulse": "qubit_constant_pi_400",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     FREQ.name = "cavity_frequency"
     FREQ.start =-200e6
     FREQ.stop =200e6 
-    FREQ.num = 401
+    FREQ.num = 201
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
