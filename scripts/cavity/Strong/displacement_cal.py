@@ -1,13 +1,3 @@
-""" """
-""" """
-""" """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
     
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, SINGLE_SHOT
 from qm import qua as qm_qua
@@ -78,9 +68,9 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_40",
+        "cav_displacement": "cav_constant_80",
         # "qubit_pi_pulse": "qubit_pi_9",
-        "qubit_selective_pi": "qubit_constant_pi_400",
+        "qubit_selective_pi": "qubit_constant_pi_300",
         "readout_pulse": "rr_readout_pulse",
     }
 
