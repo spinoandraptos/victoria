@@ -70,7 +70,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_400",
+        "qubit_drive": "qubit_gaussian_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     N.num = 100_000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.5, stop=1.5, num=31)
+    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.95, stop=1.95, num=31)
     sweeps = [N, QD_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

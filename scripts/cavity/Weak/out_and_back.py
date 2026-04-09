@@ -1,6 +1,5 @@
 """ """
 """ """
-""" """
 import sys
 # The directory containing the 'config' folder
 FOLDER = "C:/Users/qcrew/Documents/eunice/"
@@ -8,14 +7,14 @@ FOLDER = "C:/Users/qcrew/Documents/eunice/"
 # Add the FOLDER itself to sys.path, not the file path
 if FOLDER not in sys.path:
     sys.path.insert(0, FOLDER)
-    
+
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, SINGLE_SHOT
 from qm import qua as qm_qua
 from qcore import Experiment, qua, Sweep
 import numpy as np
 
 
-class CavDisplacementCalSelective(Experiment):
+class OutAndBackChi(Experiment):
     """Dispersive shift between cavity and qubit"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -28,7 +27,7 @@ class CavDisplacementCalSelective(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["cav_ampx"]
+    primary_sweeps = ["time_delay"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -38,25 +37,28 @@ class CavDisplacementCalSelective(Experiment):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
-        # qua.reset_phase(self.qubit)
-        # qua.reset_frame(self.qubit)
-            
+        qua.reset_phase(self.qubit)
+        qua.reset_frame(self.qubit)
+
+        if self.qubit_in_e:
+            self.qubit.play(self.qubit_pi_pulse)
         qua.align()
-        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
-        qua.align() 
-        self.qubit.play(self.qubit_selective_pi)
+        self.cavity.play(self.cav_displacement, ampx=1)  # create a coherent state
+        qua.align()  # put qubit into excited state to start rotation of cohstate
+        # qua.update_frequency(self.cavity, -50e6 -15.29e3,keep_phase=True)
+        qua.wait(self.time_delay, self.cavity)  # wait for state to rotate
+        # qua.update_frequency(self.cavity, -50e6 - 9.362e3, keep_phase=True)
+        qua.align()
+        self.cavity.play(self.cav_displacement, ampx=1, phase=self.disp_phase)
+        # )  # displace cavity back
+        qua.align()  # qubit and cavity
+        self.qubit.play(self.qubit_selective_pi)  # flip qubit if cav is in vac.
+
+        # measurement
         qua.align()
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), demod_type="dual")
 
-        if self.plot_single_shot:  # assign state to G or E
-            qm_qua.assign(
-                self.single_shot,
-                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
-            )
-
         qua.wait(self.wait_time, self.resonator)
-        
-    
 
 
 if __name__ == "__main__":
@@ -78,19 +80,18 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_40",
-        # "qubit_pi_pulse": "qubit_pi_9",
-        "qubit_selective_pi": "qubit_constant_pi_600",
+        "cav_displacement":"cav_constant_200", #"cav_gaussian_pulse_100",
+        "qubit_pi_pulse": "qubit_gaussian_pi_16",
+        "qubit_selective_pi": "qubit_constant_pi_400",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1000_000,
-        "plot_single_shot": False,
-     
-
+        "wait_time": 1_000_000,
+        # "plot_single_shot": True,
+        "qubit_in_e": True,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES ############ #################
@@ -98,52 +99,32 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 50000
+    N.num = 10000
 
     # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0, stop=1.95, step=0.08)
+    DEL = Sweep(name="time_delay", start=16, stop= 500+16, num=41, dtype=int)
 
- 
-    
-    sweeps = [N, CAV_AMP]
+    DISPL_PHASE = Sweep(name="disp_phase", start=0.1, stop=1, num=31, dtype=float)
+    sweeps = [N, DISPL_PHASE, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    
-    from qcore import Dataset
-    # PRESELECT = Dataset(
-    #     name="preselect",
-    #     save=True,
-    #     plot=False,
-    # )
 
     # MAG.axes = sweeps[1:]
     # PHASE.axes = sweeps[1:]
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}  # 2.792e-7
-    PHASE.plot = True
-    MAG.plot = True
-    Q.plot = True
-    I.plot = True
-    I.fitfn = "displacement_cal"
-    Q.fitfn = "displacement_cal"
-    MAG.fitfn = "displacement_cal"
-    PHASE.fitfn = "displacement_cal"
-    datasets = [I, Q, MAG, PHASE]
+    PHASE.plot = False
+    #MAG.plot = True
+    Q.plot = False
+    I.plot = False
+    #I.plot = True
+    MAG.plot_args["plot_type"] = "image"
+    #I.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot = True
+    datasets = [I, Q, PHASE, MAG]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    # cavities = ["Alice", "Bob", "Charlie"]
-    # ampx_list = [1.0]
-    # for cavity in cavities:
-    #     if cavity == "Alice":
-    #         modes["cavity"] = "alice"
-    #         pulses["cav_displacement"] = "a_d_large"
-    #     elif cavity == "Bob":
-    #         modes["cavity"] = "bob"
-    #         pulses["cav_displacement"] = "b_d_large"
-    #     elif cavity == "Charlie":
-    #         modes["cavity"] = "charlie"
-    #         pulses["cav_displacement"] = "c_s100"
-    # for ampx_item in ampx_list:
-    #     parameters["cav_ampx"] = ampx_item
-    expt = CavDisplacementCalSelective(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+
+    expt = OutAndBackChi(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

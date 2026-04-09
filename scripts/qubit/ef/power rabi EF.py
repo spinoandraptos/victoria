@@ -79,7 +79,7 @@ if __name__ == "__main__":
     N.num = 100_000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_ef_pulse_amplitude", start=-1.1, stop=1.1, num=51)
+    QD_AMPX = Sweep(name="qubit_ef_pulse_amplitude", start=-1.5, stop=1.5, num=51)
     sweeps = [N, QD_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

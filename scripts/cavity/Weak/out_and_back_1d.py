@@ -1,68 +1,58 @@
 """ """
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
 
-from config.experiment_config import FOLDER, N, I, Q, SINGLE_SHOT, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
-from cmath import phase
-from qm import qua as qm_qua
 from qcore.libs.qua_macros import QuaVariable
-from qcore.helpers import logger
 from qm import qua as qm_qua
-import time
-import numpy as np
 
 
-class QubitT2(Experiment):
-    """Qubit T2 Virtual Detuning"""
+class OUTANDBACK_1d(Experiment):
+    """Cavity spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
     # they must be specified at experiment runtime
+
     primary_datasets = ["I", "Q"]
 
     ############################## DEFINE PRIMARY SWEEPS ###############################
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
+
     primary_sweeps = ["time_delay"]
-    
+
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
 
     def sequence(self):
+        qua.reset_phase(self.cavity)
+        qua.reset_frame(self.cavity)
+
+        if self.qubit_in_e:
+            self.qubit.play(self.qubit_pi)
+
+        qua.wait(int(130), self.cavity)
+        self.cavity.play(
+            self.cavity_pulse, ampx=self.cav_ampx, phase=0.0
+        )  # create a coherent state
+        # qua.wait(int(130), self.cavity)
+        qua.align()
+        # # qua.update_frequency(self.cavity, -50e6 -15.29e3,keep_phase=True)
+        qua.wait(self.time_delay, self.cavity)  # wait for state to rotate
+        # qua.wait(int(16), self.cavity)  # wait for state to rotate
+        # # qua.update_frequency(self.cavity, -50e6 - 9.362e3, keep_phase=True)
         
-        factor = qm_qua.declare(qm_qua.fixed)
-        
-        # phase = qm_qua.declare(float)
-        qm_qua.assign(factor, self.detuning * 1e-9)
-        """QUA sequence that defines this Experiment subclass"""
-        qua.reset_frame(self.qubit)
+        self.cavity.play(self.cavity_pulse, ampx=self.cav_ampx, phase=self.disp_phase)
+        # )  # displace cavity back
 
-        self.qubit.play(self.qubit_drive)
-        qua.wait(self.time_delay, self.qubit)
-        qm_qua.assign(
-            self.phase,
-            qm_qua.Cast.mul_fixed_by_int(factor, self.time_delay),
-        )
+        qua.align()
+        self.qubit.play(self.qubit_pi_selective)  # flip qubit if cav is in vac.
 
-        self.qubit.play(self.qubit_drive, phase=self.phase)
-        qua.align(self.qubit, self.resonator)
-        #qua.wait(16, self.resonator) # to align rr after qubit, although this is not
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
-        if self.plot_single_shot:  # assign state to G or E
-            qm_qua.assign(
-                self.single_shot,
-                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
-            )
+        qua.align()
 
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -72,7 +62,9 @@ if __name__ == "__main__":
     #################################### MODE MAP ######################################
     # key: name of the Mode as defined by the Experiment subclass
     # value: name of the Mode as defined by the user in modes.yml
+
     modes = {
+        "cavity": "cav",
         "qubit": "qubit",
         "resonator": "rr",
     }
@@ -80,17 +72,22 @@ if __name__ == "__main__":
     ################################### PULSE MAP ######################################
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
+
     pulses = {
-        "qubit_drive": "qubit_gaussian_pi2_16",
+        "cavity_pulse": "cav_gaussian_long",
+        "qubit_pi_selective": "qubit_gaussian_pi_pulse_200",
+        "qubit_pi": "qubit_gaussian_pi_pulse",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 110_000,
+        "wait_time": 500000,
         "ro_ampx": 1,
-        "detuning":2e6,
+        "fetch_interval": 5,
+        "qubit_in_e": True,
+        "cav_ampx": 1,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,
@@ -98,8 +95,6 @@ if __name__ == "__main__":
             buffer=True,
             stream=True,
         ),
-        "plot_single_shot": False,
-        "initialize_wait_time": 5000,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -109,36 +104,40 @@ if __name__ == "__main__":
     # set number of repetitions for this Experiment run
     N.num = 200000
 
-    # set the qubit frequency sweep for this Experiment run
+    # set the delay sweep
+    DEL = Sweep(name="time_delay", points=[16, 216], dtype=int)
 
-    DEL = Sweep(name="time_delay", start=4, stop=10000, step=40, dtype=int)
-    sweeps = [N, DEL]
+    DISPL_PHASE = Sweep(name="disp_phase", start=0.1, stop=0.7, step=0.01, dtype=float)
+
+    sweeps = [N,DEL, DISPL_PHASE]
+
+    # sweeps = [N, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    I.fitfn = "exp_decay_sine"
-    Q.fitfn = "exp_decay_sine"
-    MAG.fitfn = "exp_decay_sine"
-    PHASE.fitfn = "exp_decay_sine"
-    SINGLE_SHOT.fitfn = "exp_decay_sine"
-    print(SINGLE_SHOT.best_fit, SINGLE_SHOT.fit_params)
+    # MAG.fitfn = "gaussian"
 
-    # SINGLE_SHOT.fitfn = "exp_decay_sine"
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
 
-    MAG.plot = True
+    Q.plot = False
     PHASE.plot = False
+    MAG.plot = False
+
+    I.fitfn = "gaussian"
+    Q.fitfn = "gaussian"
+    MAG.fitfn = "gaussian"
+    PHASE.fitfn = "gaussian"
+    datasets = [I, Q, MAG, PHASE]
     I.plot = True
     Q.plot = True
-    SINGLE_SHOT.plot = False
-    datasets = [I, Q, MAG, PHASE]
+    MAG.plot = True
+    PHASE.plot = True
+    # SINGLE_SHOT.plot = False
+    # MAG.plot_args["plot_type"] = "image"
+    # I.plot_args["plot_type"] = "image"
+    # SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    # while True:
-    # N_sweep = np.arange(1000, 50_500, 500)
-    # for n in N_sweep:
-    #     N.num = int(n)
-    #     sweeps = [N, DEL]
-    expt = QubitT2(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=False)
-        # time.sleep(120)
+
+    expt = OUTANDBACK_1d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run()

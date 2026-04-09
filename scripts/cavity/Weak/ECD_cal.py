@@ -1,11 +1,12 @@
-import sys
+""" """
+
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
 
 from qcore import Experiment, qua, Sweep
-import numpy as np
 
-class QubitSpec(Experiment):
-    """Qubit spectroscopy"""
+
+class ECD_CAL_1D(Experiment):
+    """Char_1D_singledisplacement"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -17,7 +18,7 @@ class QubitSpec(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["qubit_frequency"]
+    primary_sweeps = ["cavity_amp"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -25,14 +26,45 @@ class QubitSpec(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        qua.reset_phase(self.resonator)
-        qua.update_frequency(self.qubit, self.qubit_frequency)
-        #qua.update_frequency(self.resonator, self.resonator_frequency)
-        self.qubit.play(self.qubit_drive, ampx=self.qubit_drive_ampx)
+
+        # bring qubit into superposition
+        qua.reset_phase(self.cavity)
+        qua.reset_frame(self.cavity)
+        ###################### do a first measurement  #####################
+
+        ######################  charactristic function  1D measurement #####################
+
+        self.qubit.play(self.qubit_pi2)
+
+        # start ECD gate
+        qua.align()  # wait for qubit pulse to end
+        # First positive displacement
+        self.cavity.play(self.cav_disp, ampx=self.cavity_amp, phase=self.tomo_phase)
+
+        qua.wait(int(self.delay), self.cavity)
+        # First negative displacement
+        self.cavity.play(self.cav_disp, ampx=-self.cavity_amp, phase=self.tomo_phase)
+
         qua.align()
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
+        self.qubit.play(self.qubit_pi, phase=0.0)  # play pi to flip qubit around X
+        qua.align()  # wait for qubit pulse to end
+
+        # Second negative displacement
+        self.cavity.play(self.cav_disp, ampx=-self.cavity_amp, phase=self.tomo_phase)
+
+        qua.wait(int(self.delay), self.cavity)
+        # Second positive displacement
+        self.cavity.play(self.cav_disp, ampx=self.cavity_amp, phase=self.tomo_phase)
+        qua.align()
+
+        self.qubit.play(
+            self.qubit_pi2,
+            phase=self.correction_phase + (0 if self.measure_real else 0.25),
+        )  # play pi/2 pulse around X or SY, to measure either the real or imaginary part of the characteristic function
+        # qubit.play(qubit_pi2_pulse, phase=measure_real)  # 0 else 0.25  # play
+
+        qua.align()
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -44,6 +76,7 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
+        "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
     }
@@ -53,48 +86,51 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_400",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "cav_disp": "cav_constant_200",  # "cav_gaussian_40",
+        "qubit_pi2": "qubit_gaussian_pi2_16",
+        "qubit_pi": "qubit_gaussian_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10000,
-        "ro_ampx": 1.0,
-        "qubit_drive_ampx": 1,
+        "wait_time": 2_000_000,
+        "ro_ampx": 1,
+        "fetch_interval": 5,
+        "tomo_phase": 0,
+        "delay": 240, #45,
+        "correction_phase": 0,
+        "measure_real": True,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
     # must include an outermost averaging Sweep named "N"
     # must include all primary sweeps defined by the Experiment subclass
 
-    # set number of repetitions for this E xperiment run
-    N.num = 500000
+    # set number of repetitions for this Experiment run
+    N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
-    FREQ.name = "qubit_frequency"
-    FREQ.start =60e6  # 40e6
-    FREQ.stop = 140e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 201
-    
+    CAV_AMPX = Sweep(name="cavity_amp", start=-1.95, stop=1.95, step=0.1)
 
-    sweeps = [N, FREQ]
+    sweeps = [N, CAV_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
+    # MAG.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    PHASE.plot = True
-    I.plot = True
-    Q.plot = True
-    MAG.plot = True
+    # PHASE.plot = False
 
     I.fitfn = "gaussian"
     Q.fitfn = "gaussian"
     MAG.fitfn = "gaussian"
+    PHASE.fitfn = "gaussian"
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    expt = QubitSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=False) #simulate=False
+
+    expt = ECD_CAL_1D(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run()
+    # expt.run(simulate=True)
