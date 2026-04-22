@@ -1,7 +1,7 @@
 - !<Qubit>
   name: qubit
   core: null
-  int_freq: 1.500000E+08
+  int_freq: 1.530000E+08
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -12,12 +12,12 @@
   operations:
     qubit_constant_pulse: !<ConstantPulse>
       name: qubit_constant_pulse
-      I_ampx: 1.5
+      I_ampx: 0.5
       Q_ampx: 0.0
       digital_marker: null
       length: 1000
       pad: 0
-      total_I_amp: 0.30000000000000004
+      total_I_amp: 0.1
       total_length: 1000
     qubit_constant_pi_16: !<ConstantPulse>
       name: qubit_constant_pi_16
@@ -57,23 +57,23 @@
       total_length: 52
     qubit_gaussian_pi_16: !<GaussianPulse>
       name: qubit_gaussian_pi_16
-      I_ampx: 0.974025974025974
+      I_ampx: 0.9549274255156608
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 4
-      total_I_ampx: 0.19480519480519481
+      total_I_ampx: 0.19098548510313218
       total_length: 16
     qubit_gaussian_pi2_16: !<GaussianPulse>
       name: qubit_gaussian_pi2_16
-      I_ampx: 0.487012987012987
+      I_ampx: 0.4774637127578304
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 4
-      total_I_ampx: 0.09740259740259741
+      total_I_ampx: 0.09549274255156609
       total_length: 16
     qubit_constant_pi_300: !<ConstantPulse>
       name: qubit_constant_pi_300
@@ -169,7 +169,7 @@
 - !<Cavity>
   name: cavity
   core: null
-  int_freq: 1.120000E+07
+  int_freq: 1.190000E+07
   lo_name: opx1000
   mixer_offsets:
     I: -0.003281430326023839
@@ -281,12 +281,12 @@
       total_length: 100
     cav_constant_80: !<ConstantPulse>
       name: cav_constant_80
-      I_ampx: 1
+      I_ampx: 1.95
       Q_ampx: 0.0
       digital_marker: null
       length: 80
       pad: 0
-      total_I_amp: 0.2
+      total_I_amp: 0.39
       total_length: 80
     cav_constant_40: !<ConstantPulse>
       name: cav_constant_40
@@ -349,7 +349,7 @@
       total_length: 600
     rr_readout_pulse: !<ConstantReadoutPulse>
       name: rr_readout_pulse
-      I_ampx: 0.02
+      I_ampx: 0.03
       Q_ampx: 0.0
       digital_marker: !<DigitalWaveform>
         name: ADC_ON
@@ -358,10 +358,10 @@
           - 0
       has_optimized_weights: true
       length: 320
-      pad: 384
+      pad: 320
       threshold: null
-      total_I_amp: 0.004
-      total_length: 704
+      total_I_amp: 0.006
+      total_length: 640
       weights: C:\Users\qcrew2\Documents\Candace\eunice\config\weights\20260408_142654_weights.npz
   ports:
     I:

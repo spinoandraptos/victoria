@@ -1,5 +1,5 @@
 
-# Single QUA script generated at 2026-04-09 13:52:57.891622
+# Single QUA script generated at 2026-04-22 11:13:41.169632
 # QUA library version: 1.2.6
 
 
@@ -58,7 +58,7 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6112780000.0,
+                                    "frequency": 6116580000.0,
                                 },
                             },
                         },
@@ -70,7 +70,7 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7922770000.0,
+                                    "frequency": 7922670000.0,
                                 },
                             },
                         },
@@ -105,7 +105,7 @@ config = {
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7922770000.0,
+                            "downconverter_frequency": 7922670000.0,
                         },
                     },
                 },
@@ -189,12 +189,12 @@ config = {
                 "port": ('con1', 8, 4),
                 "upconverter": 1,
             },
-            "intermediate_frequency": 150000000.0,
+            "intermediate_frequency": 153000000.0,
         },
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 704,
+            "length": 640,
             "waveforms": {
                 "I": "rr.rr_readout_pulse.waveform.I",
                 "Q": "rr.rr_readout_pulse.waveform.Q",
@@ -229,7 +229,7 @@ config = {
     "waveforms": {
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.004] * 320 + [0.0] * 384,
+            "samples": [0.006] * 320 + [0.0] * 320,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
@@ -253,7 +253,7 @@ config = {
         },
         "qubit.qubit_gaussian_pi_16.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.026364016214924554, 0.04337042841796576, 0.06644964897985557, 0.09482186804415033, 0.1260204887268219, 0.15598780576301458, 0.1798278596857083] + [0.19308126632888667] * 2 + [0.1798278596857083, 0.15598780576301458, 0.12602048872682192, 0.09482186804415031, 0.06644964897985557, 0.04337042841796576, 0.026364016214924554],
+            "samples": [0.02584707472051427, 0.04252002786075075, 0.06514671468613292, 0.09296261572955915, 0.12354949875178617, 0.1529292213362888, 0.17630182322128266] + [0.18929535914596735] * 2 + [0.17630182322128266, 0.1529292213362888, 0.1235494987517862, 0.09296261572955913, 0.06514671468613292, 0.04252002786075075, 0.02584707472051427],
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
@@ -296,7 +296,7 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6112780000.0,
+                                    "frequency": 6116580000.0,
                                 },
                             },
                         },
@@ -308,7 +308,7 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7922770000.0,
+                                    "frequency": 7922670000.0,
                                 },
                             },
                         },
@@ -343,7 +343,7 @@ loaded_config = {
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7922770000.0,
+                            "downconverter_frequency": 7922670000.0,
                         },
                     },
                 },
@@ -427,12 +427,12 @@ loaded_config = {
                 "port": ('con1', 8, 4),
                 "upconverter": 1,
             },
-            "intermediate_frequency": 150000000.0,
+            "intermediate_frequency": 153000000.0,
         },
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 704,
+            "length": 640,
             "waveforms": {
                 "I": "rr.rr_readout_pulse.waveform.I",
                 "Q": "rr.rr_readout_pulse.waveform.Q",
@@ -467,7 +467,7 @@ loaded_config = {
     "waveforms": {
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.004] * 320 + [0.0] * 384,
+            "samples": [0.006] * 320 + [0.0] * 320,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
@@ -491,7 +491,7 @@ loaded_config = {
         },
         "qubit.qubit_gaussian_pi_16.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.026364016214924554, 0.04337042841796576, 0.06644964897985557, 0.09482186804415033, 0.1260204887268219, 0.15598780576301458, 0.1798278596857083] + [0.19308126632888667] * 2 + [0.1798278596857083, 0.15598780576301458, 0.12602048872682192, 0.09482186804415031, 0.06644964897985557, 0.04337042841796576, 0.026364016214924554],
+            "samples": [0.02584707472051427, 0.04252002786075075, 0.06514671468613292, 0.09296261572955915, 0.12354949875178617, 0.1529292213362888, 0.17630182322128266] + [0.18929535914596735] * 2 + [0.17630182322128266, 0.1529292213362888, 0.1235494987517862, 0.09296261572955913, 0.06514671468613292, 0.04252002786075075, 0.02584707472051427],
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },

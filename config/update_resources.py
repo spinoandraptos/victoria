@@ -13,11 +13,11 @@ if __name__ == "__main__":
         (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.872e9+50e6+0.8e6-0.03e6 #7.88067e9+50e6 
+        rr_LO = 7.872e9+50e6+0.8e6-0.03e6-0.1e6 #7.88067e9+50e6 
         rr_IF = -50e6 #-49.6
         
-        qubit_LO = 6.259e9+50e6+5.2e6-200e6-1300e3-120e3#6.135e9 #6.285e9+50e6-200e6
-        qubit_IF = 150e6# 123.2e6# -76e6
+        qubit_LO = 6.259e9+50e6+5.2e6-200e6-1300e3-120e3+3800e3#6.135e9 #6.285e9+50e6-200e6
+        qubit_IF = 153e6# 123.2e6# -76e6
         
         qubitEF_IF = -90e6 #-118e6# -76e6
         qubitGF2_IF = 30e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         drive_IF =-44e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
         cav_LO = 6.659e9+50e6#6.7684e9 # 6.7184e9+50e6
-        cav_IF = 11.2e6#+220e3 #ge frame
+        cav_IF = 11.9e6#+220e3 #ge frame
         
         settings = {
                 "controllers": {
@@ -119,8 +119,8 @@ if __name__ == "__main__":
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
                 length=64*5,#400,#
-                I_ampx=1*0.02, #0.03
-                pad=64*6,#300,#64*12, #1200, #
+                I_ampx=1*0.03, #0.03
+                pad=64*5,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 weights =  r"C:\Users\qcrew2\Documents\Candace\eunice\config\weights\20260408_142654_weights.npz", #r"C:\Users\qcrew2\Documents\Candace\eunice\config\weights\20260408_142509_weights.npz",
             ),
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="qubit_constant_pulse",
                 length=1000,
-                I_ampx=1.5,#0.247/10000*52,
+                I_ampx=0.5,#0.247/10000*52,
             ),
            
             ConstantPulse(
@@ -170,14 +170,14 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_16",
                 sigma=4,
                 chop=4,
-                I_ampx=1.5*0.5/0.77
+                I_ampx=1.5*0.5/0.77*0.5/0.51
                 # Q_ampx = 1*-0.159,
             ),
             GaussianPulse(
                 name="qubit_gaussian_pi2_16",
                 sigma=4,
                 chop=4,
-                I_ampx=1.5*0.5/0.77/2
+                I_ampx=1.5*0.5/0.77*0.5/0.51/2
                 # Q_ampx = 1*-0.159,
             ),
           
@@ -409,12 +409,12 @@ if __name__ == "__main__":
                 ConstantPulse(
                 name="cav_constant_100",
                 length=100,
-                I_ampx=1,
+                I_ampx=1.95,
             ),
             ConstantPulse(
                 name="cav_constant_80",
                 length=80,
-                I_ampx=1,
+                I_ampx=1.95,
             ),    
             ConstantPulse(
                 name="cav_constant_40",
