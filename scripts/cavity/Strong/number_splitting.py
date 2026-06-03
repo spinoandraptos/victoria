@@ -66,14 +66,14 @@ if __name__ == "__main__":
 
     pulses = {
         "cavity_pulse": "cav_constant_80",
-        "qubit_pulse": "qubit_constant_pi_300",
+        "qubit_pulse": "qubit_gaussian_pi_120",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1000_000,#6e6,
+        "wait_time": 1200_000,#6e6,
         "ro_ampx": 1,
         # "plot_single_shot": True,
         "qubit_drive_ampx": 1
@@ -88,14 +88,14 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = 145e6
-    FREQ.stop = 155e6
-    FREQ.num = 101
+    FREQ.start = 105e6
+    FREQ.stop = 135e6
+    FREQ.num = 251
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
     # sweeps = [N, FREQ]
-    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1.0, 1.5]) #needs to be floating point numbers 
+    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1.0, 1.5, 1.95]) #needs to be floating point numbers 
     sweeps = [N, QD_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

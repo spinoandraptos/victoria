@@ -1,8 +1,3 @@
-""" 
-NOTE this script must be on the same folder level as a yml config file named 'instruments.yml' and the .bat scripts 'setup_stage.bat' and 'teardown_stage.bat' in order for the remote stage to be setup, served, and torn down successfully
-"""
-
-
 from pathlib import Path
 
 from qcore import Server

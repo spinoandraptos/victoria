@@ -14,7 +14,7 @@ from config.experiment_config import MODES_CONFIG, FOLDER
 from config.experiment_config import (
     RR,
     QUBIT,
-    qubit_EF,
+    # qubit_EF,
 )
 
 if __name__ == "__main__":
@@ -33,11 +33,11 @@ if __name__ == "__main__":
             "reps": 20_000,
             "wait_time": 110_000,  # ns
             "readout_pulse": "rr_readout_pulse",  # pulse name used to readout
-            "qubit_pi_pulse": "qubit_gaussian_pi_16",  # pulse name used to excite qubit
+            "qubit_pi_pulse": "qubit_gaussian_pi_24",  # pulse name used to excite qubit
             "weights_file_path": file_path,
         }
 
-        ro_trainer = ReadoutTrainerOctave(RR, QUBIT, qubit_EF, qm, **params)
+        ro_trainer = ReadoutTrainerOctave(RR, QUBIT, qm, **params)
         ro_trainer.train_weights()
 
         ## Make sure to run this script every time the readout pulse is changed!!

@@ -30,9 +30,9 @@ if __name__ == "__main__":
 
         params = {
             "reps": 20_000,
-            "wait_time": 10_000,  # ns
+            "wait_time": 100_000,  # ns
             "readout_pulse": "rr_readout_pulse",  # pulse name used to readout
-            "qubit_pi_pulse": "qubitGF_constant_pi_16",  # pulse name used to excite qubit
+            "qubit_pi_pulse": "qubitGF2_gaussian_pi_24",  # pulse name used to excite qubit
             "weights_file_path": file_path,
         }
 

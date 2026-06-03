@@ -1,100 +1,29 @@
-[tool.poetry]
-name = "project-template"
-version = "1.0.0"
-description = "Extensible template for measurement scripting with qcore"
-authors = ["Qcrew <general.qcrew@gmail.com>"]
-license = "MIT"
+[project]
+name = "victoria"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Juncheng"}
+]
 readme = "README.md"
-packages = [{include = "config"}]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "pyro5 (>=5.16,<6.0)",
+    "loguru (>=0.7.3,<0.8.0)",
+    "numpy (>=1.26,<2.0)",
+    "pyyaml (>=6.0.3,<7.0.0)",
+    "pyvisa (>=1.16.2,<2.0.0)",
+    "qm-qua (>=1.2.6,<2.0.0)",
+    "qualang-tools (>=0.22.0,<0.23.0)",
+    "lmfit (>=1.3.4,<2.0.0)",
+    "h5py (>=3.16.0,<4.0.0)",
+    "pyqtgraph (>=0.14.0,<0.15.0)",
+    "pyqt6 (>=6.11.0,<7.0.0)"
+]
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-qcore = {git = "https://github.com/Qcrew/qcore.git"}
-anyio = "3.7.1"
-asteval = "0.9.30"
-asttokens = "2.2.1"
-backcall = "0.2.0"
-betterproto = "2.0.0b7"
-certifi = "2023.5.7"
-colorama = "0.4.6"
-comm = "0.1.3"
-contourpy = "1.1.0"
-cycler = "0.11.0"
-datadog-api-client = "2.14.0"
-debugpy = "1.6.7"
-decorator = "5.1.1"
-dependency-injector = "4.41.0"
-deprecation = "2.1.0"
-exceptiongroup = "1.1.2"
-executing = "1.2.0"
-fonttools = "4.41.0"
-future = "0.18.3"
-grpcio = "1.78.0"
-grpclib = "0.4.5"
-h11 = "0.16.0"
-h2 = "4.1.0"
-h5py = "3.9.0"
-hpack = "4.0.0"
-httpcore = "1.0.9"
-httpx = "0.28.1"
-hyperframe = "6.0.1"
-idna = "3.4"
-ipykernel = "6.24.0"
-ipython = "8.12.2"
-jedi = "0.18.2"
-joblib = "1.5.3"
-jupyter-client = "8.3.0"
-jupyter-core = "5.3.1"
-kiwisolver = "1.4.4"
-lmfit = "1.2.1"
-loguru = "0.6.0"
-marshmallow = "3.20.1"
-marshmallow-polyfield = "5.11"
-matplotlib-inline = "0.1.6"
-multidict = "6.0.4"
-nest-asyncio = "1.5.6"
-numpy = "1.26.4"
-packaging = "23.1"
-parso = "0.8.3"
-pickleshare = "0.7.5"
-pillow = "10.0.0"
-platformdirs = "3.8.1"
-plotly = "5.15.0"
-prompt-toolkit = "3.0.39"
-psutil = "5.9.5"
-pure-eval = "0.2.2"
-pygments = "2.15.1"
-pyparsing = "3.0.9"
-pyqt6 = "6.5.1"
-pyqt6-qt6 = "6.5.1"
-pyqt6-sip = "13.5.1"
-pyqtgraph = "0.13.3"
-pyro5 = "5.14"
-python-dateutil = "2.8.2"
-pyvisa = "1.13.0"
-pywin32 = "306"
-pyyaml = "6.0"
-pyzmq = "25.1.0"
-qm-qua = "^1.2.6"
-qualang-tools = "0.19.1"
-rfc3986 = "1.5.0"
-scipy = "1.11.1"
-serpent = "1.41"
-six = "1.16.0"
-sniffio = "1.3.0"
-stack-data = "0.6.2"
-tenacity = "8.2.2"
-threadpoolctl = "3.6.0"
-tinydb = "4.8.0"
-tornado = "6.3.2"
-traitlets = "5.9.0"
-typing-extensions = "4.15.0"
-uncertainties = "3.1.7"
-urllib3 = "1.26.16"
-wcwidth = "0.2.6"
-win32-setctime = "1.1.0"
-
+[tool.poetry]
+package-mode = false
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

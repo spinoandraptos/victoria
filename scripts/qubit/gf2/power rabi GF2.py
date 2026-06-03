@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "drive": "drive",
+        # "drive": "drive",
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
     }
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     pulses = {
         # "stark_drive": "drive_constant_pi_300",
-        "qubit_gf2_drive": "qubitGF_constant_pi_16",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 

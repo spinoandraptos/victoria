@@ -71,7 +71,7 @@
             },
             "intermediate_frequency": -68200000,
             "operations": {
-                "cavity_drive": "cavity.cav_constant_40"
+                "cavity_pulse": "cavity.cav_constant_80"
             }
         },
         "qubit": {
@@ -113,12 +113,12 @@
         }
     },
     "pulses": {
-        "cavity.cav_constant_40": {
+        "cavity.cav_constant_80": {
             "operation": "control",
-            "length": 40,
+            "length": 80,
             "waveforms": {
-                "I": "cavity.cav_constant_40.waveform.I",
-                "Q": "cavity.cav_constant_40.waveform.Q"
+                "I": "cavity.cav_constant_80.waveform.I",
+                "Q": "cavity.cav_constant_80.waveform.Q"
             }
         },
         "qubit.qubit_gaussian_pi_120": {
@@ -145,11 +145,11 @@
         }
     },
     "waveforms": {
-        "cavity.cav_constant_40.waveform.I": {
+        "cavity.cav_constant_80.waveform.I": {
             "type": "constant",
-            "sample": 0.39
+            "sample": 0.2
         },
-        "cavity.cav_constant_40.waveform.Q": {
+        "cavity.cav_constant_80.waveform.Q": {
             "type": "constant",
             "sample": 0.0
         },

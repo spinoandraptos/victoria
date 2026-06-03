@@ -1,12 +1,6 @@
 """ """
 """ """
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
-
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
@@ -15,11 +9,10 @@ from qm import qua as qm_qua
 from qcore.helpers import Stage
 from config.experiment_config import MODES_CONFIG
 import numpy as np
-from tqdm import tqdm
 import time
 
 
-class CavitySpec(Experiment):
+class CavitySpec_CHI(Experiment):
     """Cavity spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -84,9 +77,9 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
+        "qubit_pi": "qubit_gaussian_pi_24",
         "cavity_pulse": "cav_constant_1000",
-        "qubit_pi": "qubit_constant_pi_52",
-        "qubit_pulse": "qubit_constant_pi_260",
+        "qubit_pulse": "qubit_gaussian_pi_640",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -111,9 +104,9 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-55e6
-    FREQ.stop =-45e6 
-    FREQ.num = 101
+    FREQ.start =0e6
+    FREQ.stop =20e6 
+    FREQ.num = 51
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
@@ -124,7 +117,6 @@ if __name__ == "__main__":
     Q.plot = True
     I.plot = True
     SINGLE_SHOT.plot = False
-    
     QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
     sweeps = [N, QD_AMPX, FREQ]
@@ -143,7 +135,7 @@ if __name__ == "__main__":
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     
-  
-    expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+
+    expt = CavitySpec_CHI(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
             # time.sleep(60)

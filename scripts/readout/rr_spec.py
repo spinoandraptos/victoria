@@ -1,8 +1,5 @@
-import sys
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
-
 from qcore import Experiment, qua, Sweep
-
 class RRSpec(Experiment):
     """Readout resonator spectroscopy"""
 
@@ -65,8 +62,8 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -52e6
-    FREQ.stop = -48e6
+    FREQ.start = -55e6
+    FREQ.stop = -45e6
     FREQ.num = 101
 
     ################################### 2D SWEEP #######################################

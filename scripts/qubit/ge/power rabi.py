@@ -27,16 +27,6 @@ class Rabi(Experiment):
     def sequence(self):
         qua.reset_phase(self.qubit)
         qua.reset_frame(self.qubit)
-        # qua.initialize_qubit(self.resonator,
-        #                     self.readout_pulse,
-        #                     demod_type="dual",
-        #                     threshold_g=self.readout_pulse.threshold,
-        #                     wait_time=self.initialize_wait_time,
-        #                     n_consecutive=15)
-        # qua.align()
-        # qua.reset_phase(self.qubit)
-        # qua.reset_frame(self.qubit)
-        # qua.align()
         """QUA sequence that defines this Experiment subclass"""
         # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
@@ -70,7 +60,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_gaussian_pi_16",
+        "qubit_drive": "qubit_constant_pulse",
         "readout_pulse": "rr_readout_pulse",
     }
 

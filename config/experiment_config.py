@@ -1,20 +1,15 @@
 """ """
-
 from qcore import Dataset, Sweep, Stage
 from pathlib import Path
 
 ################################# PROJECT FOLDER PATH ##################################
 # to obtain Resources (Instruments, Modes, Pulses) from and save data file to
-# MODES_CONFIG = Path(__file__).resolve().parent / "config/modes.yml"
-
-FOLDER = "C:\\Users\\qcrew2\\Documents\\Candace\\eunice\\"
+FOLDER = "C:/Users/qcrew/Desktop/Juncheng/victoria/"
 MODES_CONFIG = FOLDER + "config/modes.yml"
 
 
 ######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
-# print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
-    # QUBIT, RR, CAVITY, SNAIL, CAVITY_M, QUBIT_EF= stage.get("qubit", "rr", "cavity", "snail", "cavity_m", "qubit_ef")
     QUBIT, RR, CAVITY, qubit_EF, DRIVE, qubit_GF2= stage.get("qubit", "rr", "cavity", "qubit_EF", "drive", "qubit_GF2")
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
 

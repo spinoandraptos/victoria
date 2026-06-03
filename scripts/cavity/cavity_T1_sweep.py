@@ -12,7 +12,7 @@ from qcore import Experiment, qua, Sweep
 from qm import qua as qm_qua
 
 
-class CavityT1(Experiment):
+class CavityT1_sweep_amp(Experiment):
     """Cavity T1"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -34,7 +34,7 @@ class CavityT1(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
     
-        self.cavity.play(self.cavity_drive, ampx=1.0)
+        self.cavity.play(self.cavity_drive, ampx=self.cavity_drive_ampx)
         # self.cavity.play(self.cavity_drive)
         #self.cavity.play(self.cavity_drive)
         qua.wait(self.time_delay, self.cavity)
@@ -70,8 +70,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_1000",
-        "qubit_pulse": "qubit_constant_pi_300",
+        "cavity_drive": "cav_constant_40",
+        "qubit_pulse": "qubit_gaussian_pi_120",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -93,7 +93,10 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     DEL = Sweep(name="time_delay", start=10, stop=600_000, step=5000, dtype=int)
-    sweeps = [N, DEL]
+    
+    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.5, 1.0, 1.5, 1.95]) #needs to be floating point numbers 
+    
+    sweeps = [N, QD_AMPX,DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
@@ -107,5 +110,5 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = CavityT1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = CavityT1_sweep_amp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
