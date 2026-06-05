@@ -95,15 +95,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_pi_op": "qubit_gaussian_pi_16",
-        "qubit_pi2_op": "qubit_gaussian_pi2_16",
+        "qubit_pi_op": "qubit_gaussian_pi_24",
+        "qubit_pi2_op": "qubit_gaussian_pi2_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 80000,
+        "wait_time": 100_000,
         "ro_ampx": 1,
     }
 
@@ -117,7 +117,8 @@ if __name__ == "__main__":
     # set the qubit amplitude sweep for this Experiment run
     GATES = Sweep(name="gate", start=0, stop=1, step=1, dtype=int)
     # PHA2 = Sweep(name="phase2", start=-0.0, stop=0.25, step=0.25)
-    DRAG = Sweep(name="drag", start=-1, stop=1, num=50)
+    # DRAG = Sweep(name="drag", start=-0.5, stop=0, num=50)
+    DRAG = Sweep(name="drag", start=-0.2, stop=-0.1, num=50)
 
     sweeps = [N, GATES, DRAG]
 

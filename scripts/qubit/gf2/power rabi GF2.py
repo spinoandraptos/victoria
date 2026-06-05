@@ -80,7 +80,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":8000,
+        "wait_time":200_000,
         # "initialize_wait_time": 5000,
         "ro_ampx": 1,
         "plot_single_shot": False,

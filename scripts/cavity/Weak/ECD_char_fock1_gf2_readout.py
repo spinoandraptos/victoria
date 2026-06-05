@@ -6,7 +6,7 @@ from qcore import Experiment, qua, Sweep
 from ECD_functions import V_cat, Char_2D_singledisplacement, ECD
 
 
-class ECD_coherent(Experiment):
+class ECD_fock1_gf2(Experiment):
     """Char_2D_singledisplacement"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -31,9 +31,15 @@ class ECD_coherent(Experiment):
         # bring qubit into superposition
         # qua.reset_phase(self.qubit)
         # qua.reset_frame(self.cavity, self.qubit)
+        qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
-        qua.reset_frame(self.qubit)
         ###################### state prep  #####################
+        self.qubit_gf2.play(self.qubit_gf2_drive)
+        qua.align()
+       
+        
+        self.drive.play(self.stark_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
+        
         # self.cavity.play(self.cav_disp_state, ampx=1, phase=0.0)  # 0.1
 
         # ECD(
@@ -76,6 +82,10 @@ class ECD_coherent(Experiment):
             tomo_phase=self.tomo_phase,  # -0.2,
         )
         qua.align()
+        # qua.align(self.qubit_gf2, self.qubit)
+        self.qubit_gf2.play(self.qubit_gf2_drive)
+        qua.align(self.qubit_gf2, self.resonator)
+        
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
 
@@ -90,7 +100,9 @@ if __name__ == "__main__":
     modes = {
         "cavity": "cavity",
         "qubit": "qubit",
+        "drive": "drive",
         "resonator": "rr",
+        "qubit_gf2": "qubit_GF2",
     }
 
     ################################### PULSE MAP ######################################
@@ -98,23 +110,25 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_200",
-        "cav_disp": "cav_constant_200",
-        "qubit_pi2": "qubit_gaussian_pi2_16",
-        "qubit_pi": "qubit_gaussian_pi_16",
+        "qubit_gf2_drive":"qubitGF2_gaussian_pi_24",
+        "stark_drive": "drive_constant_fock1",
+        "cav_disp_state": "cav_constant_180",
+        "cav_disp": "cav_constant_180",
+        "qubit_pi2": "qubit_gaussian_pi2_24",
+        "qubit_pi": "qubit_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 2_000_000,
+        "wait_time": 1_200_000,
         "ro_ampx": 1,
         "fetch_interval": 5,
         "tomo_phase": 0,
-        "delay": 300,
+        "delay": 160,
         "correction_phase": 0,
-        "measure_real": False,
+        "measure_real": True,
         "v_cat_amp_scale": 1,
     }
 
@@ -147,6 +161,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = ECD_coherent(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = ECD_fock1_gf2(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run(simulate=True)
     expt.run()

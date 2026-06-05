@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     modes = {
         "drive": "drive",
-        "qubit": "qubit",
+        "qubit": "qubit_GF2",
         "resonator": "rr",
     }
 
@@ -57,15 +57,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_gaussian_pulse_300",
-        "qubit_drive": "qubit_gaussian_pi_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "stark_drive": "drive_constant_SS",
+        "qubit_drive": "qubitGF2_gaussian_pi_24",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5000,
+        "wait_time": 200_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -79,17 +79,18 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_ge_frequency"
-    FREQ.start =-200e6  # 40e6
-    FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start =-100e6  # 40e6
+    FREQ.stop = 50e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
 
     
-    Q_AMPX = Sweep(
-        name="q_ampx",
-        # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0 ]#0.25,0.5,0.75]
-    ) 
+    # Q_AMPX = Sweep(
+    #     name="q_ampx",
+    #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+    #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+    #     #points=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0 ]#0.25,0.5,0.75]
+    # )
+    Q_AMPX = Sweep(name="q_ampx", start=0, stop=2.0, num=21)
     
 
     sweeps = [N, FREQ, Q_AMPX]
@@ -101,10 +102,10 @@ if __name__ == "__main__":
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     PHASE.plot = False
     MAG.plot = False
-    # Q.plot = False
-    I.plot = False
-    #I.plot = True
-    Q.plot_args["plot_type"] = "image"
+    Q.plot = False
+    #I.plot = False
+    I.plot = True
+    #Q.plot_args["plot_type"] = "image"
     I.plot_args["plot_type"] = "image"
     # SINGLE_SHOT.plot_args["plot_type"] = "image"
     # SINGLE_SHOT.plot = True

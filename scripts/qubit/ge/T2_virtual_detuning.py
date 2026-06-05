@@ -88,7 +88,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 110_000,
+        "wait_time": 150_000,
         "ro_ampx": 1,
         "detuning":2e6,
         "phase": QuaVariable(

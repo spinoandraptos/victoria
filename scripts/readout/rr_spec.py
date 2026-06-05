@@ -62,8 +62,8 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -55e6
-    FREQ.stop = -45e6
+    FREQ.start = -56e6
+    FREQ.stop = -48e6
     FREQ.num = 101
 
     ################################### 2D SWEEP #######################################

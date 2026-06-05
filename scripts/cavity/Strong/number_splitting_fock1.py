@@ -11,7 +11,7 @@ import numpy as np
 import time
 
 
-class NumberSplittingFOCK1(Experiment):
+class NumberSplitting_FOCK1(Experiment):
     """Number splitting"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -33,16 +33,26 @@ class NumberSplittingFOCK1(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         # Generate state in the cavity
-        self.qubit.play(self.qubit_pi_pulse)
-        qua.align(self.qubit, self.qubit_ef)
-        self.qubit_ef.play(self.qubit_ef_drive) 
-        qua.align(self.qubit_ef, self.drive)
+        #CREATE fock 1
+        self.qubit_gf2.play(self.qubit_gf2_pi_pulse)
+        qua.align(self.qubit_gf2, self.drive)
+        self.drive.play(self.stark_drive, ampx= self.drive_ampx) # fixed freq #, ampx=2.0 max
+     
         
-        self.drive.play(self.stark_drive) # fixed freq #, ampx=2.0 max
+        # self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
+        # number splitting
+        qua.align()
         # Selective pi pulse
         qua.update_frequency(self.qubit, self.qubit_frequency)
         self.qubit.play(self.qubit_pulse)
-        qua.align()
+        # qua.align(self.qubit, self.qubit_gf2)
+        
+        # #readout at gf2
+        # self.qubit_gf2.play(self.qubit_gf2_pi_pulse, ampx=1.0)
+        # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
+     
+        qua.align(self.qubit, self.resonator)
+
         # Measurement
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
@@ -56,9 +66,10 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
+        "cavity": "cavity",#"cav",
         "qubit": "qubit",
-        "qubit_ef": "qubit_EF",
         "resonator": "rr",
+        "qubit_gf2": "qubit_GF2",
         "drive": "drive",
         
     }
@@ -68,18 +79,17 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_pi_72",
-        "qubit_pi_pulse": "qubit_constant_pi_52",
-        "qubit_ef_drive": "qubitEF_constant_pi_52",
-        "qubit_pulse": "qubit_constant_pi_600",
+        "qubit_pulse": "qubit_gaussian_pi_160",
+        "qubit_gf2_pi_pulse": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
-        
+        "cavity_pulse": "cav_constant_240",
+        "stark_drive": "drive_constant_fock1",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1000_000,#6e6,
+        "wait_time": 1_000_000,#6e6,
         "ro_ampx": 1,
         # "plot_single_shot": True,
         "qubit_drive_ampx": 1
@@ -94,15 +104,15 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start =110e6  # 40e6
-    FREQ.stop = 130e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 101
+    FREQ.start = 120e6
+    FREQ.stop = 135e6
+    FREQ.num = 251
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
     # sweeps = [N, FREQ]
-    #QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1.0, 1.5]) #needs to be floating point numbers 
-    sweeps = [N, FREQ]
+    QD_AMPX = Sweep(name="drive_ampx", points= [0.0, 1.0]) #needs to be floating point numbers 
+    sweeps = [N,  QD_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
@@ -122,5 +132,5 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = NumberSplittingFOCK1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = NumberSplitting_FOCK1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

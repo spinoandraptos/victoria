@@ -36,9 +36,10 @@ class qubit_gf2_fock1_sweep_len(Experiment):
         # self.qubit_ef.play(self.qubit_ef_drive) 
         # qua.align(self.qubit_ef, self.drive)
         
+        # self.drive.play(self.stark_drive, duration=self.length_drive/4) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         self.drive.play(self.stark_drive, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
-        # self.qubit.play(self.qubit_pi)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
         qua.align()
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -64,8 +65,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_ramp_pi_96",
-        "qubit_gf2_drive": "qubitGF_gaussian_pi_64",
+        "stark_drive": "drive_constant_400",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=16, stop=500, step=4, dtype=int)
+    DEL = Sweep(name="length_drive", start=4, stop=200, step=4, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6
@@ -111,6 +112,15 @@ if __name__ == "__main__":
     MAG.plot = True
     Q.plot = True
     I.plot = True
+    I.fitfn, Q.fitfn, MAG.fitfn = (
+    "sine",
+    "sine",
+    "sine",
+    # "sine",
+    # "sine_gf",
+    # "sine_gf",
+    # "sine_gf",
+)
     #I.plot = True
     # Q.plot_args["plot_type"] = "image"
     #I.plot_args["plot_type"] = "image"
@@ -121,4 +131,4 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     expt = qubit_gf2_fock1_sweep_len(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=False) #simulate=False
+    expt.run(simulate=True) #simulate=False

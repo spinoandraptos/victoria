@@ -1,19 +1,18 @@
 """ """
+""" """
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
-
-from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR, SINGLE_SHOT
 from qcore import Experiment, qua, Sweep
 from qm import qua as qm_qua
+from qcore.helpers import Stage
+from config.experiment_config import MODES_CONFIG
+import numpy as np
+import time
 
 
-class CavityT1_sweep_amp(Experiment):
-    """Cavity T1"""
+class NumberSplittingGF2_FOCK1(Experiment):
+    """Number splitting"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -25,7 +24,7 @@ class CavityT1_sweep_amp(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["time_delay"]
+    primary_sweeps = ["qubit_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -33,21 +32,30 @@ class CavityT1_sweep_amp(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-    
-        self.cavity.play(self.cavity_drive, ampx=self.cavity_drive_ampx)
-        # self.cavity.play(self.cavity_drive)
-        #self.cavity.play(self.cavity_drive)
-        qua.wait(self.time_delay, self.cavity)
+        # Generate state in the cavity
+        #CREATE fock 1
+        self.qubit_gf2.play(self.qubit_gf2_pi_pulse)
+        qua.align(self.qubit_gf2, self.drive)
+        self.drive.play(self.stark_drive, ampx= self.drive_ampx) # fixed freq #, ampx=2.0 max
+     
+        
+        # self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
+        # number splitting
         qua.align()
-        # qua.align(self.cavity, self.qubit)
+        # Selective pi pulse
+        qua.update_frequency(self.qubit, self.qubit_frequency)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
-        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type='dual')
-        if self.plot_single_shot:  # assign state to G or E
-            qm_qua.assign(
-                self.single_shot,
-                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
-            )
+        # qua.align(self.qubit, self.qubit_gf2)
+        
+        #readout at gf2
+        # self.qubit_gf2.play(self.qubit_gf2_pi_pulse, ampx=1.0)
+        # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
+     
+        # qua.align(self.qubit_gf2, self.resonator)
+
+        # Measurement
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -62,6 +70,8 @@ if __name__ == "__main__":
         "cavity": "cavity",#"cav",
         "qubit": "qubit",
         "resonator": "rr",
+        "qubit_gf2": "qubit_GF2",
+        "drive": "drive",
         
     }
 
@@ -70,17 +80,20 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_40",
-        "qubit_pulse": "qubit_gaussian_pi_120",
+        "qubit_pulse": "qubit_gaussian_pi_160",
+        "qubit_gf2_pi_pulse": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
+        "cavity_pulse": "cav_constant_240",
+        "stark_drive": "drive_constant_fock1",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,
+        "wait_time": 1_000_000,#6e6,
         "ro_ampx": 1,
-        "plot_single_shot": False,
+        # "plot_single_shot": True,
+        "qubit_drive_ampx": 1
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -88,27 +101,37 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 100000
+    N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
+    FREQ.name = "qubit_frequency"
+    FREQ.start = 120e6
+    FREQ.stop = 135e6
+    FREQ.num = 251
 
-    DEL = Sweep(name="time_delay", start=10, stop=600_000, step=5000, dtype=int)
-    
-    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.5, 1.0, 1.5, 1.95]) #needs to be floating point numbers 
-    
-    sweeps = [N, QD_AMPX,DEL]
+    # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
+
+    # sweeps = [N, FREQ]
+    QD_AMPX = Sweep(name="drive_ampx", points= [0.0, 1.0]) #needs to be floating point numbers 
+    sweeps = [N,  QD_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    MAG.fitfn = 'cohstate_decay' #'exp_decay' cohstate_decay'
-    I.fitfn = 'cohstate_decay' #'exp_decay' cohstate_decay'
-    Q.fitfn = 'cohstate_decay' #'exp_decay' cohstate_decay'
-    SINGLE_SHOT.fitfn = 'cohstate_decay' #'exp_decay' cohstate_decay'
-    
 
+    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
+    PHASE.plot = True
+    I.plot = True
+    Q.plot = True
+    MAG.plot = True
+
+    I.fitfn = "gaussian"
+    Q.fitfn = "gaussian"
+    MAG.fitfn = "gaussian"
     datasets = [I, Q, MAG, PHASE]
+    # SINGLE_SHOT.fitfn = 'double_gaussian'
+    #SINGLE_SHOT.plot_args = {"plot_err": False}
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = CavityT1_sweep_amp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = NumberSplittingGF2_FOCK1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

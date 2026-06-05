@@ -28,9 +28,9 @@ class qubit_gf2_fock1_sweep_len_ampx(Experiment):
         # qua.reset_phase(self.qubit_gf2)
         # qua.reset_frame(self.qubit_gf2)
         # qua.update_frequency(self.qubit, self.qubit_frequency)
-        # qua.align()
+        qua.align()
         
-        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        self.qubit_gf2.play(self.qubit_gf2_drive)
         qua.align()
         # qua.update_frequency(self.drive) 
         # self.qubit_ef.play(self.qubit_ef_drive) 
@@ -39,6 +39,7 @@ class qubit_gf2_fock1_sweep_len_ampx(Experiment):
         self.drive.play(self.stark_drive, ampx=self.d_ampx, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
         # self.qubit.play(self.qubit_pi)
+
         qua.align()
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -64,8 +65,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_ramp_pi_400",
-        "qubit_gf2_drive": "qubitGF_gaussian_pi_24",
+        "stark_drive": "drive_constant_400",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -97,7 +98,7 @@ if __name__ == "__main__":
         name="d_ampx",
         # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
         #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[0.0, 0.5, 1 ]#0.25,0.5,0.75]
+        points=[0.0, 0.5, 1.0 ]#0.25,0.5,0.75]
     ) 
     
 
