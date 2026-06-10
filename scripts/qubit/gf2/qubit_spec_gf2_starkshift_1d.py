@@ -57,8 +57,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_gaussian_pulse_300",
-        "qubit_gf2_drive": "qubitGF_gaussian_pulse_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "stark_drive": "drive_constant_160",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_192",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -79,8 +79,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_gf2_frequency"
-    FREQ.start =-200e6  # 40e6
-    FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start =-100e6  # 40e6
+    FREQ.stop = 100e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 51
 
     

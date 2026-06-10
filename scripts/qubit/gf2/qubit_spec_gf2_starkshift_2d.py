@@ -57,8 +57,9 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_gaussian_pulse_300",
-        "qubit_gf2_drive": "qubitGF_gaussian_pulse_300",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        
+        "stark_drive": "drive_constant_192",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_192",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -79,8 +80,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_gf2_frequency"
-    FREQ.start =-200e6  # 40e6
-    FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start =50e6  # 40e6
+    FREQ.stop = 80e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 101
 
     
@@ -88,7 +89,7 @@ if __name__ == "__main__":
         name="q_ampx",
         # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
         #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[0.0, 0.05, 0.1, 0.15,0.2,0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]#0.25,0.5,0.75]
+        points=[0.0, 0.05, 0.1, 0.15,0.2,0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]#0.25,0.5,0.75]
     ) 
     
 
@@ -101,8 +102,8 @@ if __name__ == "__main__":
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     PHASE.plot = False
     MAG.plot = False
-    # Q.plot = False
-    I.plot = False
+    Q.plot = False
+    I.plot = True
     #I.plot = True
     Q.plot_args["plot_type"] = "image"
     I.plot_args["plot_type"] = "image"

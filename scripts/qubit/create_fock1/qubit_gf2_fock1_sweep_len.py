@@ -36,8 +36,8 @@ class qubit_gf2_fock1_sweep_len(Experiment):
         # self.qubit_ef.play(self.qubit_ef_drive) 
         # qua.align(self.qubit_ef, self.drive)
         
-        # self.drive.play(self.stark_drive, duration=self.length_drive/4) # fixed freq #, ampx=2.0 max , duration=self.length_drive
-        self.drive.play(self.stark_drive, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
+        self.drive.play(self.stark_drive, duration=self.length_drive/4) # divide by 4 to convert seconds to clock cycle# fixed freq #, ampx=2.0 max , duration=self.length_drive
+        # self.drive.play(self.stark_drive, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
         # self.qubit_gf2.play(self.qubit_gf2_drive)
         qua.align()
@@ -65,8 +65,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_400",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "stark_drive": "drive_constant_160",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_192",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=4, stop=200, step=4, dtype=int)
+    DEL = Sweep(name="length_drive", start=4, stop=4000, step=40, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6
@@ -131,4 +131,4 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     expt = qubit_gf2_fock1_sweep_len(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=True) #simulate=False
+    expt.run() #simulate=False

@@ -81,7 +81,7 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
     pulses = {
-        "qubit_drive": "qubit_gaussian_pi2_24",
+        "qubit_drive": "qubit_gaussian_pi2_48",
         "readout_pulse": "rr_readout_pulse",
     }
 

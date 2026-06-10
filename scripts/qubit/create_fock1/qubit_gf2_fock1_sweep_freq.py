@@ -36,8 +36,8 @@ class qubit_gf2_fock1_sweep_freq(Experiment):
         # self.qubit_ef.play(self.qubit_ef_drive) 
         # qua.align(self.qubit_ef, self.drive)
         
-        self.drive.play(self.stark_drive, ampx=self.d_ampx) # fixed freq #, ampx=2.0 max , duration=self.length_drive
-        # self.drive.play(self.stark_drive)
+        # self.drive.play(self.stark_drive, ampx=self.d_ampx) # fixed freq #, ampx=2.0 max , duration=self.length_drive
+        self.drive.play(self.stark_drive)
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
         # self.qubit.play(self.qubit_pi)
         # qua.wait(self.time_delay, self.resonator)
@@ -66,8 +66,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_400",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "stark_drive": "drive_constant_1000",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_192",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     parameters = {
         
-        "wait_time": 1_000_000,
+        "wait_time": 500_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -89,8 +89,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "drive_frequency"
-    FREQ.start = -200e6  # 40e6
-    FREQ.stop = -100e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start = -60e6  # 40e6
+    FREQ.stop = -40e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     ) 
     # DEL = Sweep(name="time_delay", start=16, stop=160, step=20, dtype=int)
 
-    sweeps = [N,  D_AMPX, FREQ]#[N,  D_AMPX, FREQ]
+    sweeps = [N, FREQ]#[N,  D_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass

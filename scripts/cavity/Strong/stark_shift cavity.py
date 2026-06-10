@@ -39,6 +39,7 @@ class CavitySpec(Experiment):
         
         # There are two cavity modes here, please check which mode is used.
         qua.update_frequency(self.cavity, self.cavity_frequency)
+        self.drive.play(self.stark_drive, ampx=self.q_ampx) # fixed freq
         self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
         qua.align(self.cavity, self.qubit)
         # qua.wait(32, self.qubit)
@@ -65,6 +66,7 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
+        "drive": "drive",
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
@@ -77,6 +79,7 @@ if __name__ == "__main__":
     pulses = {
         "cavity_pulse": "cav_constant_1000",
         "qubit_pulse": "qubit_gaussian_pi_2000",
+        "stark_drive": "drive_constant_1000",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -99,6 +102,14 @@ if __name__ == "__main__":
     N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
+    Q_AMPX = Sweep(
+        name="q_ampx",
+        # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+        points=[0.0, 0.05, 0.1, 0.15,0.2,0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]#0.25,0.5,0.75]
+    ) 
+    
+
     
     FREQ.name = "cavity_frequency"
     FREQ.start =0e6
@@ -109,21 +120,25 @@ if __name__ == "__main__":
     #     name="qb_ampx",
     #     points=[0.0, 1.0],
     # )
-    PHASE.plot = True
-    MAG.plot = True
-    Q.plot = True
+    
+    sweeps = [N, FREQ, Q_AMPX]
+    
+    PHASE.plot = False
+    MAG.plot = False
+    Q.plot = False
     I.plot = True
     SINGLE_SHOT.plot = False
+    I.plot_args["plot_type"] = "image"
     
-    sweeps = [N, FREQ]
+    
     #SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    I.fitfn = "gaussian"
-    Q.fitfn = "gaussian"
-    MAG.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
+    # I.fitfn = "gaussian"
+    # Q.fitfn = "gaussian"
+    # MAG.fitfn = "gaussian"
+    # PHASE.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     
