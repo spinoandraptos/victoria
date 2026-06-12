@@ -68,9 +68,9 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_400",
+        "cav_displacement": "cav_constant_80",
         # "qubit_pi_pulse": "qubit_pi_9",
-        "qubit_selective_pi": "qubit_gaussian_pi_2000",
+        "qubit_selective_pi": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -121,19 +121,6 @@ if __name__ == "__main__":
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    # cavities = ["Alice", "Bob", "Charlie"]
-    # ampx_list = [1.0]
-    # for cavity in cavities:
-    #     if cavity == "Alice":
-    #         modes["cavity"] = "alice"
-    #         pulses["cav_displacement"] = "a_d_large"
-    #     elif cavity == "Bob":
-    #         modes["cavity"] = "bob"
-    #         pulses["cav_displacement"] = "b_d_large"
-    #     elif cavity == "Charlie":
-    #         modes["cavity"] = "charlie"
-    #         pulses["cav_displacement"] = "c_s100"
-    # for ampx_item in ampx_list:
-    #     parameters["cav_ampx"] = ampx_item
+
     expt = CavDisplacementCalSelective(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

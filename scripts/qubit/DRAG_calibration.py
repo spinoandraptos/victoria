@@ -118,7 +118,7 @@ if __name__ == "__main__":
     GATES = Sweep(name="gate", start=0, stop=1, step=1, dtype=int)
     # PHA2 = Sweep(name="phase2", start=-0.0, stop=0.25, step=0.25)
     # DRAG = Sweep(name="drag", start=-0.5, stop=0, num=50)
-    DRAG = Sweep(name="drag", start=-0.2, stop=-0.1, num=50)
+    DRAG = Sweep(name="drag", start=-1, stop=1, num=50)
 
     sweeps = [N, GATES, DRAG]
 

@@ -35,6 +35,11 @@ class ECD_coherent(Experiment):
         qua.reset_frame(self.cavity)
         ###################### state prep  #####################
         self.cavity.play(self.cav_disp_state, ampx=1, phase=0.0)  # 0.1 , ampx=1, phase=0.0
+        amp_big=2.0
+        
+        # self.qubit.play(self.qubit_pi2)
+        # qua.align()
+        # ECD(self.cavity, self.qubit, self.cav_disp, self.qubit_pi, ampx=amp_big,delay=self.delay,tomo_phase=0)
 
         # ECD(
         # self.cavity,
@@ -77,8 +82,8 @@ class ECD_coherent(Experiment):
         )
         qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive)
-        qua.align(self.qubit_gf2, self.resonator)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        # qua.align(self.qubit_gf2, self.resonator)
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
 
@@ -102,8 +107,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_180",
-        "cav_disp": "cav_constant_180",
+        "cav_disp_state": "cav_constant_40",
+        "cav_disp": "cav_constant_120",
         "qubit_pi2": "qubit_gaussian_pi2_24",
         "qubit_pi": "qubit_gaussian_pi_24",
         "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
@@ -113,7 +118,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,
+        "wait_time": 500_000,
         "ro_ampx": 1,
         "fetch_interval": 5,
         "tomo_phase": 0,

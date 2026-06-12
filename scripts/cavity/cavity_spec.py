@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     pulses = {
         "cavity_pulse": "cav_constant_1000",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -101,8 +101,8 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =0e6
-    FREQ.stop =20e6 
+    FREQ.start =-100e6
+    FREQ.stop =-50e6 
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(

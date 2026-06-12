@@ -6,7 +6,7 @@ from qcore import Experiment, qua, Sweep
 from ECD_functions import V_cat, Char_2D_singledisplacement, ECD
 
 
-class ECD_coherent(Experiment):
+class ECD_decay_single(Experiment):
     """Char_2D_singledisplacement"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -79,8 +79,8 @@ class ECD_coherent(Experiment):
         )
         qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive)
-        qua.align(self.qubit_gf2, self.resonator)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        # qua.align(self.qubit_gf2, self.resonator)
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), demod_type="dual")
         qua.wait(self.wait_time, self.resonator)
 
@@ -104,8 +104,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_180",
-        "cav_disp": "cav_constant_180",
+        "cav_disp_state": "cav_constant_40",
+        "cav_disp": "cav_constant_120",
         "qubit_pi2": "qubit_gaussian_pi2_24",
         "qubit_pi": "qubit_gaussian_pi_24",
         "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         "correction_phase": 0,
         "measure_real": True,
         "v_cat_amp_scale": 1,
-        "decay_time":100e3,
+        "decay_time":1e3,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -155,6 +155,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = ECD_coherent(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = ECD_decay_single(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run(simulate=True)
     expt.run()

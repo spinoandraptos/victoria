@@ -6,9 +6,9 @@ from scipy.signal import savgol_filter
 from scipy.signal import hilbert
 
 sample_rate = 1e9       # 1 GSa/s
-start_idx = 1000         # Start time index of decay in trace
+start_idx = 605         # Start time index of decay in trace
 
-freq = 7.415e9
+freq = 7.8482e9+50e6-49e6
 omega = 2 * np.pi * freq
 
 rr = 'rrC'
@@ -23,7 +23,7 @@ adc_idx = {
 def exp_decay(t, A, tau, B):
     return A * np.exp(-t / tau) + B
 
-filepath = r"C:\Users\qcrew\Desktop\Juncheng\victoria\data\2026-06-02\00-45-33_TimeOfFlight.hdf5"
+filepath = r"C:\Users\qcrew\Desktop\Juncheng\victoria\data\2026-06-12\09-45-29_TimeOfFlight.hdf5"
 base, _ = filepath.rsplit('.', 1)  # split at last dot
 fit_filepath = f"{base}_kappa_fit.png"
 

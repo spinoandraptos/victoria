@@ -80,18 +80,18 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement":"cav_constant_180", #"cav_gaussian_pulse_100",
+        "cav_displacement":"cav_constant_300", #"cav_gaussian_pulse_100",
         "qubit_pi_pulse": "qubit_gaussian_pi_24",
-        "qubit_selective_pi": "qubit_gaussian_pi_160",
+        "qubit_selective_pi": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,
+        "wait_time": 800_000,
         # "plot_single_shot": True,
-        "qubit_in_e": False,
+        "qubit_in_e": True,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES ############ #################

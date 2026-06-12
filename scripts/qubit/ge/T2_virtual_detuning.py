@@ -81,7 +81,7 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
     pulses = {
-        "qubit_drive": "qubit_gaussian_pi2_48",
+        "qubit_drive": "qubit_gaussian_pi2_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=4, stop=3000, step=20, dtype=int)
+    DEL = Sweep(name="time_delay", start=4, stop=6000, step=40, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
