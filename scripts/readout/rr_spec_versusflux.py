@@ -5,7 +5,7 @@ from qcore import Experiment, qua, Sweep
 from qcore.helpers import Stage
 from qcore import Experiment, qua, Sweep
 import time
-class RRSpec_versusflux(Experiment):
+class RRSpec_versusflux_POWER(Experiment):
     """Readout resonator spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -95,7 +95,8 @@ if __name__ == "__main__":
     # start_flux = -7e-3
     # stop_flux = -2e-3
     # step = 0.1e-3
-    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=81) # 121)  # np.linsp
+    # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=81) 
+    flux_values = np.linspace(start=5e-3, stop=20e-3, num=1)
 
     # = np.arange(start_flux, stop_flux + step, step)  # Include stop value+
     # lo_rr_values = [7825033798.617158+5E6+1.8E6,  7825033798.617158+5E6+1.8E6+1.5E6 , 7825033798.617158+5E6+1.8E6+1.5E6 +1.5E6-1.1E6, 7825033798.617158+5E6+1.8E6+1.5E6 +1.5E6-1.1E6,7825033798.617158+5E6+1.8E6+1.5E6 +1.5E6-1.1E6 ]
@@ -105,16 +106,19 @@ if __name__ == "__main__":
     # Generate the linearly spaced values
     # LO_list = flux_values
      
-
-    for index_f in range(len(flux_values)): 
-        with Stage(configpath=MODES_CONFIG, remote=True) as stage:
-            (yoko1,) = stage.get("yoko1")
-            yoko_target = flux_values[index_f]
-            yoko1.ramp(yoko_target, step=0.1e-3)
-            expt = RRSpec_versusflux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-            expt.run()
-            # expt.run(simulate=True)
-            time.sleep(1)  # Sleeps for 1 second; adjust as needed
+    power_sweep = np.linspace(start=0, stop=1.5, num=16)#[0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1]
+    for power_rr in power_sweep:
+        for index_f in range(len(flux_values)): 
+            with Stage(configpath=MODES_CONFIG, remote=True) as stage:
+                (yoko1, rr) = stage.get("yoko1", "rr")
+                yoko_target = flux_values[index_f]
+                yoko1.ramp(yoko_target, step=0.1e-3)
+                parameters["ro_ampx"] = power_rr
+                
+                expt = RRSpec_versusflux_POWER(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+                expt.run()
+                # expt.run(simulate=True)
+                time.sleep(1)  # Sleeps for 1 second; adjust as needed
     yoko1.ramp(0e-3, step=1e-4)
         
 

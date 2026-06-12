@@ -5,7 +5,7 @@ from qm import qua as qm_qua
 from qcore import Experiment, qua, Sweep
 
 
-class Rabi(Experiment):
+class Rabief(Experiment):
     """Power Rabi"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_400",
+        "qubit_drive": "qubit_gaussian_pi_24",
         "qubit_ef_drive": "qubitEF_gaussian_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -124,6 +124,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = Rabi(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = Rabief(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run(simulate=True)
     expt.run()

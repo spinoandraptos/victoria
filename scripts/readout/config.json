@@ -10,7 +10,7 @@
                             "full_scale_power_dbm": 16,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7898200000.0
+                                    "frequency": 7776000000.0
                                 }
                             },
                             "band": 3
@@ -19,10 +19,10 @@
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5100000000.0
+                                    "frequency": 4000000000.0
                                 }
                             },
-                            "band": 2
+                            "band": 1
                         },
                         "6": {
                             "full_scale_power_dbm": 16,
@@ -37,16 +37,16 @@
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6768410000.0
+                                    "frequency": 2950000000.0
                                 }
                             },
-                            "band": 2
+                            "band": 1
                         }
                     },
                     "analog_inputs": {
                         "1": {
                             "gain_db": 0,
-                            "downconverter_frequency": 7898200000.0,
+                            "downconverter_frequency": 7776000000.0,
                             "band": 3
                         }
                     },
@@ -85,8 +85,8 @@
                     1
                 ]
             },
-            "intermediate_frequency": -49000000,
-            "time_of_flight": 400,
+            "intermediate_frequency": -49300000,
+            "time_of_flight": 368,
             "smearing": 0,
             "operations": {
                 "readout_pulse": "rr.rr_readout_pulse"
@@ -96,7 +96,7 @@
     "pulses": {
         "rr.rr_readout_pulse": {
             "operation": "measurement",
-            "length": 832,
+            "length": 896,
             "waveforms": {
                 "I": "rr.rr_readout_pulse.waveform.I",
                 "Q": "rr.rr_readout_pulse.waveform.Q"
@@ -944,6 +944,70 @@
                 0.0,
                 0.0,
                 0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
                 0.0
             ]
         },
@@ -967,13 +1031,13 @@
             "cosine": [
                 [
                     1.0,
-                    832
+                    896
                 ]
             ],
             "sine": [
                 [
                     0.0,
-                    832
+                    896
                 ]
             ]
         },
@@ -981,13 +1045,13 @@
             "cosine": [
                 [
                     0.0,
-                    832
+                    896
                 ]
             ],
             "sine": [
                 [
                     1.0,
-                    832
+                    896
                 ]
             ]
         },
@@ -995,13 +1059,13 @@
             "cosine": [
                 [
                     0.0,
-                    832
+                    896
                 ]
             ],
             "sine": [
                 [
                     -1.0,
-                    832
+                    896
                 ]
             ]
         }

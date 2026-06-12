@@ -13,22 +13,22 @@ if __name__ == "__main__":
         (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, yoko1) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive","yoko1")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.8482e9+50e6#7.726e9+50e6+0.9e6#7.415e9+50e6+0.5e6 
-        rr_IF = -49e6 
+        rr_LO = 7.726e9+50e6#7.411e9+50e6#7.726e9+50e6+0.9e6#7.415e9+50e6+0.5e6 
+        rr_IF = -49.3e6 
         
-        qubit_LO = 5e9+100e6#5.7e9+50e6-150E6
-        qubit_IF = 135e6
+        qubit_LO = 4e9+100e6#5.7e9+50e6-150E6
+        qubit_IF = 109e6
         
-        cav_LO = 6.71841e9+50e6#6.659e9+50e6
+        cav_LO = 2.9e9+50e6#6.659e9+50e6
         cav_IF = -68e6
         
-        qubitEF_IF = -68.8e6 #-118e6# -76e6
-        qubitGF2_IF = 34e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
+        qubitEF_IF = -20.3e6 #-118e6# -76e6
+        qubitGF2_IF = -124e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
         drive_LO = 7E9 +50E6-400e6-400e6-400e6-400e6-400e6-400e6#5.6118e9+50e6
         drive_IF = -75.1e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
 
         yoko1.output = True
-        # yoko1.ramp(-20e-3, step=1e-4)
+        # yoko1.ramp(5e-3, step=1e-4)
         settings = {
                 "controllers": {
                     "con1": {
@@ -100,7 +100,7 @@ if __name__ == "__main__":
             # ports={"I": 1, "Q": 2, "out": 1}, # OPX has I,Q combined in 1 input, from Labbrick downconversion
             upconverter = 1,
             int_freq=rr_IF,
-            tof= 400, 
+            tof= 100+240+30, 
             rf_switch=None,
             rf_switch_on=False,
         )
@@ -122,7 +122,7 @@ if __name__ == "__main__":
                 name="rr_readout_pulse",
                 length=64*10, #64*4,#64*8,#400,#
                 I_ampx=0.01, #0.03
-                pad=64*3,#64*4,#300,#64*12, #1200, #
+                pad=64*4,#64*4,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 # weights="C://Users//qcrew//Desktop//Juncheng//victoria//config//weights//20260605_121436_weights.npz",
             ),
@@ -143,7 +143,7 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="qubit_constant_pulse",
                 length=5000,
-                I_ampx=0.1,#0.247/10000*52,
+                I_ampx=1.3,#0.247/10000*52,
             ),
            
             
@@ -151,7 +151,7 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_24",
                 sigma=6,
                 chop=4,
-                I_ampx=1.5*0.5/0.566*0.5/0.505*0.5/1.41,
+                I_ampx=1.5*0.5/0.566*0.5/0.505*0.5/1.41/2*0.5/0.584,
                 Q_ampx = 1*0.020,#*-0.159,
             ),
             GaussianPulse(
@@ -346,6 +346,13 @@ if __name__ == "__main__":
             GaussianPulse(
                 name="qubitGF2_gaussian_pi_24",
                 sigma=6,
+                chop=4,
+                I_ampx=2.0,#*0.5/0.426,
+                Q_ampx=0.0,
+            ),
+            GaussianPulse(
+                name="qubitGF2_gaussian_pi_48",
+                sigma=12,
                 chop=4,
                 I_ampx=2.0,#*0.5/0.426,
                 Q_ampx=0.0,
