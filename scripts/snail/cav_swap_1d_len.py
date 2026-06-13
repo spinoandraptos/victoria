@@ -12,7 +12,7 @@ from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
 
 
-class CavitySWAP1D_len_amp(Experiment):
+class CavitySWAP1D_len(Experiment):
     """Cavity T1"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -40,7 +40,7 @@ class CavitySWAP1D_len_amp(Experiment):
         qua.align()
         self.cavity.play(self.cavity_drive, ampx=1)
         qua.align(self.cavity, self.snail)
-        self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx) #
+        self.snail.play(self.snail_pulse, duration=self.length_snail) # #, ampx= self.snail_ampx
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
-        "snail": "snail",
+        "snail": "drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -70,16 +70,16 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_200",
-        "qubit_pulse": "qubit_constant_pi_520",
+        "cavity_drive": "cav_constant_64",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_constant_pulse_20",
+        "snail_pulse": "drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":300000, #30000,
+        "wait_time":1_000_000, #30000,
         "ro_ampx": 1,
     }
 
@@ -93,21 +93,21 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=4, stop=200, step=4, dtype=int)
-    SNAIL_AMPX = Sweep(
-        name="snail_ampx",
-        points=[
-           0.05, 0.1 # 0.05, 0.1
-        ],
-    )
-    sweeps = [N, SNAIL_AMPX, DEL]
+    DEL = Sweep(name="length_snail", start=4, stop=150, step=4, dtype=int)
+    # SNAIL_AMPX = Sweep(
+    #     name="snail_ampx",
+    #     points=[
+    #        0.05, 0.1 # 0.05, 0.1
+    #     ],
+    # )
+    sweeps = [N, DEL] #, SNAIL_AMPX
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-    MAG.fitfn = "sine"
-    PHASE.fitfn = "sine"
-    I.fitfn = "sine"
-    Q.fitfn = "sine"
+    MAG.fitfn = "exp_decay_sine"
+    PHASE.fitfn = "exp_decay_sine"
+    I.fitfn = "exp_decay_sine"
+    Q.fitfn = "exp_decay_sine"
 
     # MAG.axes = sweeps[1:]
     # PHASE.axes = sweeps[1:]
@@ -117,5 +117,5 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = CavitySWAP1D_len_amp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = CavitySWAP1D_len(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()

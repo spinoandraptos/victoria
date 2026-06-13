@@ -41,7 +41,7 @@ class CavitySWAP2D_freq_len(Experiment):
         self.cavity.play(self.cavity_drive)
         qua.align(self.cavity, self.snail)
         qua.update_frequency(self.snail, self.snail_frequency)
-        self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= 0.08) #
+        self.snail.play(self.snail_pulse, duration=self.length_snail) #
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
-        "snail": "snail",
+        "snail": "drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -71,16 +71,16 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_200", #"cav_constant_40",
-        "qubit_pulse": "qubit_constant_pi_520", #"qubit_constant_pi_200",
+        "cavity_drive": "cav_constant_64",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_constant_pulse_20",
+        "snail_pulse": "drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":30000,#500000,
+        "wait_time":500_000,#500000,
         "ro_ampx": 1,
     }
 
@@ -94,14 +94,14 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=4, stop=300, step=16, dtype=int)
+    DEL = Sweep(name="length_snail", start=4, stop=125, step=4, dtype=int)
     # SNAIL_AMPX = Sweep(name="snail_ampx", start=0, stop=0.2, step=0.01, dtype=float)
     FREQ.name = "snail_frequency"
-    FREQ.start = -80e6
-    FREQ.stop = -55e6
-    FREQ.num = 35
+    FREQ.start = 3.1e6
+    FREQ.stop = 13.1e6
+    FREQ.num = 31
     
-    sweeps = [N, FREQ, DEL]
+    sweeps = [N, DEL ,FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     PHASE.plot = False
     # MAG.plot = False
     # Q.plot = False
-    I.plot = False
+    MAG.plot = False
   
     # SINGLE_SHOT.plot_args["plot_type"] = "image"
 
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     # PHASE.plot = False
     datasets = [I, Q, MAG, PHASE]
     Q.plot_args["plot_type"] = "image"
-    MAG.plot_args["plot_type"] = "image"
+    I.plot_args["plot_type"] = "image"
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 

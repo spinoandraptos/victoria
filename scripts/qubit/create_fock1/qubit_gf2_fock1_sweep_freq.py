@@ -58,7 +58,7 @@ if __name__ == "__main__":
     modes = {
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
-        "drive": "drive",
+        "drive": "drive_fock",
     }
 
     ################################### PULSE MAP ######################################
@@ -66,8 +66,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_1000",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_192",
+        "stark_drive": "drive_constant_2000",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -89,8 +89,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "drive_frequency"
-    FREQ.start = -60e6  # 40e6
-    FREQ.stop = -40e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start = 60e6  # 40e6
+    FREQ.stop = 80e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
@@ -99,12 +99,12 @@ if __name__ == "__main__":
     # FREQ2.num = 101
 
     
-    D_AMPX = Sweep(
-        name="d_ampx",
-        # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[1.0, 1.1, 1.2, 1.3]#0.25,0.5,0.75]
-    ) 
+    # D_AMPX = Sweep(
+    #     name="d_ampx",
+    #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+    #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+    #     points=[1.0, 1.1, 1.2, 1.3]#0.25,0.5,0.75]
+    # ) 
     # DEL = Sweep(name="time_delay", start=16, stop=160, step=20, dtype=int)
 
     sweeps = [N, FREQ]#[N,  D_AMPX, FREQ]
@@ -117,11 +117,9 @@ if __name__ == "__main__":
     MAG.plot = True
     Q.plot = True
     I.plot = True
-    #I.plot = True
-    # Q.plot_args["plot_type"] = "image"
-    #I.plot_args["plot_type"] = "image"
-    # SINGLE_SHOT.plot_args["plot_type"] = "image"
-    # SINGLE_SHOT.plot = True
+    I.fitfn = "gaussian"
+    Q.fitfn = "gaussian"
+    MAG.fitfn = "gaussian"
     datasets = [I, Q, MAG, PHASE]
 
 

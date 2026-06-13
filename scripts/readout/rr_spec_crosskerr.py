@@ -54,7 +54,7 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
 
-    pulses = {"readout_pulse": "rr_readout_pulse", "cav_displacement": "cav_constant_200",}
+    pulses = {"readout_pulse": "rr_readout_pulse", "cav_displacement": "cav_constant_64",}
 
     ############################## CONTROL PARAMETERS ##################################
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     ################################### 2D SWEEP #######################################
     # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0, stop=0.2, step=0.2)
+    CAV_AMP = Sweep(name="cav_ampx", start=0, stop=1, step=1)
     sweeps = [N, CAV_AMP, FREQ]
     # sweeps = [N, FREQ]
 

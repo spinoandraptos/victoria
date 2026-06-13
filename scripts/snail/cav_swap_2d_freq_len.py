@@ -1,18 +1,13 @@
 """ """
 import sys
 from datetime import datetime
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
     
 from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR, FREQ
 from qcore import Experiment, qua, Sweep
 
 
-class CavitySWAP2D_freq_amp_check(Experiment):
+class CavitySWAP2D_freq_len(Experiment):
     """Cavity T1"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -35,13 +30,13 @@ class CavitySWAP2D_freq_amp_check(Experiment):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
-        # qua.reset_phase(self.snail)
-        # qua.reset_frame(self.snail)
+        qua.reset_phase(self.snail)
+        qua.reset_frame(self.snail)
         qua.align()
-        self.cavity.play(self.cavity_drive, ampx=0)
+        self.cavity.play(self.cavity_drive)
         qua.align(self.cavity, self.snail)
         qua.update_frequency(self.snail, self.snail_frequency)
-        self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= 0.08) #
+        self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= 1.0) # self.snail_ampx
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
@@ -63,7 +58,7 @@ if __name__ == "__main__":
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
-        "snail": "snail",
+        "snail": "drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -71,16 +66,16 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_200",
-        "qubit_pulse": "qubit_constant_pi_520",
+        "cavity_drive": "cav_constant_64",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_constant_pulse_20",
+        "snail_pulse": "drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1500000,
+        "wait_time": 120_000,
         "ro_ampx": 1,
     }
 
@@ -89,32 +84,39 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 50000
+    N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
 
-    # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
+    DEL = Sweep(name="length_snail", start=4, stop=500, step=16, dtype=int)
         # set the qubit frequency sweep for this Experiment run
     FREQ.name = "snail_frequency"
-    FREQ.start = -80e6
-    FREQ.stop = -55e6
-    FREQ.num = 50
-    DEL = Sweep(name="length_snail", start=4, stop=120, step=4, dtype=int)
+    # FREQ.start = -200e6
+    # FREQ.stop = -0.5e6
+    # FREQ.num = 101
+    FREQ.start = 0e6
+    FREQ.stop = 15e6
+    FREQ.num = 201
+    
     # SNAIL_AMPX = Sweep(
     # name="snail_ampx",
     # points=[
     #     0.05, 0.08, 0.1
     # ],
-# )
-    sweeps = [N, FREQ, DEL]
+    # )
+    
     # QD_AMPX = Sweep(name="snail_frequency", points=[0.0, 1.0])
 
+    # sweeps = [N, SNAIL_AMPX, FREQ]
+    sweeps = [N, DEL, FREQ]
+
+
+    ######################## DATASET (DEPENDENT) VARIABLES #############################
+    # must include all primary datasets defined by the Experiment subclass
     PHASE.plot = False
     # MAG.plot = False
     # Q.plot = False
     I.plot = False
-  
-    # SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     # MAG.axes = sweeps[1:]
     # PHASE.axes = sweeps[1:]
@@ -126,5 +128,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = CavitySWAP2D_freq_amp_check(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
+    expt = CavitySWAP2D_freq_len(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    # expt.run()
+    expt.run(simulate=False)

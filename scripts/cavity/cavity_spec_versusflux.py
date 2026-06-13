@@ -1,23 +1,13 @@
-""" """
-""" """
 import sys
 
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
-from qcore import Experiment, qua, Sweep
 from qm import qua as qm_qua
-from qcore.helpers import Stage
-from config.experiment_config import MODES_CONFIG
 import numpy as np
-import time
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, MODES_CONFIG, RR
 from qcore import Experiment, qua, Sweep
-
-
 from qcore.helpers import Stage
-from qcore import Experiment, qua, Sweep
-import time
 
+import time
 
 class CavitySpec_versus_flux(Experiment):
     """Cavity spectroscopy"""
@@ -120,7 +110,7 @@ if __name__ == "__main__":
     MAG.plot = False
     Q.plot = False
     I.plot = False
-    SINGLE_SHOT.plot = False
+    # SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
     #SINGLE_SHOT.plot_args["plot_type"] = "image"
