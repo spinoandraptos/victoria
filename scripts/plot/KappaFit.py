@@ -6,9 +6,9 @@ from scipy.signal import savgol_filter
 from scipy.signal import hilbert
 
 sample_rate = 1e9       # 1 GSa/s
-start_idx = 1300         # Start time index of decay in trace
+start_idx = 250         # Start time index of decay in trace
 
-freq = 7.726e9+50e6-49.3e6
+freq = 7.411e9+50e6-51.1e6
 omega = 2 * np.pi * freq
 
 rr = 'rrC'
@@ -23,7 +23,7 @@ adc_idx = {
 def exp_decay(t, A, tau, B):
     return A * np.exp(-t / tau) + B
 
-filepath = r"C:\Users\qcrew\Desktop\Juncheng\victoria\data\2026-06-12\12-22-51_TimeOfFlight.hdf5"
+filepath = r"C:\Users\qcrew\Desktop\Juncheng\victoria\data\2026-06-12\10-56-28_TimeOfFlight.hdf5"
 base, _ = filepath.rsplit('.', 1)  # split at last dot
 fit_filepath = f"{base}_kappa_fit.png"
 
@@ -77,6 +77,7 @@ with h5py.File(filepath, 'r') as f:
     plt.grid(True)
     plt.tight_layout()
     plt.savefig(fit_filepath, dpi=300)
+    plt.show()
 
 # # kappa fitting CSV obtained from https://automeris.io/
 

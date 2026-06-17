@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 150_000,
         "ro_ampx": 1,
-        "detuning": 2e6,
+        "detuning":4e6,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=10, stop=140000, step=800, dtype=int)
-    DEL = Sweep(name="time_delay", start=16, stop=8000, step=40, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop=1000, step=4, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

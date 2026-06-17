@@ -74,8 +74,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start =0e6  # 40e6
-    FREQ.stop = 60e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start =100e6  # 40e6
+    FREQ.stop = 160e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 51
     
 

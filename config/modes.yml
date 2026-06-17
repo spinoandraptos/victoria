@@ -1,6 +1,6 @@
 - !<Qubit>
   name: qubit
-  int_freq: 1.350000E+08
+  int_freq: 1.340000E+08
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -20,14 +20,24 @@
       total_length: 5000
     qubit_gaussian_pi_24: !<GaussianPulse>
       name: qubit_gaussian_pi_24
-      I_ampx: 0.45433311609861843
-      Q_ampx: -0.02
+      I_ampx: 0.38523285374388627
+      Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 6
-      total_I_ampx: 0.09086662321972369
+      total_I_ampx: 0.07704657074877726
       total_length: 24
+    qubit_gaussian_pi_240: !<GaussianPulse>
+      name: qubit_gaussian_pi_240
+      I_ampx: 0.04726236400098605
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 60
+      total_I_ampx: 0.00945247280019721
+      total_length: 240
     qubit_gaussian_pi_48: !<GaussianPulse>
       name: qubit_gaussian_pi_48
       I_ampx: 2.2111111111111112
@@ -40,13 +50,13 @@
       total_length: 48
     qubit_gaussian_pi2_24: !<GaussianPulse>
       name: qubit_gaussian_pi2_24
-      I_ampx: 0.22540557697915953
+      I_ampx: 0.1948707505431319
       Q_ampx: -0.02
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 6
-      total_I_ampx: 0.04508111539583191
+      total_I_ampx: 0.038974150108626385
       total_length: 24
     qubit_gaussian_pi2_48: !<GaussianPulse>
       name: qubit_gaussian_pi2_48
@@ -70,13 +80,13 @@
       total_length: 640
     qubit_gaussian_pi_1200: !<GaussianPulse>
       name: qubit_gaussian_pi_1200
-      I_ampx: 0.008901220233768851
+      I_ampx: 0.008166936499370388
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 320
-      total_I_ampx: 0.0017802440467537704
+      total_I_ampx: 0.0016333872998740779
       total_length: 1280
     qubit_gaussian_pi_2000: !<GaussianPulse>
       name: qubit_gaussian_pi_2000
@@ -235,7 +245,7 @@
   rf_switch_on: false
 - !<Readout>
   name: rr
-  int_freq: -4.910000E+07
+  int_freq: -4.160000E+07
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -275,13 +285,19 @@
         samples:
         - - 1
           - 0
-      has_optimized_weights: true
+      has_optimized_weights: false
       length: 256
       pad: 256
       threshold: null
       total_I_amp: 0.003
       total_length: 512
-      weights: C://Users//qcrew//Desktop//Juncheng//victoria//config//weights//20260612_162253_weights.npz
+      weights:
+      - 1.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - -1.0
   ports:
     I:
     - 1
@@ -477,7 +493,7 @@
   rf_switch_on: false
 - !<Qubit>
   name: qubit_GF2
-  int_freq: 3.360000E+07
+  int_freq: 3.270000E+07
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
