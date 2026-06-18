@@ -14,10 +14,10 @@ if __name__ == "__main__":
         (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, drive_fock) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive","drive_fock")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.8471e9+50e6#7.726e9+50e6+0.9e6#7.415e9+50e6+0.5e6 
-        rr_IF = -41.6e6 
+        rr_LO = 7.8733e9+50e6+50e6+10e6#7.726e9+50e6+0.9e6#7.415e9+50e6+0.5e6 
+        rr_IF = -14.8e6 
         
-        qubit_LO = 5e9+100e6#5.7e9+50e6-150E6
+        qubit_LO = 4e9+100e6-300e6#5.7e9+50e6-150E6
         qubit_IF = 133e6+1e6
                 
         cav_LO = 6.71841e9+50e6#6.659e9+50e6
@@ -123,8 +123,8 @@ if __name__ == "__main__":
             ),
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
-                length=64*4,#64*8,#400,#
-                I_ampx=0.015,#0.015, #0.03
+                length=64*8,#64*8,#400,#
+                I_ampx=2,#0.015,#0.015, #0.03
                 pad=64*4,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 # weights="C://Users//qcrew//Desktop//Juncheng//victoria//config//weights//20260612_162253_weights.npz",
@@ -146,7 +146,7 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="qubit_constant_pulse",
                 length=5000,
-                I_ampx=0.1,#0.247/10000*52,
+                I_ampx=0.2,#0.247/10000*52,
             ),
            
             
