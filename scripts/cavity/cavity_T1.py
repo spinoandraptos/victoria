@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     pulses = {
         "cavity_drive": "cav_constant_64",
-        "qubit_pulse": "qubit_gaussian_pi_1200",
+        "qubit_pulse": "qubit_gaussian_pi_160",
         "readout_pulse": "rr_readout_pulse",
     }
 

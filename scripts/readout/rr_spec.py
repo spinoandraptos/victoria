@@ -47,8 +47,8 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5_000,
-        "ro_ampx": 0.0002,
+        "wait_time": 10_000,
+        "ro_ampx": 1,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -62,8 +62,8 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -100e6
-    FREQ.stop = -1e6
+    FREQ.start = -50e6
+    FREQ.stop = -40e6
     FREQ.num = 101
 
     ################################### 2D SWEEP #######################################
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     # must include all primary datasets defined by the Experiment subclass
 
     PHASE.inputs = ("I", "Q", "resonator_frequency")
-    PHASE.datafn_args = {"delay": -3e-7}#.298e-7} #100ns-900ns
+    PHASE.datafn_args = {"delay": -3.298e-7} #100ns-900ns
 
     MAG.fitfn = "lorentzian"
     # MAG.axes = sweeps

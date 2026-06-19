@@ -5,8 +5,6 @@ from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
 from qcore import Experiment, qua, Sweep
 
-import numpy as np
-
 
 class RRSpecAmp(Experiment):
     """Readout resonator spectroscopy"""
@@ -55,7 +53,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10_000,
+        "wait_time": 5_000,
         # "ro_ampx": 1,
     }
 
@@ -70,16 +68,15 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -100e6
-    FREQ.stop = -20e6
-    FREQ.num =201
+    FREQ.start = -46e6
+    FREQ.stop = -40e6
+    FREQ.num = 101
 
     ################################### 2D SWEEP #######################################
 
     RO_AMPX = Sweep(
         name="ro_ampx",
-        # points=[ 0.001, 0.002, 0.003]#0.000175, 0.0002, 0.000225, 0.00025, 0.000275, 0.0003, 0.0004]#[0.00005, 0.000075, 0.0001, 0.000125, 0.00015, 0.000175, 0.0002, 0.000225, 0.00025, 0.000275]#[0.005, 0.01, 0.015,0.02, 0.03, 0.04,0.05, 0.08, 0.1]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
-        points=[0.0001, 0.0002, 0.0003, 0.0004]
+        points=[0.005, 0.01, 0.015,0.02, 0.03, 0.04,0.05]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
         # points=[0.2, 0.4, 0.6, 0.8, 1.0]
         # points=[0.01, 0.02, 0.03, 0.04, 0.05, 0.1]#0.25,0.5,0.75]
     ) 
@@ -90,14 +87,13 @@ if __name__ == "__main__":
     # must include all primary datasets defined by the Experiment subclass
 
     PHASE.inputs = ("I", "Q", "resonator_frequency")
-    PHASE.datafn_args = {"delay": -3e-7}#-3.298e-7}
+    PHASE.datafn_args = {"delay": -3.298e-7}
 
     # MAG.fitfn = "lorentzian"
     # MAG.axes = sweeps
 
     I.plot = True
     Q.plot = True
-    MAG.plot = True
     PHASE.plot = True
 
     datasets = [I, Q, MAG, PHASE]
@@ -107,25 +103,3 @@ if __name__ == "__main__":
     # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
     expt = RRSpecAmp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
-    
-    # I.plot = False
-    # Q.plot = False
-    # PHASE.plot = False
-
-    # datasets = [I, Q, MAG, PHASE]
-
-    ######################## INITIALIZE AND RUN EXPERIMENT #############################
-
-    # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
-    # freq_sweep_ranges = np.linspace(-150, -20, 10)
-    # amp_sweep_ranges = np.arange(0.1, 1, 0.1)
-    # print(freq_sweep_ranges,amp_sweep_ranges)
-    # for i in range(len(freq_sweep_ranges)-1):
-    #     FREQ.start =freq_sweep_ranges[i]*1e6
-    #     FREQ.stop =freq_sweep_ranges[i+1]*1e6
-    #     for j in range(len(amp_sweep_ranges)):
-    #         RO_AMPX.points = [amp_sweep_ranges[j], amp_sweep_ranges[j]]
-    #         RO_AMPX.name = "ro_ampx"
-    #         sweeps = [N, RO_AMPX, FREQ]
-    #         expt = RRSpecAmp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    #         expt.run()

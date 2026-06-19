@@ -10,9 +10,9 @@
 # - !<LMS>
 #   id: 25330
 #   name: lo_cav
-# - !<GS200>
-#   id: 91X336839
-#   name: yoko1
+- !<GS200>
+  id: 91X336839
+  name: yoko1
 # - !<GS200>
 #   id: 9
 #   name: yoko2

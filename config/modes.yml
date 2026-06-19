@@ -11,33 +11,33 @@
   operations:
     qubit_constant_pulse: !<ConstantPulse>
       name: qubit_constant_pulse
-      I_ampx: 0.2
+      I_ampx: 0.1
       Q_ampx: 0.0
       digital_marker: null
       length: 5000
       pad: 0
-      total_I_amp: 0.04000000000000001
+      total_I_amp: 0.020000000000000004
       total_length: 5000
     qubit_gaussian_pi_24: !<GaussianPulse>
       name: qubit_gaussian_pi_24
-      I_ampx: 0.38523285374388627
-      Q_ampx: 0.0
+      I_ampx: 0.39166647939536076
+      Q_ampx: -0.02
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 6
-      total_I_ampx: 0.07704657074877726
+      total_I_ampx: 0.07833329587907216
       total_length: 24
-    qubit_gaussian_pi_240: !<GaussianPulse>
-      name: qubit_gaussian_pi_240
-      I_ampx: 0.04726236400098605
-      Q_ampx: 0.0
+    qubit_gaussian_pi_160: !<GaussianPulse>
+      name: qubit_gaussian_pi_160
+      I_ampx: 0.06119788740552511
+      Q_ampx: -0.02
       chop: 4
       digital_marker: null
       pad: 0
-      sigma: 60
-      total_I_ampx: 0.00945247280019721
-      total_length: 240
+      sigma: 40
+      total_I_ampx: 0.012239577481105024
+      total_length: 160
     qubit_gaussian_pi_48: !<GaussianPulse>
       name: qubit_gaussian_pi_48
       I_ampx: 2.2111111111111112
@@ -50,13 +50,13 @@
       total_length: 48
     qubit_gaussian_pi2_24: !<GaussianPulse>
       name: qubit_gaussian_pi2_24
-      I_ampx: 0.1948707505431319
+      I_ampx: 0.19982983642620447
       Q_ampx: -0.02
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 6
-      total_I_ampx: 0.038974150108626385
+      total_I_ampx: 0.0399659672852409
       total_length: 24
     qubit_gaussian_pi2_48: !<GaussianPulse>
       name: qubit_gaussian_pi2_48
@@ -80,13 +80,13 @@
       total_length: 640
     qubit_gaussian_pi_1200: !<GaussianPulse>
       name: qubit_gaussian_pi_1200
-      I_ampx: 0.008166936499370388
+      I_ampx: 0.008901220233768851
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 320
-      total_I_ampx: 0.0016333872998740779
+      total_I_ampx: 0.0017802440467537704
       total_length: 1280
     qubit_gaussian_pi_2000: !<GaussianPulse>
       name: qubit_gaussian_pi_2000
@@ -136,7 +136,7 @@
   rf_switch_on: false
 - !<Cavity>
   name: cavity
-  int_freq: -6.770000E+07
+  int_freq: -6.210000E+07
   lo_name: opx1000
   mixer_offsets:
     I: -0.003281430326023839
@@ -245,7 +245,7 @@
   rf_switch_on: false
 - !<Readout>
   name: rr
-  int_freq: -1.480000E+07
+  int_freq: -4.260000E+07
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -278,7 +278,7 @@
       total_length: 600
     rr_readout_pulse: !<ConstantReadoutPulse>
       name: rr_readout_pulse
-      I_ampx: 2
+      I_ampx: 0.015
       Q_ampx: 0.0
       digital_marker: !<DigitalWaveform>
         name: ADC_ON
@@ -286,11 +286,11 @@
         - - 1
           - 0
       has_optimized_weights: false
-      length: 512
+      length: 256
       pad: 256
       threshold: null
-      total_I_amp: 0.4
-      total_length: 768
+      total_I_amp: 0.003
+      total_length: 512
       weights:
       - 1.0
       - 0.0
@@ -493,7 +493,7 @@
   rf_switch_on: false
 - !<Qubit>
   name: qubit_GF2
-  int_freq: 3.270000E+07
+  int_freq: 3.360000E+07
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
