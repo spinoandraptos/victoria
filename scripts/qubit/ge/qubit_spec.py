@@ -60,7 +60,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 100000,
+        "wait_time": 50000,
         "ro_ampx": 1,
         "qubit_drive_ampx": 1,
     }
@@ -74,9 +74,9 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start =100e6  # 40e6
-    FREQ.stop = 160e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 101
+    FREQ.start =-200e6  # 40e6
+    FREQ.stop =200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.num = 201
     
 
     sweeps = [N, FREQ]
