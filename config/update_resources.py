@@ -10,37 +10,37 @@ if __name__ == "__main__":
     """ """
     with Stage(configpath=MODES_CONFIG, remote=True) as stage:
         
-        (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, drive_fock, yoko1) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive","drive_fock", "yoko1")
+        # (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, drive_fock, yoko1) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive","drive_fock", "yoko1")
         # (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, yoko1) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive", "yoko1")
-        (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, drive_fock, yoko1) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive","drive_fock", "yoko1")
+        (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, drive_fock) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive","drive_fock")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.483e9+50e6#7.726e9+50e6+0.9e6#7.415e9+50e6+0.5e6 
-        rr_IF = -46e6 
+        rr_LO = 7.8482e9+50e6#7.726e9+50e6+0.9e6#7.415e9+50e6+0.5e6 
+        rr_IF = -42.8e6 
         
-        qubit_LO = 3.7e9#5.7e9+50e6-150E6
-        qubit_IF = 44e6
+        qubit_LO = 5e9+100e6#5.7e9+50e6-150E6
+        qubit_IF = 134e6
         
         cav_LO = 6.71841e9+50e6#6.659e9+50e6
         cav_IF = -62.1e6
         
-        qubitEF_IF = -180e6 #-118e6# -76e6
-        qubitGF2_IF = -40e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
+        qubitEF_IF = -68.8e6 #-118e6# -76e6
+        qubitGF2_IF = 33.6e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
         drive_fock_LO = 3.56729e9+50E6
         drive_fock_IF = 71.7E6
         drive_LO = 6.71841e9+50e6-2.9e9+50e6#5.6118e9+50e6
         drive_IF =  7.92e6-5E6#
 
-        yoko1.output = True
-        yoko1.ramp(0e-3, step=1e-4)
+        # yoko1.output = True
+        # yoko1.ramp(0e-3, step=1e-4)
         settings = {
                 "controllers": {
                     "con1": {
                         "fems": {
                             1: {
                                 "analog_outputs": {
-                                    6: {
-                                        "full_scale_power_dbm": 1, #only in increments of 3s -11
+                                    1: {
+                                        "full_scale_power_dbm": 16, #only in increments of 3s -11
                                         "upconverters": {1: {"frequency":  rr_LO}},
                                         "band":3,
                                     },
@@ -59,15 +59,15 @@ if __name__ == "__main__":
                                     #     "full_scale_power_dbm": -11, #16
                                     #     "upconverters": {1: {"frequency": alice_LO}},
                                     # },
-                                    # 7: {
-                                    #     "full_scale_power_dbm": 4, 
-                                    #     "upconverters": {1: {"frequency": drive_fock_LO}},
+                                    7: {
+                                        "full_scale_power_dbm": 4, 
+                                        "upconverters": {1: {"frequency": drive_fock_LO}},
                                         
-                                    # },
-                                    # 6: {
-                                    #     "full_scale_power_dbm": 4, 
-                                    #     "upconverters": {1: {"frequency": drive_LO}}, # SNAIL drive
-                                    # },
+                                    },
+                                    6: {
+                                        "full_scale_power_dbm": 4, 
+                                        "upconverters": {1: {"frequency": drive_LO}}, # SNAIL drive
+                                    },
                                     4: {
                                         "full_scale_power_dbm": 4, #if rt amp, max 4
                                         "upconverters": {1: {"frequency": cav_LO}},
@@ -99,7 +99,7 @@ if __name__ == "__main__":
             name="rr",
             lo_name="opx1000",  # either octave or labbrick
             ports={
-                "I": [1,6], "out1": [1,1] 
+                "I": [1,1], "out1": [1,1] 
             },  # OPX has two separate inputs (I, Q), from the Octave
             # ports={"I": 1, "Q": 2, "out": 1}, # OPX has I,Q combined in 1 input, from Labbrick downconversion
             upconverter = 1,
@@ -124,9 +124,9 @@ if __name__ == "__main__":
             ),
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
-                length=64*5,#64*8,#400,#
-                I_ampx=.1,#0.15,#0.015,#0.015, #0.03
-                pad=64*5,#300,#64*12, #1200, #
+                length=64*8,#64*8,#400,#
+                I_ampx=0.015, #0.03
+                pad=64*8,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 # weights="C://Users//qcrew//Desktop//Juncheng//victoria//config//weights//20260612_162253_weights.npz",
             ),
@@ -146,8 +146,8 @@ if __name__ == "__main__":
         qubit.operations = [
             ConstantPulse(
                 name="qubit_constant_pulse",
-                length=1000,
-                I_ampx=1,#0.247/10000*52,
+                length=5000,
+                I_ampx=0.1,#0.247/10000*52,
             ),
            
             
@@ -155,7 +155,7 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_24",
                 sigma=6,
                 chop=4,
-                I_ampx=2,
+                I_ampx=1.5*0.5/0.566*0.5/0.505*0.5/1.41/.512*.5*.5/.58,
                 Q_ampx = -0.020,#*-0.159,
             ),
             GaussianPulse(
@@ -176,7 +176,7 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi2_24",
                 sigma=6,
                 chop=4,
-                I_ampx=2/1.2/1.4/2*.5/.64*.5/.47/1.14/.96/2,
+                I_ampx=1.5*0.5/0.566*0.5/0.505*0.5/1.41/.512*.5*.5/.58/2/.49*.5,
                 Q_ampx =-0.020,#*-0.159,
             ),
             GaussianPulse(
@@ -322,7 +322,7 @@ if __name__ == "__main__":
                 name="qubitEF_gaussian_pi_24",
                 sigma=6,
                 chop=4,
-                I_ampx=2,#*0.5/0.426,
+                I_ampx=1.5*0.5/1.43*0.5/0.515*0.5/0.914/.53*.5,#*0.5/0.426,
                 Q_ampx=0.0,
             ),
             
@@ -355,10 +355,10 @@ if __name__ == "__main__":
                 Q_ampx=0.0,
             ),
             GaussianPulse(
-                name="qubitGF2_gaussian_pi24",
+                name="qubitGF2_gaussian_pi_24",
                 sigma=6,
                 chop=4,
-                I_ampx=1,#*0.5/0.426,
+                I_ampx=2.0,#*0.5/0.426,
                 Q_ampx=0.0,
             ),
             GaussianPulse(
@@ -376,89 +376,89 @@ if __name__ == "__main__":
                 Q_ampx=0.0,
             ),
         ]
-        # drive.configure(
-        #     name="drive",
-        #     lo_name="opx1000",
-        #     ports={"I": [1,6]},
-        #     upconverter = 1,
-        #     int_freq=drive_IF,
-        #     rf_switch=None,
-        #     rf_switch_on=False,
-        # )
+        drive.configure(
+            name="drive",
+            lo_name="opx1000",
+            ports={"I": [1,6]},
+            upconverter = 1,
+            int_freq=drive_IF,
+            rf_switch=None,
+            rf_switch_on=False,
+        )
         
-        # drive.operations = [
+        drive.operations = [
             
-        # GaussianPulse(
-        #         name="drive_gaussian_pi_24",
-        #         sigma=6,
-        #         chop=4,
-        #         I_ampx=1.95,#*0.5/0.426,
-        #         Q_ampx=0.0,
-        #     ),
-        # GaussianPulse(
-        #         name="drive_gaussian_pi_100",
-        #         sigma=25,
-        #         chop=4,
-        #         I_ampx=1.95,#*0.5/0.426,
-        #         Q_ampx=0.0,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_192",
-        #         length=4*48,
-        #         I_ampx=2,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_400",
-        #         length=400,
-        #         I_ampx=1,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_2000",
-        #         length=2000,
-        #         I_ampx=.8,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_52",
-        #         length=52,
-        #         I_ampx=.8,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_600",
-        #         length=600,
-        #         I_ampx=1,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_5000",
-        #         length=5000,
-        #         I_ampx=2,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_fock1",
-        #         length=60,
-        #         I_ampx=.9,#0.247/10000*52,
-        #     ),
-        # ConstantPulse(
-        #         name="drive_constant_SS",
-        #         length=6*4,
-        #         I_ampx=1,#0.247/10000*52,
-        #     ),
-        # ]
+        GaussianPulse(
+                name="drive_gaussian_pi_24",
+                sigma=6,
+                chop=4,
+                I_ampx=1.95,#*0.5/0.426,
+                Q_ampx=0.0,
+            ),
+        GaussianPulse(
+                name="drive_gaussian_pi_100",
+                sigma=25,
+                chop=4,
+                I_ampx=1.95,#*0.5/0.426,
+                Q_ampx=0.0,
+            ),
+        ConstantPulse(
+                name="drive_constant_192",
+                length=4*48,
+                I_ampx=2,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_400",
+                length=400,
+                I_ampx=1,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_2000",
+                length=2000,
+                I_ampx=.8,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_52",
+                length=52,
+                I_ampx=.8,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_600",
+                length=600,
+                I_ampx=1,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_5000",
+                length=5000,
+                I_ampx=2,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_fock1",
+                length=60,
+                I_ampx=.9,#0.247/10000*52,
+            ),
+        ConstantPulse(
+                name="drive_constant_SS",
+                length=6*4,
+                I_ampx=1,#0.247/10000*52,
+            ),
+        ]
         
-        # drive_fock.configure(
-        #     name="drive_fock",
-        #     lo_name="opx1000",
-        #     ports={"I": [1,7]},
-        #     upconverter = 1,
-        #     int_freq=drive_fock_IF,
-        #     rf_switch=None,
-        #     rf_switch_on=False,
-        # )
+        drive_fock.configure(
+            name="drive_fock",
+            lo_name="opx1000",
+            ports={"I": [1,7]},
+            upconverter = 1,
+            int_freq=drive_fock_IF,
+            rf_switch=None,
+            rf_switch_on=False,
+        )
         
-        # drive_fock.operations = [
+        drive_fock.operations = [
             
-        # ConstantPulse(
-        #         name="drive_constant_2000",
-        #         length=2000,
-        #         I_ampx=2,#0.247/10000*52,
-        #     ),
-        # ]
+        ConstantPulse(
+                name="drive_constant_2000",
+                length=2000,
+                I_ampx=2,#0.247/10000*52,
+            ),
+        ]
