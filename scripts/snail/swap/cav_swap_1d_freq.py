@@ -2,21 +2,13 @@
 import sys
 from datetime import datetime
 
-
-
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
-
+    
+from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR, FREQ
 from qcore import Experiment, qua, Sweep
-from qm import qua as qm_qua
-from qcore.helpers import Stage
-from config.experiment_config import MODES_CONFIG
-import numpy as np
-from tqdm import tqdm
-import time
 
 
-class CavitySpec(Experiment):
-    """Cavity spectroscopy"""
+class CavitySWAP1D_freq(Experiment):
+    """Cavity T1"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -28,33 +20,33 @@ class CavitySpec(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["cavity_frequency"]
+    primary_sweeps = ["snail_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
 
     def sequence(self):
-        """QUA sequence that defines this Experiment subclass"""        
-          # There are two cavity modes here, please check which mode is used.
-        qua.update_frequency(self.cavity, self.cavity_frequency)
-        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
-        qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
-        self.qubit.play(self.qubit_pulse)
-        qua.align(self.qubit, self.resonator)
+        """QUA sequence that defines this Experiment subclass"""
+        qua.reset_phase(self.cavity)
+        qua.reset_frame(self.cavity)
+        qua.reset_phase(self.snail)
+        qua.reset_frame(self.snail)
         qua.align()
+        self.cavity.play(self.cavity_drive, ampx = 1.0)
+        qua.align(self.cavity, self.snail)
+        qua.update_frequency(self.snail, self.snail_frequency)
+        self.snail.play(self.snail_pulse, ampx= 1.0) # self.snail_ampx duration=int(100)
+        # qua.wait(self.time_delay, self.cavity)
+        qua.align(self.snail, self.qubit)
+        self.qubit.play(self.qubit_pulse, ampx = 0)
+        qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
-        if self.plot_single_shot:  # assign state to G or E
-            qm_qua.assign(
-                self.single_shot,
-                qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),
-            )
-
         qua.wait(self.wait_time, self.resonator)
-      
+
+
 if __name__ == "__main__":
     """ """
 
@@ -66,6 +58,7 @@ if __name__ == "__main__":
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
+        "snail": "snail_drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -73,19 +66,17 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_1000",
-        "qubit_pulse": "qubit_constant_pi_520",
+        "cavity_drive": "cav_constant_64_4alpha",
+        "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
+        "snail_pulse": "snail_drive_constant_2000",
     }
 
-    ############################## CONTROL PARAMETERS ############# #####################
+    ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 100_000,
         "ro_ampx": 1,
-        "cav_ampx": 1,
-        "fetch_interval": 1,
-        "plot_single_shot": False,
         
     }
 
@@ -94,53 +85,48 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 500
+    N.num = 10000
 
-    
-    FREQ.name = "cavity_frequency"
-    FREQ.start =-120e6
-    FREQ.stop =-30e6 
+    # set the qubit frequency sweep for this Experiment run
+
+    # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
+        # set the qubit frequency sweep for this Experiment run
+    FREQ.name = "snail_frequency"
+    # FREQ.start = -200e6
+    # FREQ.stop = -0.5e6
+    # FREQ.num = 101
+    FREQ.start = 120e6
+    FREQ.stop = 200e6
     FREQ.num = 201
-
-    PHASE.plot = False
-    MAG.plot = False
-    Q.plot = False
-    I.plot = False
-    SINGLE_SHOT.plot = False
     
-    sweeps = [N, FREQ]    #SINGLE_SHOT.plot_args["plot_type"] = "image"
+    # SNAIL_AMPX = Sweep(
+    # name="snail_ampx",
+    # points=[
+    #     0.05, 0.08, 0.1
+    # ],
+    # )
+    
+    # QD_AMPX = Sweep(name="snail_frequency", points=[0.0, 1.0])
+
+    # sweeps = [N, SNAIL_AMPX, FREQ]
+    sweeps = [N, FREQ]
+
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
+    # MAG.fitfn = "cohstate_decay"
     I.fitfn = "gaussian"
     Q.fitfn = "gaussian"
     MAG.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
 
+    # MAG.axes = sweeps[1:]
+    # PHASE.axes = sweeps[1:]
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    
-   
+    # PHASE.plot = False
     datasets = [I, Q, MAG, PHASE]
+
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    flux_start = 0e-3
-    flux_end = 50e-3
-    flux_step = 10e-3
-    flux_points = np.arange(flux_start, flux_end+flux_step, flux_step)
 
-    with Stage(configpath=MODES_CONFIG, remote=True) as stage:
-    
-      print("START: "+ str(datetime.now()))
-
-      for flux_point in flux_points:
-        
-        (yoko, opx1000) = stage.get("yoko2", "opx1000")
-        yoko.output=True
-        yoko.ramp(flux_point, step=1e-4)
-        
-        expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-        expt.run()
-        
-    print("END: "+ str(datetime.now()))
-    yoko.output=True
-    yoko.ramp(0e-3, step=1e-4)
-      
+    expt = CavitySWAP1D_freq(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    # expt.run()
+    expt.run(simulate=False)

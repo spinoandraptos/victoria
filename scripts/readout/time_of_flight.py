@@ -37,7 +37,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10_000,
+        "wait_time": 20_000,
         "ro_ampx": 1,
         "fetch_interval": 15,
     }

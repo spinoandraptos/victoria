@@ -108,9 +108,9 @@ if __name__ == "__main__":
 
     pulses = {
         "qubit_gf2_drive":"qubitGF2_gaussian_pi_24",
-        "stark_drive": "drive_constant_fock1_16",
-        "cav_disp_state": "cav_constant_180",
-        "cav_disp": "cav_constant_180",
+        "stark_drive": "drive_constant_56",
+        "cav_disp_state": "cav_constant_64",
+        "cav_disp": "cav_constant_64",
         "qubit_pi2": "qubit_gaussian_pi2_24",
         "qubit_pi": "qubit_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",

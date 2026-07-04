@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=32, stop=20_000, step=200, dtype=int)
+    DEL = Sweep(name="time_delay", start=32, stop=50_000, step=500, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

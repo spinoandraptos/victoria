@@ -34,10 +34,10 @@ class NumberSplitting_FOCK1(Experiment):
         """QUA sequence that defines this Experiment subclass"""
         # Generate state in the cavity
         #CREATE fock 1
-        self.qubit_gf2.play(self.qubit_gf2_pi_pulse)
+        self.qubit_gf2.play(self.qubit_gf2_pi_pulse, ampx= self.drive_ampx)
         qua.align(self.qubit_gf2, self.drive)
         self.drive.play(self.stark_drive, ampx= self.drive_ampx) # fixed freq #, ampx=2.0 max
-     
+    
         
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
         # number splitting
@@ -79,11 +79,11 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_pulse": "qubit_gaussian_pi_160",
+        "qubit_pulse": "qubit_gaussian_pi_2000",
         "qubit_gf2_pi_pulse": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
-        "cavity_pulse": "cav_constant_240",
-        "stark_drive": "drive_constant_fock1",
+        "cavity_pulse": "cav_constant_64",
+        "stark_drive": "drive_constant_24",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -104,8 +104,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = 120e6
-    FREQ.stop = 135e6
+    FREQ.start = 86e6
+    FREQ.stop = 100e6
     FREQ.num = 251
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])

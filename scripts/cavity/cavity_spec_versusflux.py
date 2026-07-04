@@ -72,15 +72,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_1000",
-        "qubit_pulse": "qubit_gaussian_pi_160",
+        "cavity_pulse": "cav_gaussian_2000",
+        "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 200_000,
+        "wait_time": 800_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -93,14 +93,14 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 2000
+    N.num = 500
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-70e6
-    FREQ.stop =-60e6 
-    FREQ.num = 401
+    FREQ.start =-250e6
+    FREQ.stop =0e6 
+    FREQ.num = 201
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
@@ -126,7 +126,8 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     
 
-    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=81)
+    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
+    flux_values = np.linspace(start=0e-3, stop=20e-3, num=401)
     for index_f in range(len(flux_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")

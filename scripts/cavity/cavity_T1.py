@@ -70,8 +70,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_64",
-        "qubit_pulse": "qubit_gaussian_pi_160",
+        "cavity_drive": "cav_constant_64_4alpha",
+        "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
     }
 

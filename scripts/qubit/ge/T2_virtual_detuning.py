@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 150_000,
         "ro_ampx": 1,
-        "detuning":5e6,
+        "detuning":2e6,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,

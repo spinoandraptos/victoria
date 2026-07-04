@@ -57,7 +57,7 @@ if __name__ == "__main__":
     modes = {
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
-        "drive": "drive_fock",
+        "drive": "drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     pulses = {
         "stark_drive": "drive_constant_2000",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_16",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=16, stop=4000, step=40, dtype=int)
+    DEL = Sweep(name="length_drive", start=16, stop=100, step=4, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6

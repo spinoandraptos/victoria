@@ -4,6 +4,11 @@ from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
 import numpy as np
 
+from qcore.helpers import Stage
+from config.experiment_config import MODES_CONFIG
+import numpy as np
+import time
+
 class QubitSpec(Experiment):
     """Qubit spectroscopy"""
 
@@ -53,7 +58,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": 'qubit_constant_pulse',#"qubit_constant_pi_400",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "qubit_drive": 'qubit_gaussian_pi_12000',#"qubit_constant_pi_400",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -72,10 +77,14 @@ if __name__ == "__main__":
     # set number of repetitions for this E xperiment run
     N.num = 500000
 
+    # with Stage(configpath=MODES_CONFIG, remote=True) as stage:
+    #     (yoko1, rr) = stage.get("yoko1", "rr")
+    #     yoko1.ramp(5e-3, step=1e-4)
+
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start =-200e6  # 40e6
-    FREQ.stop =200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start =90e6  # 40e6
+    FREQ.stop =100e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
     
 

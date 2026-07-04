@@ -1,5 +1,10 @@
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 from qcore import Experiment, qua, Sweep
+
+from qcore.helpers import Stage
+from config.experiment_config import MODES_CONFIG
+import numpy as np
+import time
 class RRSpec(Experiment):
     """Readout resonator spectroscopy"""
 
@@ -47,7 +52,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10_000,
+        "wait_time": 20_000,
         "ro_ampx": 1,
     }
 
@@ -61,6 +66,9 @@ if __name__ == "__main__":
     N.num = 100_000
  
     # set the qubit frequency sweep for this Experiment run
+    # with Stage(configpath=MODES_CONFIG, remote=True) as stage:
+    #     (yoko1, rr) = stage.get("yoko1", "rr")
+    #     yoko1.ramp(15e-3, step=1e-4)
     FREQ.name = "resonator_frequency"
     FREQ.start = -50e6
     FREQ.stop = -40e6
@@ -75,7 +83,7 @@ if __name__ == "__main__":
     # must include all primary datasets defined by the Experiment subclass
 
     PHASE.inputs = ("I", "Q", "resonator_frequency")
-    PHASE.datafn_args = {"delay": -3.298e-7} #100ns-900ns
+    PHASE.datafn_args = {"delay": -3.72e-7} #100ns-900ns #-3.298e-7
 
     MAG.fitfn = "lorentzian"
     # MAG.axes = sweeps
@@ -83,11 +91,13 @@ if __name__ == "__main__":
     I.plot = True
     Q.plot = True
     PHASE.plot = True
+    MAG.plot = True
 
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
+    
     expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
