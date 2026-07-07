@@ -37,19 +37,19 @@
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6909000000.0
+                                    "frequency": 3750000000.0
                                 }
                             },
-                            "band": 2
+                            "band": 1
                         },
                         "4": {
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6909000000.0
+                                    "frequency": 2400000000.0
                                 }
                             },
-                            "band": 2
+                            "band": 1
                         }
                     },
                     "analog_inputs": {
@@ -89,7 +89,7 @@
             },
             "intermediate_frequency": -93320000,
             "operations": {
-                "cavity_pulse": "cavity.cav_constant_1000"
+                "cavity_drive": "cavity.cav_constant_48_ecd"
             }
         },
         "qubit": {
@@ -138,19 +138,19 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -188000000,
+            "intermediate_frequency": 125150000,
             "operations": {
-                "snail_pulse": "snail_drive.snail_drive_constant_10000"
+                "snail_pulse": "snail_drive.snail_drive_constant_2000"
             }
         }
     },
     "pulses": {
-        "cavity.cav_constant_1000": {
+        "cavity.cav_constant_48_ecd": {
             "operation": "control",
-            "length": 1000,
+            "length": 48,
             "waveforms": {
-                "I": "cavity.cav_constant_1000.waveform.I",
-                "Q": "cavity.cav_constant_1000.waveform.Q"
+                "I": "cavity.cav_constant_48_ecd.waveform.I",
+                "Q": "cavity.cav_constant_48_ecd.waveform.Q"
             }
         },
         "qubit.qubit_gaussian_pi_2000": {
@@ -175,21 +175,21 @@
                 "minus_sin": "rr.rr_readout_pulse.minus_sin"
             }
         },
-        "snail_drive.snail_drive_constant_10000": {
+        "snail_drive.snail_drive_constant_2000": {
             "operation": "control",
-            "length": 10000,
+            "length": 2000,
             "waveforms": {
-                "I": "snail_drive.snail_drive_constant_10000.waveform.I",
-                "Q": "snail_drive.snail_drive_constant_10000.waveform.Q"
+                "I": "snail_drive.snail_drive_constant_2000.waveform.I",
+                "Q": "snail_drive.snail_drive_constant_2000.waveform.Q"
             }
         }
     },
     "waveforms": {
-        "cavity.cav_constant_1000.waveform.I": {
+        "cavity.cav_constant_48_ecd.waveform.I": {
             "type": "constant",
-            "sample": 0.04000000000000001
+            "sample": 0.26
         },
-        "cavity.cav_constant_1000.waveform.Q": {
+        "cavity.cav_constant_48_ecd.waveform.Q": {
             "type": "constant",
             "sample": 0.0
         },
@@ -4083,11 +4083,11 @@
             "type": "constant",
             "sample": 0.0
         },
-        "snail_drive.snail_drive_constant_10000.waveform.I": {
+        "snail_drive.snail_drive_constant_2000.waveform.I": {
             "type": "constant",
             "sample": 0.4
         },
-        "snail_drive.snail_drive_constant_10000.waveform.Q": {
+        "snail_drive.snail_drive_constant_2000.waveform.Q": {
             "type": "constant",
             "sample": 0.0
         }

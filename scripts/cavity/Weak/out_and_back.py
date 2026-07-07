@@ -80,7 +80,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement":"cav_constant_64_4alpha", #"cav_gaussian_pulse_100",
+        "cav_displacement":"cav_constant_84", #"cav_gaussian_pulse_100",
         "qubit_pi_pulse": "qubit_gaussian_pi_24",
         "qubit_selective_pi": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
@@ -89,9 +89,9 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 100_000,
+        "wait_time": 800_000,
         # "plot_single_shot": True,
-        "qubit_in_e": True,
+        "qubit_in_e": False,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES ############ #################
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     N.num = 10000
 
     # set the delay sweep
-    DEL = Sweep(name="time_delay", start=16, stop= 4000, num=21, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop= 2500, num=21, dtype=int)
 
     DISPL_PHASE = Sweep(name="disp_phase", start=0.1, stop=1, num=31, dtype=float)
     sweeps = [N, DISPL_PHASE, DEL]

@@ -33,7 +33,7 @@ class CavitySWAP2D_freq_len(Experiment):
         qua.reset_phase(self.snail)
         qua.reset_frame(self.snail)
         qua.align()
-        self.cavity.play(self.cavity_drive)
+        self.cavity.play(self.cavity_drive, ampx = 0.5)
         qua.align(self.cavity, self.snail)
         qua.update_frequency(self.snail, self.snail_frequency)
         self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= 1.0) # self.snail_ampx
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_64_4alpha",
+        "cavity_drive": "cav_constant_48_ecd",
         "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
         "snail_pulse": "snail_drive_constant_2000",
@@ -88,14 +88,14 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="length_snail", start=4, stop=600, step=16, dtype=int)
+    DEL = Sweep(name="length_snail", start=16, stop=200, step=16, dtype=int)
         # set the qubit frequency sweep for this Experiment run
     FREQ.name = "snail_frequency"
     # FREQ.start = -200e6
     # FREQ.stop = -0.5e6
     # FREQ.num = 101
-    FREQ.start = 124.15e6-2e6
-    FREQ.stop = 124.15e6+2e6
+    FREQ.start = 124.15e6-3e6
+    FREQ.stop = 124.15e6+3e6
     FREQ.num = 101
     
     # SNAIL_AMPX = Sweep(
@@ -114,17 +114,17 @@ if __name__ == "__main__":
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
     PHASE.plot = False
-    # MAG.plot = False
+    MAG.plot = False
     # Q.plot = False
-    I.plot = False
+    # I.plot = False
 
     # MAG.axes = sweeps[1:]
     # PHASE.axes = sweeps[1:]
-    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
+    # PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     # PHASE.plot = False
     datasets = [I, Q, MAG, PHASE]
     Q.plot_args["plot_type"] = "image"
-    MAG.plot_args["plot_type"] = "image"
+    I.plot_args["plot_type"] = "image"
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 

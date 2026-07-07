@@ -104,8 +104,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_40",
-        "cav_disp": "cav_constant_120",
+        "cav_disp_state": "cav_constant_48_ecd",
+        "cav_disp": "cav_constant_48_ecd",
         "qubit_pi2": "qubit_gaussian_pi2_24",
         "qubit_pi": "qubit_gaussian_pi_24",
         "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,
+        "wait_time": 800_000,
         "ro_ampx": 1,
         "fetch_interval": 5,
         "tomo_phase": 0,

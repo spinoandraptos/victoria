@@ -78,7 +78,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1000_000,
+        "wait_time": 800_000,
         "ro_ampx": 1,
         "plot_single_shot": False,
     }
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=10, stop=500_000, step=8000, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop=800_000, step=30000, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

@@ -108,9 +108,9 @@ if __name__ == "__main__":
 
     pulses = {
         "qubit_gf2_drive":"qubitGF2_gaussian_pi_24",
-        "stark_drive": "drive_constant_56",
+        "stark_drive": "drive_constant_24",
         "cav_disp_state": "cav_constant_64",
-        "cav_disp": "cav_constant_64",
+        "cav_disp": "cav_constant_48_ecd",
         "qubit_pi2": "qubit_gaussian_pi2_24",
         "qubit_pi": "qubit_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_200_000,
+        "wait_time": 800_000,
         "ro_ampx": 1,
         "fetch_interval": 5,
         "tomo_phase": 0,
@@ -137,8 +137,8 @@ if __name__ == "__main__":
     N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
-    CAV_AMPX = Sweep(name="ampx_x", start=-1.95, stop=1.95, step=0.1)
-    CAV_AMPX2 = Sweep(name="ampx_y", start=-1.95, stop=1.95, step=0.1)
+    CAV_AMPX = Sweep(name="ampx_x", start=-1.5, stop=1.5, step=0.1)
+    CAV_AMPX2 = Sweep(name="ampx_y", start=-1.5, stop=1.5, step=0.1)
 
     sweeps = [N, CAV_AMPX, CAV_AMPX2]
 

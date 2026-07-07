@@ -20,22 +20,30 @@ if __name__ == "__main__":
         qubit_IF = 96e6+440e3
         
         cav_LO = 6.659e9+50e6
-        cav_IF = -52.6e6
+        cav_IF = -93e6-380e3+60e3 #-52.6e6
         
         qubitEF_IF = -100e6 #-118e6# -76e6
         qubitGF2_IF = -2e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
         
-        SNAIL_drive_LO = 6.659e9+50e6#3.7e9+50e6#6.659e9+50e6#3.7e9+50e6#5.6118e9+50e6
-        SNAIL_drive_IF = -188e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
-        SNAIL_drive_EF_IF = -188e6
         
-        drive_LO = SNAIL_drive_LO #2.4e9#5.6118e9+50e6
-        drive_IF = -129e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        
+        # SNAIL_drive_LO = 3.7e9+50e6#6.659e9+50e6+200e6#-400E6-400e6#3.7e9+50e6#6.659e9+50e6#3.7e9+50e6#5.6118e9+50e6
+        # SNAIL_drive_IF = -188e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        # SNAIL_drive_EF_IF = -188e6
+        
+        # drive_LO = SNAIL_drive_LO#2.4e9#5.6118e9+50e6
+        # drive_IF = 124.15e6#-129e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        drive_LO = 2.4e9#5.6118e9+50e6
+        drive_IF = -130e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        
+        SNAIL_drive_LO = 3.7e9+50e6#5.6118e9+50e6
+        SNAIL_drive_EF_IF = -188e6
+        SNAIL_drive_IF = 124.15e6+1e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
       
 
         yoko1.output = True
-        yoko1.ramp(-13.25e-3, step=1e-4)
+        yoko1.ramp(0e-3, step=1e-4) #-0.0125
         settings = {
                 "controllers": {
                     "con1": {
@@ -209,7 +217,7 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_2000",
                 sigma=520,
                 chop=4,
-                I_ampx=0.4466/520*6
+                I_ampx=0.4466/520*6*0.5/0.518
                 # Q_ampx = 1*-0.159,
             ),
             GaussianPulse(
@@ -274,6 +282,18 @@ if __name__ == "__main__":
                 chop=4,
                 I_ampx=1/5,
             ),
+            GaussianPulse(
+                name="cav_gaussian_2000_4alpha",
+                sigma=500,
+                chop=4,
+                I_ampx=1/5/5*2*4/3.7,
+            ),
+            GaussianPulse(
+                name="cav_gaussian_2000_6alpha",
+                sigma=500,
+                chop=4,
+                I_ampx=1/5/5*2*4/3.7*6/4,
+            ),
             ConstantPulse(
                 name="cav_constant_pulse",
                 length=100000,
@@ -303,7 +323,7 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="cav_constant_40",
                 length=40,
-                I_ampx=1.95,
+                I_ampx=1,
             ),
             ConstantPulse(
                 name="cav_constant_64",
@@ -311,19 +331,29 @@ if __name__ == "__main__":
                 I_ampx=1.5/8/2*5,
             ),
             ConstantPulse(
+                name="cav_constant_48_ecd",
+                length=48,
+                I_ampx=1.3,
+            ),
+            ConstantPulse(
                 name="cav_constant_64_2alpha",
                 length=64,
                 I_ampx=1.5/8/2*2,
             ),
             ConstantPulse(
-                name="cav_constant_64_4alpha",
+                name="cav_constant_64_6alpha",
                 length=64,
                 I_ampx=1.5/8/2*5*4,
             ),
             ConstantPulse(
-                name="cav_constant_100",
-                length=100,
-                I_ampx=1.5,
+                name="cav_constant_84",
+                length=84,
+                I_ampx=2,
+            ),
+            ConstantPulse(
+                name="cav_constant_120",
+                length=120,
+                I_ampx=1.3,
             ),
         ]
         
@@ -386,7 +416,7 @@ if __name__ == "__main__":
                 name="qubitGF2_gaussian_pi_24",
                 sigma=6,
                 chop=4,
-                I_ampx=1*1.1*1.1,#*0.5/0.426,
+                I_ampx=1*1.1*1.1*0.5/0.54,#*0.5/0.426,
                 Q_ampx=0.0,
             ),
             GaussianPulse(
@@ -477,9 +507,19 @@ if __name__ == "__main__":
                 I_ampx=2,#0.247/10000*52,
             ),
             ConstantPulse(
+                name="snail_drive_constant_2000",
+                length=2000,
+                I_ampx=2,#0.247/10000*52,
+            ),
+            ConstantPulse(
                 name="snail_drive_constant_pi",
                 length=200,
                 I_ampx=1.5,#0.247/10000*52,
+            ),
+            ConstantPulse(
+                name="snail_drive_60",
+                length=60,
+                I_ampx=1,#0.247/10000*52,
             ),
         ]
         

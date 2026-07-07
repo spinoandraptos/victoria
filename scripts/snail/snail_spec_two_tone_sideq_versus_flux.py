@@ -9,7 +9,7 @@ from qcore.helpers import Stage
 
 import time
 
-class SnailSpec_versus_flux_single(Experiment):
+class SnailSpec_twotone_sideq_versus_flux(Experiment):
     """Cavity spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -38,9 +38,9 @@ class SnailSpec_versus_flux_single(Experiment):
         qua.update_frequency(self.snail, self.snail_frequency)
         
         self.snail.play(self.snail_pulse)
-        qua.align(self.cavity, self.snail)
-        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
-        qua.align(self.cavity, self.qubit)
+        # qua.update_frequency(self.cavity, int(self.cavity_IF_SET)) #, keep_phase=True
+        # self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
+        qua.align(self.snail, self.qubit)
         # qua.wait(32, self.qubit)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
@@ -76,20 +76,21 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse":"cav_constant_64",#"cav_constant_1000",
+        "cavity_pulse":"cav_constant_1000",#"cav_constant_1000",
         "qubit_pulse": "qubit_gaussian_pi_2000",
-        "snail_pulse": "snail_drive_constant_pi",#"snail_drive_constant_10000",
+        "snail_pulse": "snail_drive_constant_10000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 100_000,
+        "wait_time": 80_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
         "plot_single_shot": False,
+        "cavity_IF_SET":0e6,
         
     }
 
@@ -98,23 +99,23 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
+    N.num = 2500
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "snail_frequency"
-    FREQ.start =-300e6
-    FREQ.stop =-170e6 
-    FREQ.num = 101
+    FREQ.start =-400e6
+    FREQ.stop =400e6 
+    FREQ.num = 301
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
     #     points=[0.0, 1.0],
     # )
-    PHASE.plot = True
-    MAG.plot = True
-    Q.plot = True
-    I.plot = True
+    PHASE.plot = False
+    MAG.plot = False
+    Q.plot = False
+    I.plot = False
     # SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
@@ -123,10 +124,10 @@ if __name__ == "__main__":
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
 
-    I.fitfn = "gaussian"
-    Q.fitfn = "gaussian"
-    MAG.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
+    # I.fitfn = "gaussian"
+    # Q.fitfn = "gaussian"
+    # MAG.fitfn = "gaussian"
+    # PHASE.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     
@@ -135,7 +136,22 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     
 
-    expt = SnailSpec_versus_flux_single(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    # expt = SnailSpec_twotone_sideq(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     
-    # expt.run(simulate=True)
-    expt.run()
+    # # expt.run(simulate=True)
+    # expt.run()
+    
+    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=61)
+    
+   
+    for index_f in range(len(flux_values)): 
+        with Stage(configpath=MODES_CONFIG, remote=True) as stage:
+            (yoko1,cavity) = stage.get("yoko1", "cavity")
+            yoko_target = flux_values[index_f]
+            yoko1.ramp(yoko_target, step=0.1e-3)
+            
+            expt = SnailSpec_twotone_sideq_versus_flux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+            expt.run()
+            # expt.run(simulate=True)
+            time.sleep(1)  # Sleeps for 1 second; adjust as needed
+    # yoko1.ramp(0e-3, step=1e-4)

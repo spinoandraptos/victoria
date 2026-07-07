@@ -90,13 +90,13 @@
       total_length: 1280
     qubit_gaussian_pi_2000: !<GaussianPulse>
       name: qubit_gaussian_pi_2000
-      I_ampx: 0.005153076923076923
+      I_ampx: 0.004974012474012474
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 520
-      total_I_ampx: 0.0010306153846153848
+      total_I_ampx: 0.000994802494802495
       total_length: 2080
     qubit_gaussian_pi_8000: !<GaussianPulse>
       name: qubit_gaussian_pi_8000
@@ -146,7 +146,7 @@
   rf_switch_on: false
 - !<Cavity>
   name: cavity
-  int_freq: -5.260000E+07
+  int_freq: -9.332000E+07
   lo_name: opx1000
   mixer_offsets:
     I: -0.003281430326023839
@@ -184,6 +184,26 @@
       pad: 0
       sigma: 500
       total_I_ampx: 0.04000000000000001
+      total_length: 2000
+    cav_gaussian_2000_4alpha: !<GaussianPulse>
+      name: cav_gaussian_2000_4alpha
+      I_ampx: 0.08648648648648648
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 500
+      total_I_ampx: 0.017297297297297298
+      total_length: 2000
+    cav_gaussian_2000_6alpha: !<GaussianPulse>
+      name: cav_gaussian_2000_6alpha
+      I_ampx: 0.1297297297297297
+      Q_ampx: 0.0
+      chop: 4
+      digital_marker: null
+      pad: 0
+      sigma: 500
+      total_I_ampx: 0.025945945945945945
       total_length: 2000
     cav_constant_pulse: !<ConstantPulse>
       name: cav_constant_pulse
@@ -232,12 +252,12 @@
       total_length: 80
     cav_constant_40: !<ConstantPulse>
       name: cav_constant_40
-      I_ampx: 1.95
+      I_ampx: 1
       Q_ampx: 0.0
       digital_marker: null
       length: 40
       pad: 0
-      total_I_amp: 0.39
+      total_I_amp: 0.2
       total_length: 40
     cav_constant_64: !<ConstantPulse>
       name: cav_constant_64
@@ -248,6 +268,15 @@
       pad: 0
       total_I_amp: 0.09375
       total_length: 64
+    cav_constant_48_ecd: !<ConstantPulse>
+      name: cav_constant_48_ecd
+      I_ampx: 1.3
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 48
+      pad: 0
+      total_I_amp: 0.26
+      total_length: 48
     cav_constant_64_2alpha: !<ConstantPulse>
       name: cav_constant_64_2alpha
       I_ampx: 0.1875
@@ -257,8 +286,8 @@
       pad: 0
       total_I_amp: 0.037500000000000006
       total_length: 64
-    cav_constant_64_4alpha: !<ConstantPulse>
-      name: cav_constant_64_4alpha
+    cav_constant_64_6alpha: !<ConstantPulse>
+      name: cav_constant_64_6alpha
       I_ampx: 1.875
       Q_ampx: 0.0
       digital_marker: null
@@ -266,15 +295,24 @@
       pad: 0
       total_I_amp: 0.375
       total_length: 64
-    cav_constant_100: !<ConstantPulse>
-      name: cav_constant_100
-      I_ampx: 1.5
+    cav_constant_84: !<ConstantPulse>
+      name: cav_constant_84
+      I_ampx: 2
       Q_ampx: 0.0
       digital_marker: null
-      length: 100
+      length: 84
       pad: 0
-      total_I_amp: 0.30000000000000004
-      total_length: 100
+      total_I_amp: 0.4
+      total_length: 84
+    cav_constant_120: !<ConstantPulse>
+      name: cav_constant_120
+      I_ampx: 1.3
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 120
+      pad: 0
+      total_I_amp: 0.26
+      total_length: 120
   ports:
     I:
     - 1
@@ -390,7 +428,7 @@
   rf_switch_on: false
 - !<Qubit>
   name: drive
-  int_freq: -1.290000E+08
+  int_freq: -1.300000E+08
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -480,7 +518,7 @@
   rf_switch_on: false
 - !<Qubit>
   name: snail_drive
-  int_freq: -1.880000E+08
+  int_freq: 1.251500E+08
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -498,6 +536,15 @@
       pad: 0
       total_I_amp: 0.4
       total_length: 10000
+    snail_drive_constant_2000: !<ConstantPulse>
+      name: snail_drive_constant_2000
+      I_ampx: 2
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 2000
+      pad: 0
+      total_I_amp: 0.4
+      total_length: 2000
     snail_drive_constant_pi: !<ConstantPulse>
       name: snail_drive_constant_pi
       I_ampx: 1.5
@@ -507,6 +554,15 @@
       pad: 0
       total_I_amp: 0.30000000000000004
       total_length: 200
+    snail_drive_60: !<ConstantPulse>
+      name: snail_drive_60
+      I_ampx: 1
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 60
+      pad: 0
+      total_I_amp: 0.2
+      total_length: 60
   ports:
     I:
     - 1
@@ -571,13 +627,13 @@
       total_length: 16
     qubitGF2_gaussian_pi_24: !<GaussianPulse>
       name: qubitGF2_gaussian_pi_24
-      I_ampx: 1.2100000000000002
+      I_ampx: 1.1203703703703705
       Q_ampx: 0.0
       chop: 4
       digital_marker: null
       pad: 0
       sigma: 6
-      total_I_ampx: 0.24200000000000005
+      total_I_ampx: 0.2240740740740741
       total_length: 24
     qubitGF2_gaussian_pi_192: !<GaussianPulse>
       name: qubitGF2_gaussian_pi_192

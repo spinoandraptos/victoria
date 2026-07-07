@@ -34,7 +34,7 @@ class ECD_decay_sweep(Experiment):
         qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
         ###################### state prep  #####################
-        self.cavity.play(self.cav_disp_state, ampx=1, phase=0.0)  # 0.1 , ampx=1, phase=0.0
+        self.cavity.play(self.cav_disp_state, ampx=0.5, phase=0.0)  # 0.1 , ampx=1, phase=0.0
 
         # ECD(
         # self.cavity,
@@ -104,8 +104,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_40",
-        "cav_disp": "cav_constant_120",
+        "cav_disp_state": "cav_constant_48_ecd",
+        "cav_disp": "cav_constant_48_ecd",
         "qubit_pi2": "qubit_gaussian_pi2_24",
         "qubit_pi": "qubit_gaussian_pi_24",
         "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
@@ -160,8 +160,8 @@ if __name__ == "__main__":
     import numpy as np
     import time
 
-    decay_sweep =[0.5e3, 1e3, 10e3, 20e3, 40e3]
-    #decay_sweep = [ 200e3, 300e3, 400e3, 500e3, 600e3,  1e3, 10e3, 50e3, 100e3]
+    # decay_sweep =[0.5e3, 1e3, 10e3, 20e3, 40e3]
+    decay_sweep = [ 0.5e3, 1e3, 2.5e3, 5e3, 8e3, 20e3, 50e3, 100e3, 200e3, 300e3, 400e3, 500e3]
     # decay_sweep = [150e3, 200e3,250e3]
 
     for t_decay in decay_sweep:

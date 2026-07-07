@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_64_4alpha",
+        "cavity_drive": "cav_constant_48_ecd",
         "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
         "snail_pulse": "snail_drive_constant_2000",
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     # FREQ.start = -200e6
     # FREQ.stop = -0.5e6
     # FREQ.num = 101
-    FREQ.start = 120e6
-    FREQ.stop = 200e6
+    FREQ.start = -400e6
+    FREQ.stop = 400e6
     FREQ.num = 201
     
     # SNAIL_AMPX = Sweep(
