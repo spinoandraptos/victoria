@@ -39,7 +39,7 @@ class CavitySWAP1D_freq(Experiment):
         self.snail.play(self.snail_pulse, ampx= 1.0) # self.snail_ampx duration=int(100)
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
-        self.qubit.play(self.qubit_pulse, ampx = 0)
+        self.qubit.play(self.qubit_pulse, ampx = 1)
         qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -129,4 +129,4 @@ if __name__ == "__main__":
 
     expt = CavitySWAP1D_freq(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run()
-    expt.run(simulate=False)
+    expt.run(simulate=True)

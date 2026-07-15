@@ -60,14 +60,14 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_gaussian_pi2_24",
+        "qubit_drive": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":100_000,
+        "wait_time":120_000,
         # "initialize_wait_time": 5000,
         "ro_ampx": 1,
         "plot_single_shot": False,

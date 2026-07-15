@@ -20,30 +20,28 @@ if __name__ == "__main__":
         qubit_IF = 96e6+440e3
         
         cav_LO = 6.659e9+50e6
-        cav_IF = -93e6-380e3+60e3 #-52.6e6
+        cav_IF = -64.4e6#-93e6-380e3+60e3 #-52.6e6
         
         qubitEF_IF = -100e6 #-118e6# -76e6
         qubitGF2_IF = -2e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
         
-        
-        
-        # SNAIL_drive_LO = 3.7e9+50e6#6.659e9+50e6+200e6#-400E6-400e6#3.7e9+50e6#6.659e9+50e6#3.7e9+50e6#5.6118e9+50e6
-        # SNAIL_drive_IF = -188e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
-        # SNAIL_drive_EF_IF = -188e6
-        
-        # drive_LO = SNAIL_drive_LO#2.4e9#5.6118e9+50e6
-        # drive_IF = 124.15e6#-129e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
-        drive_LO = 2.4e9#5.6118e9+50e6
-        drive_IF = -130e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        drive_LO = 2.4e9#5.6118e9+50e6 #fock
+        drive_IF = -128e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
         SNAIL_drive_LO = 3.7e9+50e6#5.6118e9+50e6
+        SNAIL_drive_IF = 120e6#124.15e6+1e3#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        
+        # SNAIL_drive_LO = 6.659e9+50e6+350e6#-400E6-400e6#3.7e9+50e6#6.659e9+50e6#3.7e9+50e6#5.6118e9+50e6
+        # SNAIL_drive_IF = -188e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         SNAIL_drive_EF_IF = -188e6
-        SNAIL_drive_IF = 124.15e6+1e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        
+        # drive_LO = SNAIL_drive_LO#2.4e9#5.6118e9+50e6
+        # drive_IF = -129e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
       
 
         yoko1.output = True
-        yoko1.ramp(0e-3, step=1e-4) #-0.0125
+        # yoko1.ramp(0e-3, step=1e-4) #-0.0125
         settings = {
                 "controllers": {
                     "con1": {
@@ -484,9 +482,9 @@ if __name__ == "__main__":
                 I_ampx=.9,#0.247/10000*52,
             ),
         ConstantPulse(
-                name="drive_constant_SS",
-                length=6*4,
-                I_ampx=1,#0.247/10000*52,
+                name="drive_constant_fock1",
+                length=24,
+                I_ampx=2,#0.247/10000*52,
             ),
         ]
         
@@ -509,17 +507,17 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="snail_drive_constant_2000",
                 length=2000,
-                I_ampx=2,#0.247/10000*52,
+                I_ampx=1,#0.247/10000*52,
+            ),
+            ConstantPulse(
+                name="snail_drive_constant_60",
+                length=60,
+                I_ampx=1,#0.247/10000*52,
             ),
             ConstantPulse(
                 name="snail_drive_constant_pi",
                 length=200,
                 I_ampx=1.5,#0.247/10000*52,
-            ),
-            ConstantPulse(
-                name="snail_drive_60",
-                length=60,
-                I_ampx=1,#0.247/10000*52,
             ),
         ]
         

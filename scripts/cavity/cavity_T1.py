@@ -70,7 +70,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_64_4alpha",
+        "cavity_drive": "cav_constant_48_ecd",
         "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=16, stop=800_000, step=30000, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop=100_000, step=1000, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

@@ -87,7 +87,7 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -93320000,
+            "intermediate_frequency": -64400000,
             "operations": {
                 "cavity_drive": "cavity.cav_constant_48_ecd"
             }
@@ -138,7 +138,7 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": 125150000,
+            "intermediate_frequency": 136200000,
             "operations": {
                 "snail_pulse": "snail_drive.snail_drive_constant_2000"
             }
@@ -4085,7 +4085,7 @@
         },
         "snail_drive.snail_drive_constant_2000.waveform.I": {
             "type": "constant",
-            "sample": 0.4
+            "sample": 0.2
         },
         "snail_drive.snail_drive_constant_2000.waveform.Q": {
             "type": "constant",

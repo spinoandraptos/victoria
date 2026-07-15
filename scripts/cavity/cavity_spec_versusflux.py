@@ -93,14 +93,14 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 500
+    N.num = 2500
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
     FREQ.start =-250e6
     FREQ.stop =0e6 
-    FREQ.num = 201
+    FREQ.num = 401
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
@@ -126,8 +126,8 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     
 
-    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
-    flux_values = np.linspace(start=0e-3, stop=20e-3, num=401)
+    # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
+    flux_values = np.linspace(start=-20e-3, stop=0e-3, num=61)
     for index_f in range(len(flux_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")

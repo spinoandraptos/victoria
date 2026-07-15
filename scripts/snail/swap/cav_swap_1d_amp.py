@@ -74,13 +74,13 @@ if __name__ == "__main__":
         "cavity_drive": "cav_constant_48_ecd",
         "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_drive_60",
+        "snail_pulse": "drive_constant_fock1",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":1_000_000, #30000,
+        "wait_time":100_000, #30000,
         "ro_ampx": 1,
     }
 

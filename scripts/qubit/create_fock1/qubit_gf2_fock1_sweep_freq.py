@@ -39,9 +39,13 @@ class qubit_gf2_fock1_sweep_freq(Experiment):
         # self.drive.play(self.stark_drive, ampx=self.d_ampx) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         self.drive.play(self.stark_drive)
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
-        # self.qubit.play(self.qubit_pi)
-        # qua.wait(self.time_delay, self.resonator)
+        qua.align(self.qubit_gf2, self.drive)
+        self.qubit_gf2.play(self.qubit_gf2_drive)
+        
+     
+        qua.align(self.qubit_gf2, self.resonator)
         qua.align()
+
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -75,7 +79,7 @@ if __name__ == "__main__":
 
     parameters = {
         
-        "wait_time": 1_000_000,
+        "wait_time": 200_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }

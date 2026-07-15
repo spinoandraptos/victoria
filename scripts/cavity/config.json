@@ -33,23 +33,23 @@
                             },
                             "band": 3
                         },
-                        "5": {
-                            "full_scale_power_dbm": 4,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 6909000000.0
-                                }
-                            },
-                            "band": 2
-                        },
                         "4": {
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6909000000.0
+                                    "frequency": 2400000000.0
                                 }
                             },
-                            "band": 2
+                            "band": 1
+                        },
+                        "5": {
+                            "full_scale_power_dbm": 4,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 3750000000.0
+                                }
+                            },
+                            "band": 1
                         }
                     },
                     "analog_inputs": {
@@ -87,9 +87,9 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -93320000,
+            "intermediate_frequency": -64400000,
             "operations": {
-                "cavity_pulse": "cavity.cav_constant_1000"
+                "cavity_drive": "cavity.cav_constant_48_ecd"
             }
         },
         "qubit": {
@@ -128,15 +128,43 @@
             "operations": {
                 "readout_pulse": "rr.rr_readout_pulse"
             }
+        },
+        "drive": {
+            "MWInput": {
+                "port": [
+                    "con1",
+                    1,
+                    4
+                ],
+                "upconverter": 1
+            },
+            "intermediate_frequency": -128000000,
+            "operations": {
+                "stark_drive": "drive.drive_constant_fock1"
+            }
+        },
+        "qubit_GF2": {
+            "MWInput": {
+                "port": [
+                    "con1",
+                    1,
+                    3
+                ],
+                "upconverter": 1
+            },
+            "intermediate_frequency": -2000000,
+            "operations": {
+                "qubit_gf2_drive": "qubit_GF2.qubitGF2_gaussian_pi_24"
+            }
         }
     },
     "pulses": {
-        "cavity.cav_constant_1000": {
+        "cavity.cav_constant_48_ecd": {
             "operation": "control",
-            "length": 1000,
+            "length": 48,
             "waveforms": {
-                "I": "cavity.cav_constant_1000.waveform.I",
-                "Q": "cavity.cav_constant_1000.waveform.Q"
+                "I": "cavity.cav_constant_48_ecd.waveform.I",
+                "Q": "cavity.cav_constant_48_ecd.waveform.Q"
             }
         },
         "qubit.qubit_gaussian_pi_2000": {
@@ -160,14 +188,30 @@
                 "sin": "rr.rr_readout_pulse.sin",
                 "minus_sin": "rr.rr_readout_pulse.minus_sin"
             }
+        },
+        "drive.drive_constant_fock1": {
+            "operation": "control",
+            "length": 24,
+            "waveforms": {
+                "I": "drive.drive_constant_fock1.waveform.I",
+                "Q": "drive.drive_constant_fock1.waveform.Q"
+            }
+        },
+        "qubit_GF2.qubitGF2_gaussian_pi_24": {
+            "operation": "control",
+            "length": 24,
+            "waveforms": {
+                "I": "qubit_GF2.qubitGF2_gaussian_pi_24.waveform.I",
+                "Q": "qubit_GF2.qubitGF2_gaussian_pi_24.waveform.Q"
+            }
         }
     },
     "waveforms": {
-        "cavity.cav_constant_1000.waveform.I": {
+        "cavity.cav_constant_48_ecd.waveform.I": {
             "type": "constant",
-            "sample": 0.04000000000000001
+            "sample": 0.26
         },
-        "cavity.cav_constant_1000.waveform.Q": {
+        "cavity.cav_constant_48_ecd.waveform.Q": {
             "type": "constant",
             "sample": 0.0
         },
@@ -4058,6 +4102,47 @@
             ]
         },
         "rr.rr_readout_pulse.waveform.Q": {
+            "type": "constant",
+            "sample": 0.0
+        },
+        "drive.drive_constant_fock1.waveform.I": {
+            "type": "constant",
+            "sample": 0.4
+        },
+        "drive.drive_constant_fock1.waveform.Q": {
+            "type": "constant",
+            "sample": 0.0
+        },
+        "qubit_GF2.qubitGF2_gaussian_pi_24.waveform.I": {
+            "type": "arbitrary",
+            "samples": [
+                0.030325128280796552,
+                0.04229546621507466,
+                0.05723338406009124,
+                0.07513970286929174,
+                0.09570926046162745,
+                0.11827770434592445,
+                0.14181306778519426,
+                0.16496585280160386,
+                0.18618140358736002,
+                0.20386514607606043,
+                0.2165778831123702,
+                0.22322851253569057,
+                0.22322851253569057,
+                0.2165778831123702,
+                0.20386514607606043,
+                0.18618140358736002,
+                0.1649658528016039,
+                0.14181306778519426,
+                0.1182777043459245,
+                0.09570926046162748,
+                0.07513970286929174,
+                0.05723338406009127,
+                0.04229546621507469,
+                0.030325128280796552
+            ]
+        },
+        "qubit_GF2.qubitGF2_gaussian_pi_24.waveform.Q": {
             "type": "constant",
             "sample": 0.0
         }

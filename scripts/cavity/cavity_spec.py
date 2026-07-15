@@ -101,9 +101,9 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-200e6
+    FREQ.start =-100e6
     FREQ.stop =0e6 
-    FREQ.num = 101
+    FREQ.num = 201
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",

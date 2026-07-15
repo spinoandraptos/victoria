@@ -37,7 +37,7 @@
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6709000000.0
+                                    "frequency": 7059000000.0
                                 }
                             },
                             "band": 2
@@ -46,7 +46,7 @@
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6709000000.0
+                                    "frequency": 7059000000.0
                                 }
                             },
                             "band": 2
@@ -101,7 +101,7 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -93320000,
+            "intermediate_frequency": -64400000,
             "operations": {
                 "cav_displacement": "cavity.cav_constant_48_ecd"
             }

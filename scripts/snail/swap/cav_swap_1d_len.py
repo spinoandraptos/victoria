@@ -80,7 +80,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":1_000_000, #30000,
+        "wait_time":100_000, #30000,
         "ro_ampx": 1,
     }
 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=16, stop=100, step=4, dtype=int)
+    DEL = Sweep(name="length_snail", start=16, stop=200, step=4, dtype=int)
     # SNAIL_AMPX = Sweep(
     #     name="snail_ampx",
     #     points=[
