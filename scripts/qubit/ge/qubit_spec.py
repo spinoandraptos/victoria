@@ -58,14 +58,14 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": 'qubit_constant_10000',#"qubit_constant_pi_400",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "qubit_drive": 'qubit_gaussian_pi_2000',#"qubit_constant_pi_400",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 10000,
+        "wait_time": 120000,
         "ro_ampx": 1,
         "qubit_drive_ampx": 1,
     }
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start =-200e6  # 40e6
+    FREQ.start =-400e6  # 40e6
     FREQ.stop =0e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
     

@@ -30,17 +30,19 @@ class qubit_gf2_fock1_sweep_len_ampx(Experiment):
         # qua.update_frequency(self.qubit, self.qubit_frequency)
         qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive)
-        qua.align()
+        self.qubit_gf2.play(self.qubit_gf2_drive, ampx=1.0)
+        qua.wait(46,self.drive)
         # qua.update_frequency(self.drive) 
         # self.qubit_ef.play(self.qubit_ef_drive) 
         # qua.align(self.qubit_ef, self.drive)
-        
+            
         self.drive.play(self.stark_drive, ampx=self.d_ampx, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
         # self.qubit.play(self.qubit_pi)
 
-        qua.align()
+        qua.wait(56,self.qubit_gf2)
+        self.qubit_gf2.play(self.qubit_gf2_drive)
+        qua.wait(124,self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -122,4 +124,4 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     expt = qubit_gf2_fock1_sweep_len_ampx(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=False) #simulate=False
+    expt.run(simulate=True) #simulate=False

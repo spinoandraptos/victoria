@@ -30,18 +30,13 @@ class Snail_Power_Rabi(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.cavity)
-        #qua.reset_frame(self.cavity)
-       
-        
-        # There are two cavity modes here, please check which mode is used.
-        # qua.update_frequency(self.snail, self.snail_frequency)
         
         self.snail.play(self.snail_pulse, ampx = self.snail_ampx)
+        # self.snail.play(self.snail_pulse, ampx = self.snail_ampx)
+        
         qua.align(self.cavity, self.snail)
         self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
         qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
         qua.align()
@@ -76,7 +71,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse":"cav_constant_1000",
+        "cavity_pulse":"cav_constant_48_ecd",
         "qubit_pulse": "qubit_gaussian_pi_2000",
         "snail_pulse": "snail_drive_constant_pi",
         "readout_pulse": "rr_readout_pulse",
@@ -106,7 +101,7 @@ if __name__ == "__main__":
     # FREQ.start =-250e6
     # FREQ.stop =-150e6 
     # FREQ.num = 101
-    AMPX = Sweep(name="snail_ampx", start=-1.5, stop=1.5, step=0.1, dtype=float)
+    AMPX = Sweep(name="snail_ampx", start=-2.5, stop=2.5, step=0.1, dtype=float)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
     #     points=[0.0, 1.0],

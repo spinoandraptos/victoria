@@ -10,7 +10,6 @@ from qcore.helpers import Stage
 import time
 
 class Snail_T1(Experiment):
-    """Cavity spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -30,19 +29,14 @@ class Snail_T1(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.cavity)
-        #qua.reset_frame(self.cavity)
-       
         
-        # There are two cavity modes here, please check which mode is used.
-        # qua.update_frequency(self.snail, self.snail_frequency)
-        
-        self.snail.play(self.snail_pulse)
+        self.snail.play(self.snail_pulse, ampx = self.snail_ampx)
         qua.wait(self.delay, self.cavity)
-        qua.align()
+        qua.align(self.cavity, self.snail)
+        
         self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
         qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
+        
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
         qua.align()
@@ -77,7 +71,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse":"cav_constant_64",
+        "cavity_pulse":"cav_constant_48_ecd",
         "qubit_pulse": "qubit_gaussian_pi_2000",
         "snail_pulse": "snail_drive_constant_pi",
         "readout_pulse": "rr_readout_pulse",
@@ -88,6 +82,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 100_000,
         "ro_ampx": 1,
+        "snail_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
         "plot_single_shot": False,
@@ -107,7 +102,7 @@ if __name__ == "__main__":
     # FREQ.start =-250e6
     # FREQ.stop =-150e6 
     # FREQ.num = 101
-    DELAY = Sweep(name="delay", start=16, stop=5000, step=100, dtype=int)
+    DELAY = Sweep(name="delay", start=16, stop=30000, step=100, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
     #     points=[0.0, 1.0],

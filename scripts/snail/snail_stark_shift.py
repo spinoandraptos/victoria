@@ -12,7 +12,7 @@ import numpy as np
 import time
 
 
-class CavitySpec(Experiment):
+class snail_stark_shift(Experiment):
     """Cavity spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -25,7 +25,7 @@ class CavitySpec(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["cavity_frequency"]
+    primary_sweeps = ["snail_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -33,16 +33,12 @@ class CavitySpec(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.cavity)
-        #qua.reset_frame(self.cavity)
        
-        
         # There are two cavity modes here, please check which mode is used.
-        qua.update_frequency(self.cavity, self.cavity_frequency)
-        self.drive.play(self.stark_drive, ampx=self.q_ampx) # fixed freq
-        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
-        qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
+        qua.update_frequency(self.snail, self.snail_frequency)
+        self.drive.play(self.stark_drive, ampx=self.drive_ampx) # fixed freq
+        self.snail.play(self.snail_pulse, ampx = self.snail_ampx)
+        qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
         qua.align()
@@ -67,7 +63,7 @@ if __name__ == "__main__":
 
     modes = {
         "drive": "drive",
-        "cavity": "cavity",
+        "snail": "snail_drive",
         "qubit": "qubit",
         "resonator": "rr",
     }
@@ -77,18 +73,18 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_1000",
+        "snail_pulse": "snail_drive_constant_500",
         "qubit_pulse": "qubit_gaussian_pi_2000",
-        "stark_drive": "drive_constant_1000",
+        "stark_drive": "drive_constant_500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 100_000,
         "ro_ampx": 1,
-        "cav_ampx": 1,
+        "snail_ampx": 1,
         "fetch_interval": 1,
         "plot_single_shot": False,
         
@@ -99,27 +95,20 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
+    N.num = 300
 
     # set the qubit frequency sweep for this Experiment run
     Q_AMPX = Sweep(
-        name="q_ampx",
+        name="drive_ampx",
         # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-        #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-        points=[0.0, 0.05, 0.1, 0.15,0.2,0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]#0.25,0.5,0.75]
+        # points=[1.0,2.0 ]
+        points=[0.0, 0.1, 0.2, 0.4, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.75, 2.0]
     ) 
     
-
-    
-    FREQ.name = "cavity_frequency"
-    FREQ.start =0e6
-    FREQ.stop =20e6 
-    FREQ.num = 101
-    #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
-    # QB_AMPX = Sweep(
-    #     name="qb_ampx",
-    #     points=[0.0, 1.0],
-    # )
+    FREQ.name = "snail_frequency"
+    FREQ.start =-40e7
+    FREQ.stop =20e7
+    FREQ.num = 501
     
     sweeps = [N, FREQ, Q_AMPX]
     
@@ -129,42 +118,13 @@ if __name__ == "__main__":
     I.plot = True
     SINGLE_SHOT.plot = False
     I.plot_args["plot_type"] = "image"
-    
-    
-    #SINGLE_SHOT.plot_args["plot_type"] = "image"
-
-    ######################## DATASET (DEPENDENT) VARIABLES #############################
-    # must include all primary datasets defined by the Experiment subclass
-    # I.fitfn = "gaussian"
-    # Q.fitfn = "gaussian"
-    # MAG.fitfn = "gaussian"
-    # PHASE.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     
    
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    
-    # cavity = ["charlie"]
 
-    # freq_sweep_ranges = np.arange(start=-100, stop=-10, step = 20)
-    # for cav in cavity:
-    #     if cav == "alice":
-    #         modes["cavity"]="alice"
-    #         pulses["cavity_pulse"]="a_d_large"
-    #     elif cav == "bob":
-    #         modes["cavity"]="bob"
-    #         pulses["cavity_pulse"]="bob_constant"
-    #     elif cav == "charlie":
-    #         modes["cavity"]="charlie"
-    #         pulses["cavity_pulse"]="charlie_constant"
-    #     for i in range(len(freq_sweep_ranges)-1):
-    #         FREQ.name = "cavity_frequency"
-    #         FREQ.start =freq_sweep_ranges[i]*1e6
-    #         FREQ.stop =freq_sweep_ranges[i+1]*1e6
-    #         FREQ.num = 151
-    #         sweeps = [N, FREQ]
-    expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
-            # time.sleep(60)
+    expt = snail_stark_shift(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run(simulate = False)
+

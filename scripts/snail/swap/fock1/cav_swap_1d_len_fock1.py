@@ -51,9 +51,9 @@ class CavitySWAP1D_len_fock1(Experiment):
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
-        qua.align(self.qubit, self.qubit_gf2)
-        self.qubit_gf2.play(self.qubit_gf2_drive)
-        qua.align(self.qubit_gf2, self.resonator)
+        # qua.align(self.qubit, self.qubit_gf2)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        qua.align(self.qubit, self.resonator)
         
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -73,7 +73,7 @@ if __name__ == "__main__":
         "qubit": "qubit",
         "resonator": "rr",
         "snail": "snail_drive",
-        "drive": "drive",
+        "drive": "fock_drive",
         "qubit_gf2": "qubit_GF2",
     }
 
@@ -82,11 +82,11 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_48_ecd",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+       
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
         "snail_pulse": "snail_drive_constant_2000",
-        "stark_drive": "drive_constant_fock1",
+        "stark_drive": "fock_drive_constant_48",
         "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
     }
 

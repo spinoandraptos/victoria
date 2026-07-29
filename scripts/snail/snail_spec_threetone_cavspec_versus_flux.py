@@ -30,19 +30,14 @@ class snail_spec_threetone_cavspec_versus_flux(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.cavity)
-        #qua.reset_frame(self.cavity)
-    
         
-        # There are two cavity modes here, please check which mode is used.
-        # qua.update_frequency(self.cavity, self.cavity_frequency)
+
         qua.update_frequency(self.snail, self.snail_frequency)
         self.snail.play(self.snail_pulse)
         qua.align(self.cavity, self.snail)
         qua.update_frequency(self.cavity, self.cavity_frequency)
         self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
         qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
         qua.align()

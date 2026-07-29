@@ -34,18 +34,20 @@ class CavitySWAP1D_len(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase(self.cavity)
-        qua.reset_frame(self.cavity)
+        # qua.reset_frame(self.cavity)
         # qua.reset_phase(self.qubit)
         qua.reset_phase(self.snail)
-        qua.reset_frame(self.snail)
-        qua.align()
-        self.cavity.play(self.cavity_drive, ampx=1)
-        qua.align(self.cavity, self.snail)
-        self.snail.play(self.snail_pulse, duration=self.length_snail) # #, ampx= self.snail_ampx
-        # qua.wait(self.time_delay, self.cavity)
-        qua.align(self.snail, self.qubit)
-        self.qubit.play(self.qubit_pulse)
+        # qua.reset_frame(self.snail)
+        # qua.align()
+        self.cavity.play(self.cavity_drive)
+        qua.wait(72, self.snail)    
+        # self.snail.play(self.snail_pulse, duration=self.length_snail) # self.snail_ampx duration=int(100)
+        self.snail.play(self.snail_pulse, duration=self.length_snail)
+        # qua.wait(45, self.qubit)
+        qua.align(self.qubit, self.snail)
+        self.qubit.play(self.qubit_pulse, ampx = 1)
         qua.align(self.qubit, self.resonator)
+        qua.wait(21, self.resonator)  
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -71,10 +73,10 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_48_ecd",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+        "cavity_drive": "cav_constant_52",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_drive_constant_2000",
+        "snail_pulse": "snail_drive_constant_1000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -94,7 +96,7 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=16, stop=200, step=4, dtype=int)
+    DEL = Sweep(name="length_snail", start=4, stop=300, step=4, dtype=int)
     # SNAIL_AMPX = Sweep(
     #     name="snail_ampx",
     #     points=[
@@ -119,4 +121,4 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     expt = CavitySWAP1D_len(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
+    expt.run(simulate=False)

@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_gaussian_2000",
+        "cavity_pulse": "cav_gaussian_1000",
         "qubit_pulse": "qubit_gaussian_pi_2000",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -93,12 +93,12 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 2500
+    N.num = 200
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-250e6
+    FREQ.start =-150e6
     FREQ.stop =0e6 
     FREQ.num = 401
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
@@ -106,10 +106,10 @@ if __name__ == "__main__":
     #     name="qb_ampx",
     #     points=[0.0, 1.0],
     # )
-    PHASE.plot = False
-    MAG.plot = False
-    Q.plot = False
-    I.plot = False
+    PHASE.plot = True
+    MAG.plot = True
+    Q.plot = True
+    I.plot = True
     # SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     
 
     # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
-    flux_values = np.linspace(start=-20e-3, stop=0e-3, num=61)
+    flux_values = np.linspace(start=-9.5e-3, stop=0e-3, num=9)
     for index_f in range(len(flux_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")

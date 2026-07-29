@@ -31,7 +31,7 @@ class qubit_gf2_fock1_sweep_freq(Experiment):
         qua.align()
         
         self.qubit_gf2.play(self.qubit_gf2_drive, ampx=1.0)
-        qua.align()
+        qua.wait(46,self.drive)
         qua.update_frequency(self.drive, self.drive_frequency)
         # self.qubit_ef.play(self.qubit_ef_drive) 
         # qua.align(self.qubit_ef, self.drive)
@@ -39,12 +39,12 @@ class qubit_gf2_fock1_sweep_freq(Experiment):
         # self.drive.play(self.stark_drive, ampx=self.d_ampx) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         self.drive.play(self.stark_drive)
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
-        qua.align(self.qubit_gf2, self.drive)
+        # qua.align(self.qubit_gf2, self.drive)
+        qua.wait(56,self.qubit_gf2)
         self.qubit_gf2.play(self.qubit_gf2_drive)
         
      
-        qua.align(self.qubit_gf2, self.resonator)
-        qua.align()
+        qua.wait(124,self.resonator)
 
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     modes = {
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
-        "drive": "drive",
+        "drive": "fock_drive",
     }
 
     ################################### PULSE MAP ######################################

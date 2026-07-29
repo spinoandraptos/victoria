@@ -7,7 +7,7 @@ from config.experiment_config import FOLDER, N, I, Q, MAG, PHASE, RR, FREQ
 from qcore import Experiment, qua, Sweep
 
 
-class CavitySWAP1D_freq(Experiment):
+class CavitySWAP1D_freq_fock1(Experiment):
     """Cavity T1"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -28,8 +28,7 @@ class CavitySWAP1D_freq(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        qua.reset_phase(self.cavity)
-        qua.reset_frame(self.cavity)
+
         qua.reset_phase(self.snail)
         qua.reset_frame(self.snail)
         qua.align()
@@ -46,9 +45,9 @@ class CavitySWAP1D_freq(Experiment):
         # qua.wait(self.time_delay, self.cavity)
         qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse)
-        qua.align(self.qubit, self.qubit_gf2)
-        self.qubit_gf2.play(self.qubit_gf2_drive)
-        qua.align(self.qubit_gf2, self.resonator)
+        # qua.align(self.qubit, self.qubit_gf2)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -63,12 +62,12 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "cavity": "cavity",
+       
         "qubit": "qubit",
         "resonator": "rr",
         "snail": "snail_drive",
         "qubit_gf2": "qubit_GF2",
-        "drive": "drive",
+        "drive": "fock_drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -76,12 +75,12 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_48_ecd",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+       
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
         "snail_pulse": "snail_drive_constant_2000",
         "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
-        "stark_drive": "drive_constant_fock1",
+        "stark_drive": "fock_drive_constant_48",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -107,8 +106,8 @@ if __name__ == "__main__":
     # FREQ.start = -200e6
     # FREQ.stop = -0.5e6
     # FREQ.num = 101
-    FREQ.start = 0e6
-    FREQ.stop = 200e6
+    FREQ.start = -100e6
+    FREQ.stop = 0e6
     FREQ.num = 201
     
     # SNAIL_AMPX = Sweep(
@@ -139,6 +138,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = CavitySWAP1D_freq(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = CavitySWAP1D_freq_fock1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run()
     expt.run(simulate=False)

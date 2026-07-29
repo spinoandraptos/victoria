@@ -141,7 +141,7 @@ if __name__ == "__main__":
     # # expt.run(simulate=True)
     # expt.run()
     
-    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=61)
+    flux_values = np.linspace(start=-12e-3, stop=5e-3, num=18)#np.linspace(start=-20e-3, stop=5e-3, num=26)
     
    
     for index_f in range(len(flux_values)): 

@@ -75,15 +75,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_1000",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+        "cavity_pulse": "cav_gaussian_2000",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 100_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -101,9 +101,9 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-100e6
+    FREQ.start =-200e6
     FREQ.stop =0e6 
-    FREQ.num = 201
+    FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",

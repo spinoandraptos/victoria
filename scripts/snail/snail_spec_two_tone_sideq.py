@@ -30,20 +30,12 @@ class SnailSpec_twotone_sideq(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        #qua.reset_phase(self.cavity)
-        #qua.reset_frame(self.cavity)
-       
         
-        # There are two cavity modes here, please check which mode is used.
         qua.update_frequency(self.snail, self.snail_frequency)
-        
+
         self.snail.play(self.snail_pulse)
-        # qua.update_frequency(self.cavity, int(self.cavity_IF_SET)) #, keep_phase=True
-        # self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
-        qua.align(self.snail, self.qubit)
-        # qua.wait(32, self.qubit)
+        qua.align()
         self.qubit.play(self.qubit_pulse)
-        qua.align(self.qubit, self.resonator)
         qua.align()
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -77,15 +69,15 @@ if __name__ == "__main__":
 
     pulses = {
         "cavity_pulse":"cav_constant_1000",#"cav_constant_1000",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
-        "snail_pulse": "snail_drive_constant_pi",#"snail_drive_constant_10000",
+        "qubit_pulse": "qubit_gaussian_pi_640",
+        "snail_pulse": "snail_drive_constant_10000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 70_000,
+        "wait_time": 120_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -99,13 +91,13 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 2500
+    N.num = 12500
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "snail_frequency"
-    FREQ.start =-400e6
-    FREQ.stop =400e6 
+    FREQ.start = 0e6
+    FREQ.stop =200e6
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(

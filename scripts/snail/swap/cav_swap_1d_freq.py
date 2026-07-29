@@ -29,18 +29,18 @@ class CavitySWAP1D_freq(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase(self.cavity)
-        qua.reset_frame(self.cavity)
+        # qua.reset_frame(self.cavity)
         qua.reset_phase(self.snail)
-        qua.reset_frame(self.snail)
-        qua.align()
-        self.cavity.play(self.cavity_drive, ampx = 1.0)
-        qua.align(self.cavity, self.snail)
+        # qua.reset_frame(self.snail)
         qua.update_frequency(self.snail, self.snail_frequency)
-        self.snail.play(self.snail_pulse, ampx= 1.0) # self.snail_ampx duration=int(100)
-        # qua.wait(self.time_delay, self.cavity)
-        qua.align(self.snail, self.qubit)
+        self.cavity.play(self.cavity_drive)
+        qua.wait(72, self.snail)    
+        self.snail.play(self.snail_pulse) # self.snail_ampx duration=int(100)
+        qua.wait(1052, self.qubit)  
+        # qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse, ampx = 1)
         qua.align(self.qubit, self.resonator)
+        qua.wait(21, self.resonator)  
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -66,10 +66,10 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_48_ecd",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+        "cavity_drive": "cav_constant_52",
+        "qubit_pulse": "qubit_gaussian_pi_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_drive_constant_2000",
+        "snail_pulse": "snail_drive_constant_1000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
+    N.num = 100000
 
     # set the qubit frequency sweep for this Experiment run
 
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     # FREQ.start = -200e6
     # FREQ.stop = -0.5e6
     # FREQ.num = 101
-    FREQ.start = -400e6
-    FREQ.stop = 400e6
+    FREQ.start = 0e6
+    FREQ.stop = 200e6
     FREQ.num = 201
     
     # SNAIL_AMPX = Sweep(
@@ -129,4 +129,4 @@ if __name__ == "__main__":
 
     expt = CavitySWAP1D_freq(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run()
-    expt.run(simulate=True)
+    expt.run(simulate=False)

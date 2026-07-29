@@ -39,10 +39,8 @@ class snail_spec_threetone_cavspec(Experiment):
         
         self.snail.play(self.snail_pulse)
         qua.align(self.cavity, self.snail)
-        # qua.update_frequency(self.snail, self.snail_frequency)
         self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
         qua.align(self.cavity, self.qubit)
-        # qua.wait(32, self.qubit)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
         qua.align()
@@ -104,8 +102,8 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "snail_frequency"
-    FREQ.start =-400e6
-    FREQ.stop =0e6 
+    FREQ.start =-250e6
+    FREQ.stop =-150e6
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(

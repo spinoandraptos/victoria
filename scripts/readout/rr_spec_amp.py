@@ -48,7 +48,7 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
 
-    pulses = {"readout_pulse": "rr_readout_pulse"}
+    pulses = {"readout_pulse": "rr_longer_readout_pulse"}
 
     ############################## CONTROL PARAMETERS ##################################
 
@@ -68,8 +68,8 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -52e6
-    FREQ.stop = -48e6
+    FREQ.start = -60e6
+    FREQ.stop = -50e6
     FREQ.num = 201#101
 
     ################################### 2D SWEEP #######################################
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         # points=[0.05,0.1,0.5, 0.6, 0.7, 0.8, 0.9, 1]
         # points=[0.1, 0.2, 0.3, 0.5, 1, 1.5]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
         # points=[0.01, 0.2, 0.5, 0.8, 1.0, 1.2]
-        points=[0.01, 0.1, 0.5 ,1]#0.25,0.5,0.75]
+        points=[0.1, 0.5, 1.0, 1.5, 2.0 ]#0.25,0.5,0.75]
     ) 
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]

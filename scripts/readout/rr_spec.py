@@ -72,7 +72,7 @@ if __name__ == "__main__":
     FREQ.name = "resonator_frequency"
     FREQ.start = -60e6
     FREQ.stop = -40e6
-    FREQ.num = 101
+    FREQ.num = 201
 
     ################################### 2D SWEEP #######################################
 
