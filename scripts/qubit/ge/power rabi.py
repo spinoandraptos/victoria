@@ -28,10 +28,10 @@ class Rabi(Experiment):
         qua.reset_phase(self.qubit)
         qua.reset_frame(self.qubit)
         """QUA sequence that defines this Experiment subclass"""
+
         self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
-        # qua.wait(46,self.resonator )
-        # qua.align(self.qubit, self.resonator)
+        qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -107,5 +107,5 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     expt = Rabi(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=True)
-    # expt.run()
+    # expt.run(simulate=True)
+    expt.run()

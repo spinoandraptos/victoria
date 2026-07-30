@@ -31,16 +31,18 @@
                                     "frequency": 7705600000.0
                                 }
                             },
-                            "band": 3
+                            "band": 3,
+                            "delay": 20
                         },
                         "5": {
                             "full_scale_power_dbm": 4,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 3750000000.0
+                                    "frequency": 3350000000.0
                                 }
                             },
-                            "band": 1
+                            "band": 1,
+                            "delay": 20
                         },
                         "4": {
                             "full_scale_power_dbm": 4,
@@ -49,7 +51,8 @@
                                     "frequency": 2400000000.0
                                 }
                             },
-                            "band": 1
+                            "band": 1,
+                            "delay": 20
                         },
                         "1": {
                             "full_scale_power_dbm": 4,
@@ -58,7 +61,8 @@
                                     "frequency": 3750000000.0
                                 }
                             },
-                            "band": 1
+                            "band": 1,
+                            "delay": 20
                         }
                     },
                     "analog_inputs": {
@@ -70,6 +74,11 @@
                     },
                     "type": "MW"
                 },
+                "8": {
+                    "type": "MW",
+                    "analog_outputs": {},
+                    "analog_inputs": {}
+                },
                 "3": {
                     "type": "MW",
                     "analog_outputs": {},
@@ -77,11 +86,6 @@
                 },
                 "6": {
                     "type": "LF"
-                },
-                "8": {
-                    "type": "MW",
-                    "analog_outputs": {},
-                    "analog_inputs": {}
                 }
             }
         }
@@ -96,10 +100,7 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -94000000,
-            "operations": {
-                "cavity_drive": "cavity.cav_constant_48_ecd"
-            }
+            "intermediate_frequency": -94000000
         },
         "qubit": {
             "MWInput": {
@@ -147,7 +148,7 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -49500000,
+            "intermediate_frequency": -33300000,
             "operations": {
                 "snail_pulse": "snail_drive.snail_drive_constant_2000"
             }
@@ -161,9 +162,9 @@
                 ],
                 "upconverter": 1
             },
-            "intermediate_frequency": -129000000,
+            "intermediate_frequency": -128000000,
             "operations": {
-                "fock_drive": "fock_drive.fock_drive_constant_48"
+                "stark_drive": "fock_drive.fock_drive_constant_48"
             }
         },
         "qubit_GF2": {
@@ -182,14 +183,6 @@
         }
     },
     "pulses": {
-        "cavity.cav_constant_48_ecd": {
-            "operation": "control",
-            "length": 48,
-            "waveforms": {
-                "I": "cavity.cav_constant_48_ecd.waveform.I",
-                "Q": "cavity.cav_constant_48_ecd.waveform.Q"
-            }
-        },
         "qubit.qubit_gaussian_pi_1200": {
             "operation": "control",
             "length": 1200,
@@ -238,14 +231,6 @@
         }
     },
     "waveforms": {
-        "cavity.cav_constant_48_ecd.waveform.I": {
-            "type": "constant",
-            "sample": 0.26
-        },
-        "cavity.cav_constant_48_ecd.waveform.Q": {
-            "type": "constant",
-            "sample": 0.0
-        },
         "qubit.qubit_gaussian_pi_1200.waveform.I": {
             "type": "arbitrary",
             "samples": [
@@ -1449,7 +1434,8 @@
                 0.00027475204590832544,
                 0.0002729294965171606,
                 0.00027111601944199685
-            ]
+            ],
+            "max_allowed_error": 1
         },
         "qubit.qubit_gaussian_pi_1200.waveform.Q": {
             "type": "constant",
@@ -3250,7 +3236,8 @@
                 0.0,
                 0.0,
                 0.0
-            ]
+            ],
+            "max_allowed_error": 1
         },
         "rr.rr_readout_pulse.waveform.Q": {
             "type": "constant",
@@ -3258,7 +3245,7 @@
         },
         "snail_drive.snail_drive_constant_2000.waveform.I": {
             "type": "constant",
-            "sample": 0.4
+            "sample": 0.2
         },
         "snail_drive.snail_drive_constant_2000.waveform.Q": {
             "type": "constant",
@@ -3299,7 +3286,8 @@
                 0.058520842597230345,
                 0.043246897970424025,
                 0.031007288630671325
-            ]
+            ],
+            "max_allowed_error": 1
         },
         "qubit_GF2.qubitGF2_gaussian_pi_24.waveform.Q": {
             "type": "constant",

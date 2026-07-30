@@ -22,7 +22,8 @@
                                     "frequency": 7705600000.0
                                 }
                             },
-                            "band": 3
+                            "band": 3,
+                            "delay": 20
                         },
                         "5": {
                             "full_scale_power_dbm": 4,
@@ -31,7 +32,8 @@
                                     "frequency": 3350000000.0
                                 }
                             },
-                            "band": 1
+                            "band": 1,
+                            "delay": 20
                         },
                         "4": {
                             "full_scale_power_dbm": 4,
@@ -40,7 +42,8 @@
                                     "frequency": 2400000000.0
                                 }
                             },
-                            "band": 1
+                            "band": 1,
+                            "delay": 20
                         },
                         "1": {
                             "full_scale_power_dbm": 4,
@@ -49,7 +52,8 @@
                                     "frequency": 3750000000.0
                                 }
                             },
-                            "band": 1
+                            "band": 1,
+                            "delay": 20
                         },
                         "2": {
                             "full_scale_power_dbm": 4,
@@ -70,6 +74,11 @@
                     },
                     "type": "MW"
                 },
+                "8": {
+                    "type": "MW",
+                    "analog_outputs": {},
+                    "analog_inputs": {}
+                },
                 "3": {
                     "type": "MW",
                     "analog_outputs": {},
@@ -77,11 +86,6 @@
                 },
                 "6": {
                     "type": "LF"
-                },
-                "8": {
-                    "type": "MW",
-                    "analog_outputs": {},
-                    "analog_inputs": {}
                 }
             }
         }
@@ -177,7 +181,8 @@
                 0.022814267493335292,
                 0.01685974184180541,
                 0.012088147498694248
-            ]
+            ],
+            "max_allowed_error": 1
         },
         "qubit.qubit_gaussian_pi_24.waveform.Q": {
             "type": "arbitrary",
@@ -206,7 +211,8 @@
                 -0.0007457457326007477,
                 -0.0006091171981096156,
                 -0.00047831966170698613
-            ]
+            ],
+            "max_allowed_error": 1
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
@@ -2003,7 +2009,8 @@
                 0.0,
                 0.0,
                 0.0
-            ]
+            ],
+            "max_allowed_error": 1
         },
         "rr.rr_readout_pulse.waveform.Q": {
             "type": "constant",

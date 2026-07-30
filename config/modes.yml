@@ -1,5 +1,6 @@
 - !<Qubit>
   name: qubit
+  core: null
   int_freq: 9.644000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -144,8 +145,10 @@
     - 3
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Cavity>
   name: cavity
+  core: null
   int_freq: -9.400000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -383,8 +386,10 @@
     - 2
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Readout>
   name: rr
+  core: null
   int_freq: -4.540000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -463,8 +468,10 @@
   rf_switch_on: false
   smearing: 0
   tof: 360
+  upconverter: 1
 - !<Qubit>
   name: qubit_EF
+  core: null
   int_freq: -1.000000E+08
   lo_name: opx1000
   mixer_offsets:
@@ -510,8 +517,10 @@
     - 3
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: drive
+  core: null
   int_freq: 1.240000E+08
   lo_name: opx1000
   mixer_offsets:
@@ -645,8 +654,10 @@
     - 1
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: snail_drive
+  core: null
   int_freq: -3.330000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -781,8 +792,10 @@
     - 5
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: fock_drive
+  core: null
   int_freq: -1.280000E+08
   lo_name: opx1000
   mixer_offsets:
@@ -843,8 +856,10 @@
     - 4
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: snail_drive_EF
+  core: null
   int_freq: 5.000000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -897,8 +912,10 @@
     - 5
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: qubit_GF2
+  core: null
   int_freq: -2.000000E+06
   lo_name: opx1000
   mixer_offsets:
@@ -954,8 +971,10 @@
     - 3
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: SQ_LO7
+  core: null
   int_freq: -5.000000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -980,8 +999,10 @@
     - 7
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1
 - !<Qubit>
   name: SQ_IF1
+  core: null
   int_freq: -5.000000E+07
   lo_name: opx1000
   mixer_offsets:
@@ -1006,3 +1027,4 @@
     - 1
   rf_switch: null
   rf_switch_on: false
+  upconverter: 1

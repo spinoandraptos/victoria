@@ -132,4 +132,4 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     expt = CavitySWAP1D_len_fock1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
+    expt.run(simulate=True)
