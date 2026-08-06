@@ -36,7 +36,7 @@ class NumberSplitting(Experiment):
      
         
         self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
-        qua.align()
+        qua.align(self.cavity, self.qubit)
         # Selective pi pulse
         qua.update_frequency(self.qubit, self.qubit_frequency)
         self.qubit.play(self.qubit_pulse)
@@ -65,8 +65,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_64_4alpha",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+        "cavity_pulse": "cav_constant_200",
+        "qubit_pulse": "qubit_constant_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -88,14 +88,14 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = 86e6
-    FREQ.stop = 100e6
-    FREQ.num = 251
+    FREQ.start = 200e6
+    FREQ.stop = 210e6
+    FREQ.num = 301
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
     # sweeps = [N, FREQ]
-    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 0.5, 1, 2.0]) #needs to be floating point numbers 
+    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1]) #needs to be floating point numbers 
     sweeps = [N, QD_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

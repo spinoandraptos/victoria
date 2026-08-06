@@ -1,11 +1,12 @@
+""" """
 import sys
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, FREQ2
-
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, SINGLE_SHOT
+from qm import qua as qm_qua
 from qcore import Experiment, qua, Sweep
-import numpy as np
 
-class QubitSpec_fock1(Experiment):
-    """Qubit spectroscopy"""
+
+class RabiGF2(Experiment):
+    """Power Rabi"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
@@ -23,30 +24,34 @@ class QubitSpec_fock1(Experiment):
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
 
+
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        # qua.reset_phase(self.resonator)
+        # qua.reset_phase(self.qubit_gf2)
+        # qua.reset_frame(self.qubit_gf2)
         # qua.update_frequency(self.qubit, self.qubit_frequency)
-        qua.update_frequency(self.drive, self.drive_frequency)
+        qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive)
+        self.qubit_gf2.play(self.qubit_gf2_drive, ampx=1.0)
+        # qua.wait(46,self.drive)
+        qua.update_frequency(self.drive, self.drive_frequency)
+        # self.qubit_ef.play(self.qubit_ef_drive) 
         qua.align(self.qubit_gf2, self.drive)
         
+        # self.drive.play(self.stark_drive, ampx=self.d_ampx) # fixed freq #, ampx=2.0 max , duration=self.length_drive
+        self.drive.play(self.fock_drive)
+        # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
+        # qua.align(self.qubit_gf2, self.drive)
+        # qua.wait(56,self.qubit_gf2)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
         
-        # self.qubit.play(self.qubit_pi_pulse)
-        # qua.align(self.qubit, self.qubit_ef)
-        # self.qubit_ef.play(self.qubit_ef_drive) 
-        # qua.align(self.qubit_ef, self.drive)
-        
-        # self.drive.play(self.stark_drive) # fixed freq #, ampx=2.0 max
-        # self.qubit.play(self.qubit_pi_pulse)
-        
-        qua.align()
+        qua.align(self.drive, self.resonator)
+        # qua.wait(124,self.resonator)
+
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
         qua.wait(self.wait_time, self.resonator)
-
 
 if __name__ == "__main__":
     """ """
@@ -56,11 +61,9 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        # "qubit": "qubit",
-        # "qubit_ef": "qubit_EF",
+        "drive": "fock_drive",
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
-        "drive": "drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -68,65 +71,57 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_fock1",
-        # "qubit_pi_pulse": "qubit_constant_pi_16",
-        # "qubit_ef_drive": "qubitEF_constant_pi_16",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
-        "readout_pulse": "rr_readout_pulse",
+           "fock_drive": "drive_constant_56",
+           "qubit_gf2_drive": "qubitGF2_constant_pi_200",
+           "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 300000,
-        "ro_ampx": 1.0,
-        "qubit_drive_ampx": 1,
+        "wait_time":20_000,
+        # "initialize_wait_time": 5000,
+        "ro_ampx": 1,
+        "plot_single_shot": False,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
     # must include an outermost averaging Sweep named "N"
     # must include all primary sweeps defined by the Experiment subclass
 
-    # set number of repetitions for this E xperiment run
-    N.num = 500000
+    # set number of repetitions for this Experiment run
+    N.num = 100_000
 
-    # set the qubit frequency sweep for this Experiment run
-    # FREQ.name = "qubit_frequency"
-    # FREQ.start =90e6  # 40e6
-    # FREQ.stop = 160e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    # FREQ.num = 201
-    
-    FREQ2.name = "drive_frequency"
-    FREQ2.start =-200e6  # 40e6
-    FREQ2.stop = -50e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ2.num = 101
-
-    
-    # Q_AMPX = Sweep(
-    #     name="q_ampx",
-    #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
-    #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-    #     points=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]#0.25,0.5,0.75]
-    # ) 
-    
-
-    sweeps = [N,  FREQ2]
+    # set the qubit amplitude sweep for this Experiment run
+    FREQ.name = "drive_frequency"
+    FREQ.start = -200e6  # 40e6
+    FREQ.stop = 200e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.num = 201
+    sweeps = [N, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
+    I.fitfn, Q.fitfn, MAG.fitfn, SINGLE_SHOT.fitfn = (
+        "sine",
+        "sine",
+        "sine",
+        "sine",
+        # "sine_gf",
+        # "sine_gf",
+        # "sine_gf",
+        # "sine_gf",
+    )
 
-    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    PHASE.plot = True
+    PHASE.datafn_args = {"delay": -3.298e-7, "freq": RR.int_freq}
     MAG.plot = True
-    Q.plot = True
+    PHASE.plot = True
     I.plot = True
-    #I.plot = True
-    # Q.plot_args["plot_type"] = "image"
-    #I.plot_args["plot_type"] = "image"
-    # SINGLE_SHOT.plot_args["plot_type"] = "image"
-    # SINGLE_SHOT.plot = True
-    datasets = [I, Q, PHASE, MAG]
+    Q.plot = True
+    SINGLE_SHOT.plot = False
+    datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    expt = QubitSpec_fock1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run(simulate=False) #simulate=False
+
+    expt = RabiGF2(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    # expt.run(simulate=True)
+    expt.run()

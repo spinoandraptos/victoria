@@ -34,7 +34,7 @@ class CavityT1(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
     
-        self.cavity.play(self.cavity_drive, ampx=1.0)
+        self.cavity.play(self.cavity_drive, ampx=2.0)
 
         qua.wait(self.time_delay, self.cavity)
         qua.align()
@@ -69,15 +69,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_52",
-        "qubit_pulse": "qubit_gaussian_pi_1200",
+        "cavity_drive": "cav_constant_200",
+        "qubit_pulse": "qubit_constant_pi_pulse_1000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 200_000,
+        "wait_time": 80_000,
         "ro_ampx": 1,
         "plot_single_shot": False,
     }
@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=16, stop=500_000, step=5000, dtype=int)
+    DEL = Sweep(name="time_delay", start=16, stop=60_000, step=1500, dtype=int)
     sweeps = [N, DEL]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

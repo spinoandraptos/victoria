@@ -73,14 +73,14 @@ if __name__ == "__main__":
 
     pulses = {
         # "stark_drive": "drive_constant_pi_300",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "qubit_gf2_drive": "qubitGF2_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":200_000,
+        "wait_time":20_000,
         # "initialize_wait_time": 5000,
         "ro_ampx": 1,
         "plot_single_shot": False,
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     N.num = 100_000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.7, stop=1.7, num=61)
+    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.4, stop=1.4, num=61)
     sweeps = [N, QD_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

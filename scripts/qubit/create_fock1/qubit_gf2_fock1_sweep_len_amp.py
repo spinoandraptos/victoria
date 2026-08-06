@@ -28,21 +28,21 @@ class qubit_gf2_fock1_sweep_len_ampx(Experiment):
         # qua.reset_phase(self.qubit_gf2)
         # qua.reset_frame(self.qubit_gf2)
         # qua.update_frequency(self.qubit, self.qubit_frequency)
-        qua.align()
+        # qua.align()
         
         self.qubit_gf2.play(self.qubit_gf2_drive, ampx=1.0)
-        qua.wait(46,self.drive)
+        # qua.wait(46,self.drive)
         # qua.update_frequency(self.drive) 
         # self.qubit_ef.play(self.qubit_ef_drive) 
-        # qua.align(self.qubit_ef, self.drive)
+        qua.align(self.qubit_gf2, self.drive)
             
-        self.drive.play(self.stark_drive, ampx=self.d_ampx, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
+        self.drive.play(self.fock_drive, ampx=self.d_ampx, duration=self.length_drive) # fixed freq #, ampx=2.0 max , duration=self.length_drive
         # self.snail.play(self.snail_pulse, duration=self.length_snail, ampx= self.snail_ampx)
         # self.qubit.play(self.qubit_pi)
-
-        qua.wait(56,self.qubit_gf2)
-        self.qubit_gf2.play(self.qubit_gf2_drive)
-        qua.wait(124,self.resonator)
+        qua.align(self.resonator, self.drive)
+        # qua.wait(56,self.qubit_gf2)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        # qua.wait(124,self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     modes = {
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
-        "drive": "drive",
+        "drive": "fock_drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -67,15 +67,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_400",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "fock_drive": "fock_drive_constant_72",
+        "qubit_gf2_drive": "qubitGF2_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,
+        "wait_time": 200_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=4, stop=300, step=4, dtype=int)
+    # DEL = Sweep(name="length_drive", start=4, stop=300, step=4, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6

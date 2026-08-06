@@ -36,12 +36,12 @@ class NumberSplitting_FOCK1(Experiment):
         #CREATE fock 1
         self.qubit_gf2.play(self.qubit_gf2_pi_pulse, ampx= self.drive_ampx)
         qua.align(self.qubit_gf2, self.drive)
-        self.drive.play(self.stark_drive, ampx= self.drive_ampx) # fixed freq #, ampx=2.0 max
+        self.drive.play(self.fock_drive, ampx= self.drive_ampx) # fixed freq #, ampx=2.0 max
     
         
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
         # number splitting
-        qua.align()
+        qua.align(self.drive, self.qubit)
         # Selective pi pulse
         qua.update_frequency(self.qubit, self.qubit_frequency)
         self.qubit.play(self.qubit_pulse)
@@ -66,11 +66,11 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "cavity": "cavity",#"cav",
+        # "cavity": "cavity",#"cav",
         "qubit": "qubit",
         "resonator": "rr",
         "qubit_gf2": "qubit_GF2",
-        "drive": "drive",
+        "drive": "fock_drive",
         
     }
 
@@ -79,17 +79,17 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_pulse": "qubit_gaussian_pi_2000",
-        "qubit_gf2_pi_pulse": "qubitGF2_gaussian_pi_24",
+        "qubit_pulse": "qubit_constant_pi_pulse_1200",
+        "qubit_gf2_pi_pulse": "qubitGF2_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
-        "cavity_pulse": "cav_constant_64",
-        "stark_drive": "drive_constant_24",
+        # "cavity_pulse": "cav_constant_64",
+        "fock_drive": "fock_drive_constant_72",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1_000_000,#6e6,
+        "wait_time": 100_000,#6e6,
         "ro_ampx": 1,
         # "plot_single_shot": True,
         "qubit_drive_ampx": 1
@@ -104,9 +104,9 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = 86e6
-    FREQ.stop = 100e6
-    FREQ.num = 251
+    FREQ.start = 200e6
+    FREQ.stop = 210e6
+    FREQ.num = 301
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
