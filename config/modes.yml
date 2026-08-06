@@ -1,7 +1,7 @@
 - !<Qubit>
   name: qubit
   core: null
-  int_freq: 2.080000E+08
+  int_freq: -3.790000E+08
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -55,6 +55,15 @@
       pad: 0
       total_I_amp: 0.31597573306370075
       total_length: 36
+    qubit_constant_pi_100: !<ConstantPulse>
+      name: qubit_constant_pi_100
+      I_ampx: 1
+      Q_ampx: 0.0
+      digital_marker: null
+      length: 100
+      pad: 0
+      total_I_amp: 0.2
+      total_length: 100
     qubit_cos_ramp_pulse: !<RampedConstantPulse>
       name: qubit_cos_ramp_pulse
       I_ampx: 1.4
@@ -152,7 +161,7 @@
 - !<Readout>
   name: rr
   core: null
-  int_freq: -4.850000E+07
+  int_freq: -5.680000E+07
   lo_name: opx1000
   mixer_offsets:
     I: 0.0
@@ -185,7 +194,7 @@
       total_length: 600
     rr_readout_pulse: !<ConstantReadoutPulse>
       name: rr_readout_pulse
-      I_ampx: 0.2
+      I_ampx: 1.72
       Q_ampx: 0.0
       digital_marker: !<DigitalWaveform>
         name: ADC_ON
@@ -196,7 +205,7 @@
       length: 320
       pad: 320
       threshold: null
-      total_I_amp: 0.04000000000000001
+      total_I_amp: 0.34400000000000003
       total_length: 640
       weights:
       - 1.0

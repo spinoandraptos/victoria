@@ -14,8 +14,8 @@ if __name__ == "__main__":
         (opx1000, qubit, rr, cav, qubit_EF, qubit_GF2, drive, snail_drive, snail_drive_EF,fock_drive) = stage.get("opx1000", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "drive", "snail_drive", "snail_drive_EF","fock_drive")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.47e9+50e6#7.415e9+50e6+0.5e6 
-        rr_IF = -48.5e6
+        rr_LO = 5.649e9+50e6#7.415e9+50e6+0.5e6 
+        rr_IF = -56.8e6
         # rr_LO = 7.773e9+50e6#7.415e9+50e6+0.5e6 
         # rr_IF = -49.7e6
         
@@ -25,13 +25,13 @@ if __name__ == "__main__":
         # rr_LO = 3.7e9+50e6#5.6118e9+50e6 #fock
         # rr_IF = -50e6#124e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        qubit_LO = 5.25e9#5.6e9+50e6-400e6#+50e6+800e6#5.7e9+50e6-150E6
-        qubit_IF = 208e6
+        qubit_LO = 4e9-800e6#5.6e9+50e6-400e6#+50e6+800e6#5.7e9+50e6-150E6
+        qubit_IF =-379e6
         
         # qubit_LO =  6.659e9+50e6#6.659e9+50e6+1e8 #-800e6-800e6-800e6#5.6118e9+50e6
         # qubit_IF = 9.8e7#-2.9e8#5.9e7 #-2.643e8#124.15e6+1e3#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        cav_LO = 6.61e9 + 50e6
+        cav_LO = 3e9 + 50e6
         cav_IF = -26e6 #-94.6e6#-6.3762e7#-1.365e8#-6.1813e7 #-1.365e8#-1.0608e8#-9.7255e7#-1.365e8#-6.1813e7#-93e6-380e3+60e3 #-52.6e6
         
         qubitEF_IF = 22e6 #-118e6# -76e6
@@ -69,7 +69,7 @@ if __name__ == "__main__":
                             1: {
                                 "analog_outputs": {
                                     6: {
-                                        "full_scale_power_dbm": -11, #only in increments of 3s -11
+                                        "full_scale_power_dbm": -2, #only in increments of 3s -11
                                         "upconverters": {1: {"frequency":  rr_LO}},
                                         "band":3,
                                     },
@@ -181,7 +181,7 @@ if __name__ == "__main__":
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
                 length=64*5,#64*8,#400,#
-                I_ampx=0.2,#0.05*0.7*.8*.8*.6, #0.03
+                I_ampx=1.72,#0.05*0.7*.8*.8*.6, #0.03
                 pad=64*5,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
                 # weights=r"C:\Users\qcrew\Desktop\Juncheng\victoria\config\weights\20260806_103504_weights.npz",
@@ -236,6 +236,12 @@ if __name__ == "__main__":
                 name="qubit_constant_pi_36",
                 length=36,
                 I_ampx=1.5*0.5/0.46*0.5/0.516,#0.247/10000*52,
+                
+            ),
+            ConstantPulse(
+                name="qubit_constant_pi_100",
+                length=100,
+                I_ampx=1,#0.247/10000*52,
                 
             ),
         

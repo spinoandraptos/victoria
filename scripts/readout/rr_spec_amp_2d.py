@@ -1,11 +1,12 @@
+""" """
+import sys
+
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
+
 from qcore import Experiment, qua, Sweep
 
-from qcore.helpers import Stage
-from config.experiment_config import MODES_CONFIG
-import numpy as np
-import time
-class RRSpec(Experiment):
+
+class RRSpecAmp_2d(Experiment):
     """Readout resonator spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -53,7 +54,7 @@ if __name__ == "__main__":
 
     parameters = {
         "wait_time": 20_000,
-        "ro_ampx": 1,
+        # "ro_ampx": 1,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -66,38 +67,40 @@ if __name__ == "__main__":
     N.num = 100_000
  
     # set the qubit frequency sweep for this Experiment run
-    # with Stage(configpath=MODES_CONFIG, remote=True) as stage:
-    #     (yoko1, rr) = stage.get("yoko1", "rr")
-    #     yoko1.ramp(15e-3, step=1e-4)
     FREQ.name = "resonator_frequency"
-    FREQ.start = -60e6
-    FREQ.stop = -55e6
-    FREQ.num = 201
+    FREQ.start = -70e6
+    FREQ.stop = -40e6
+    FREQ.num = 101#101
 
     ################################### 2D SWEEP #######################################
 
-    sweeps = [N, FREQ]
+    RO_AMPX = Sweep(name="ro_ampx", start=0.1, stop=2, num=11)
+    # Sweep(
+    #     name="ro_ampx",
+    #     # points=[0.05,0.1,0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    #     # points=[0.1, 0.2, 0.3, 0.5, 1, 1.5]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
+    #     # points=[0.01, 0.2, 0.5, 0.8, 1.0, 1.2]
+    #     points=[ 0.08, 0.1, 0.2, 0.25, 0.5,1, 1.5, 2]#0.25,0.5,0.75]
+    # ) 
+    # QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.7, stop=1.7, num=51)
+    sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
 
-    PHASE.inputs = ("I", "Q", "resonator_frequency")
-    PHASE.datafn_args = {"delay": -3.72e-7} #100ns-900ns #-3.298e-7
-
-    MAG.fitfn = "lorentzian"
-    # MAG.axes = sweeps
-
-    I.plot = True
-    Q.plot = True
-    PHASE.plot = True
-    MAG.plot = True
+    PHASE.datafn_args = {"delay": 2.792e-7}
+    # PHASE.plot = False
+    Q.plot = False
+    I.plot = False
+    # MAG.plot = False
 
     datasets = [I, Q, MAG, PHASE]
+    MAG.plot_args["plot_type"] = "image"
+    PHASE.plot_args["plot_type"] = "image"
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
-    
-    expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = RRSpecAmp_2d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
