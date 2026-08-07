@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": "qubit_constant_pi_36",
+        "qubit_drive": "qubit_constant_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -80,8 +80,8 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -55e6
-    FREQ.stop = -40e6
+    FREQ.start = -45e6
+    FREQ.stop = -35e6
     FREQ.num = 101
     
     QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])

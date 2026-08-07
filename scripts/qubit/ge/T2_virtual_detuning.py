@@ -81,14 +81,14 @@ if __name__ == "__main__":
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
     pulses = {
-        "qubit_drive": "qubit_constant_pi2_pulse",
-        "readout_pulse": "rr_readout_pulse_short",
+        "qubit_drive": "qubit_constant_pi2_24",
+        "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 20_000,
+        "wait_time": 150_000,
         "ro_ampx": 1,
         "detuning":2e6,
         "phase": QuaVariable(

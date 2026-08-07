@@ -8,7 +8,7 @@ from qcore import Experiment, qua, Sweep
 from qcore import Dataset
 from qm import qua as qm_qua
 
-class RamseyRevival(Experiment):
+class Wigner_2d(Experiment):
     """Ramsey revival"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -19,7 +19,7 @@ class RamseyRevival(Experiment):
     ############################## DEFINE PRIMARY SWEEPS ###############################
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
-    primary_sweeps = ["delay"]
+    primary_sweeps = ["cavity_drive_Q"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -28,8 +28,26 @@ class RamseyRevival(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase()
+        
+                #create coherent state
+        self.cavity.play(self.cavity_pulse)
+        
+        # #fock1 
+        # self.cavity.play(self.cavity_pulse, ampx= 1.14)
+        # qua.align(self.qubit, self.cavity)
+        # # two selective pi pulses on the qubit (played simultaneously) or one selective 2pi pulses on the qubit
+        # # self.qubit.play(self.qubit_snap_2pi_pulse)
+        # self.qubit.play(self.qubit_snap_pulse)
+        # self.qubit.play(self.qubit_snap_pulse)
+        
+        # qua.align(self.qubit, self.cavity)
+        # # displacement pulse on the cavity to alpha = -0.58
+        # self.cavity.play(self.cavity_pulse, ampx= -0.58)
+        
+        qua.align()
+        #wigner 2d
 
-        self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
+        self.cavity.play(self.cavity_pulse, ampx=(self.cavity_drive_I, -self.cavity_drive_Q, self.cavity_drive_Q, self.cavity_drive_I), phase=0.0)  # displacement in I direction
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
         qua.align(self.cavity,self.qubit)
@@ -73,9 +91,9 @@ if __name__ == "__main__":
 
     pulses = {
         # "qubitA_drive": "qubitAGF_gaussian_pi_pulse",
-        # "driveA_pulse": "driveA_constant_ramp_pulse_short",
-        "cavity_pulse": "cav_gaussian_pulse_100",
-        "qubit_pulse": "qubit_constant_pi2_24",
+        "qubit_snap_pulse": "qubit_gaussian_pi_8000",
+        "cavity_pulse": "cav_constant_20",
+        "qubit_pulse": "qubit_gaussian_pi2_24",
         # "qubitEF_drive": "qubitEF_constant_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -83,11 +101,12 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1500_000,
+        "wait_time": 1.5e6,
         "ro_ampx": 1,
-        # "cavity_ampx": 1,
+        "delay": 914,
         "fetch_interval": 1,
         "plot_single_shot": False,
+        # "cavity_drive_I": 0.0,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -98,35 +117,36 @@ if __name__ == "__main__":
     N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
-    DELAY = Sweep(
-        name="delay",
-        dtype=int,
-        start=4,
-        stop=5000,
-        step=16,
-    )
+    # DELAY = Sweep(
+    #     name="delay",
+    #     dtype=int,
+    #     start=4,
+    #     stop=1000,
+    #     step=16,
+    # )
     
-    CAVITY_AMPX = Sweep(name="cavity_ampx", points=[0.5, 0.7])
+    CAVITY_AMPX = Sweep(name="cavity_drive_Q", start=-2, stop=2, num = 51)
+    CAVITY_AMPX2 = Sweep(name="cavity_drive_I", start=-2, stop=2, num = 51)
 
 
-    sweeps = [N, CAVITY_AMPX ,DELAY]
+    sweeps = [N, CAVITY_AMPX, CAVITY_AMPX2]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
     # MAG.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    MAG.plot = True
-    I.plot = True
-    Q.plot = True
-    PHASE.plot = True,
-    I.fitfn = "gaussian"
-    Q.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
-    MAG.fitfn = "gaussian"
+    # PHASE.plot = False
+    Q.plot = False
+    PHASE.plot = False
+    # MAG.plot = False
+
     datasets = [I, Q, MAG, PHASE]
+    MAG.plot_args["plot_type"] = "image"
+    I.plot_args["plot_type"] = "image"
+    # datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = RamseyRevival(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = Wigner_2d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run(simulate = False)

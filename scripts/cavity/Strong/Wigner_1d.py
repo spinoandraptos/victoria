@@ -19,7 +19,7 @@ class Wigner_1d(Experiment):
     ############################## DEFINE PRIMARY SWEEPS ###############################
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
-    primary_sweeps = ["delay"]
+    primary_sweeps = ["cavity_drive_Q"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -28,8 +28,31 @@ class Wigner_1d(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase()
+        
+        #create coherent state
+        # self.cavity.play(self.cavity_pulse)
+        #         # self.qubitB.play(self.qubitB_grape_8)
+        #fock1 
+        # displacement pulse on the cavity to alpha = 1.14
+        self.cavity.play(self.cavity_pulse, ampx= 1.14)
+        qua.align(self.qubit, self.cavity)
+        # two selective pi pulses on the qubit (played simultaneously) or one selective 2pi pulses on the qubit
+        self.qubit.play(self.qubit_snap_2pi_pulse)
+        # self.qubit.play(self.qubit_pulse)
+        # self.qubit.play(self.qubit_pulse)
+        
+        qua.align(self.qubit, self.cavity)
+        # displacement pulse on the cavity to alpha = -0.58
+        self.cavity.play(self.cavity_pulse, ampx= 0.58, phase = 0.5)
+        
+        # qua.align(self.qubit, self.cavity)
+            
+          
+        
+                
+        qua.align()
 
-        self.cavity.play(self.cavityB_pulse_short, ampx=(self.cavity_drive_I, -self.cavity_drive_Q, self.cavity_drive_Q, self.cavity_drive_I), phase=0.0)  # displacement in I direction
+        self.cavity.play(self.cavity_pulse, ampx=(self.cavity_drive_I, -self.cavity_drive_Q, self.cavity_drive_Q, self.cavity_drive_I), phase=0.0)  # displacement in I direction
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
         # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
         qua.align(self.cavity,self.qubit)
@@ -40,8 +63,8 @@ class Wigner_1d(Experiment):
         self.qubit.play(self.qubit_pulse) # pi/2
         qua.align()
 
-        self.qubitEF.play(self.qubitEF_drive)
-        qua.align(self.qubitEF, self.resonator)
+        # self.qubitEF.play(self.qubitEF_drive)
+        # qua.align(self.qubitEF, self.resonator)
 
         self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx,  demod_type="dual")
 
@@ -63,7 +86,7 @@ if __name__ == "__main__":
         # "driveA": "driveA",
         "cavity": "cavity",
         "qubit": "qubit",
-        "qubitEF":'qubit_EF',
+        # "qubitEF":'qubit_EF',
         "resonator": "rr",
     }
 
@@ -73,19 +96,19 @@ if __name__ == "__main__":
 
     pulses = {
         # "qubitA_drive": "qubitAGF_gaussian_pi_pulse",
-        # "driveA_pulse": "driveA_constant_ramp_pulse_short",
-        "cavity_pulse": "cav_constant_40",
-        "qubit_pulse": "qubit_gaussian_pi2_16",
-        "qubitEF_drive": "qubitEF_constant_pi_16",
+        "qubit_snap_2pi_pulse": "qubit_gaussian_2pi_8000",
+        "cavity_pulse": "cav_constant_20",
+        "qubit_pulse": "qubit_gaussian_pi2_24",
+        # "qubitEF_drive": "qubitEF_constant_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1e6,
+        "wait_time": 1.5e6,
         "ro_ampx": 1,
-        "delay": 508,
+        "delay": 914,
         "fetch_interval": 1,
         "plot_single_shot": False,
         "cavity_drive_I": 0.0,
@@ -107,7 +130,7 @@ if __name__ == "__main__":
     #     step=16,
     # )
     
-    CAVITY_AMPX = Sweep(name="cavity_drive_Q", start=-1.8, stop=1.8, num = 101)
+    CAVITY_AMPX = Sweep(name="cavity_drive_Q", start=-2, stop=2, num = 51)
 
 
     sweeps = [N, CAVITY_AMPX]

@@ -6,7 +6,7 @@ from qm import QuantumMachinesManager
 from qm.qua import *
 
 
-# Single QUA script generated at 2026-08-06 13:30:48.872384
+# Single QUA script generated at 2026-08-07 16:13:11.526796
 # QUA library version: 1.3.1
 
 
@@ -21,7 +21,7 @@ with program() as prog:
     with for_(v1,1,(v1<100001),(v1+1)):
         r1 = declare_output_stream()
         save(v1, r1)
-        with for_(v2,-60000000,(v2<-54987500),(v2+25000)):
+        with for_(v2,-45000000,(v2<-34975000),(v2+50000)):
             r2 = declare_output_stream()
             save(v2, r2)
             update_frequency('rr', v2, 'Hz', False)
@@ -57,54 +57,54 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4094900000.0,
+                                    "frequency": 1185200000.0,
                                 },
                             },
                         },
                         "4": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 8,
-                            "band": 1,
-                            "delay": 20,
+                            "band": 2,
+                            "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 2800000000.0,
+                                    "frequency": 5698000000.0,
                                 },
                             },
                         },
                         "5": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
-                            "band": 1,
-                            "delay": 20,
-                            "shareable": False,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 3050000000.0,
-                                },
-                            },
-                        },
-                        "6": {
-                            "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": -2,
                             "band": 2,
                             "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5699000000.0,
+                                    "frequency": 6660000000.0,
+                                },
+                            },
+                        },
+                        "6": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 4,
+                            "band": 3,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 7679500000.0,
                                 },
                             },
                         },
                     },
                     "analog_inputs": {
                         "1": {
-                            "band": 2,
+                            "band": 3,
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 5699000000.0,
+                            "downconverter_frequency": 7679500000.0,
                         },
                     },
                 },
@@ -141,7 +141,7 @@ config = {
             },
             "smearing": 0,
             "time_of_flight": 408,
-            "intermediate_frequency": -56800000.0,
+            "intermediate_frequency": -40700000.0,
         },
     },
     "pulses": {
@@ -159,7 +159,7 @@ config = {
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.34400000000000003] * 320 + [0.0] * 320,
+            "samples": [0.020000000000000004] * 128 + [0.0] * 512,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
@@ -205,54 +205,54 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4094900000.0,
+                                    "frequency": 1185200000.0,
                                 },
                             },
                         },
                         "4": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 8,
-                            "band": 1,
-                            "delay": 20,
+                            "band": 2,
+                            "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 2800000000.0,
+                                    "frequency": 5698000000.0,
                                 },
                             },
                         },
                         "5": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
-                            "band": 1,
-                            "delay": 20,
-                            "shareable": False,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 3050000000.0,
-                                },
-                            },
-                        },
-                        "6": {
-                            "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": -2,
                             "band": 2,
                             "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5699000000.0,
+                                    "frequency": 6660000000.0,
+                                },
+                            },
+                        },
+                        "6": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 4,
+                            "band": 3,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 7679500000.0,
                                 },
                             },
                         },
                     },
                     "analog_inputs": {
                         "1": {
-                            "band": 2,
+                            "band": 3,
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 5699000000.0,
+                            "downconverter_frequency": 7679500000.0,
                         },
                     },
                 },
@@ -289,7 +289,7 @@ loaded_config = {
             },
             "smearing": 0,
             "time_of_flight": 408,
-            "intermediate_frequency": -56800000.0,
+            "intermediate_frequency": -40700000.0,
         },
     },
     "pulses": {
@@ -307,7 +307,7 @@ loaded_config = {
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.34400000000000003] * 320 + [0.0] * 320,
+            "samples": [0.020000000000000004] * 128 + [0.0] * 512,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },

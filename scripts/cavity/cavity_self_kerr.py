@@ -83,17 +83,17 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_28",
-        "sel_qubit_pulse": "qubit_gaussian_pi_2000",
+        "cavity_drive": "cav_constant_20",
+        "sel_qubit_pulse": "qubit_gaussian_pi_8000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 1500_000,
         "ro_ampx": 1,
-        "detuning":6e6,
+        "detuning":4e6,
         "phase": QuaVariable(
             value=0.0,
             dtype=qm_qua.fixed,
@@ -111,15 +111,15 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 1000
+    N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
 
-    DEL = Sweep(name="time_delay", start=4, stop=1_500, step=4, dtype=int)
+    DEL = Sweep(name="time_delay", start=4, stop=1_600, step=8, dtype=int)
     DIS_AMPX = Sweep(
         name="disp_ampx",
         # points=[0.5, 1.75]
-        points=[0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+        points=[0.2, 0.4, 0.6, 0.8, 1.0, 1.2,1.4]
     ) 
     sweeps = [N, DIS_AMPX, DEL]
 

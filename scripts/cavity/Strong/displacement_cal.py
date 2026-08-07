@@ -30,8 +30,9 @@ class CavDisplacementCalSelective(Experiment):
         qua.reset_frame(self.cavity)
         # qua.reset_phase(self.qubit)
         # qua.reset_frame(self.qubit)
-            
-        qua.align()
+        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
+        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
+        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
         self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
         qua.align() 
         self.qubit.play(self.qubit_selective_pi)
@@ -68,16 +69,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_200",
-        # "qubit_pi_pulse": "qubit_pi_9",
-        "qubit_selective_pi": "qubit_constant_pi_pulse_1000",
+        "cav_displacement": "cav_constant_20",
+        "qubit_selective_pi": "qubit_gaussian_pi_4000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 20_000,
+        "wait_time": 1500_000,
         "plot_single_shot": False,
      
 
@@ -88,10 +88,10 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 50000
+    N.num = 1500
 
     # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0.1, stop=3, step=0.05)
+    CAV_AMP = Sweep(name="cav_ampx", start=0.1, stop=1.5, step=0.02)
 
  
     

@@ -65,8 +65,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_200",
-        "qubit_pulse": "qubit_constant_pi_pulse_1200",
+        "cavity_pulse": "cav_gaussian_pulse_100",
+        "qubit_pulse": "qubit_gaussian_pi_8000",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -88,14 +88,14 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = 200e6
-    FREQ.stop = 210e6
+    FREQ.start = 38e6
+    FREQ.stop = 45e6
     FREQ.num = 301
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
     # sweeps = [N, FREQ]
-    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1]) #needs to be floating point numbers 
+    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 0.5, 1.0]) #needs to be floating point numbers 
     sweeps = [N, QD_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

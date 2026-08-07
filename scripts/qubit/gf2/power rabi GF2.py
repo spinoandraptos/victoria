@@ -73,14 +73,14 @@ if __name__ == "__main__":
 
     pulses = {
         # "stark_drive": "drive_constant_pi_300",
-        "qubit_gf2_drive": "qubitGF2_constant_pi_200",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_48",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":20_000,
+        "wait_time":150_000,
         # "initialize_wait_time": 5000,
         "ro_ampx": 1,
         "plot_single_shot": False,

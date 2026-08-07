@@ -8,7 +8,7 @@ from pathlib import Path
 
 from qcore import Stage
 from qcore.instruments import QM
-from qcore.scripts.readout_training_octave import ReadoutTrainerOctave
+from qcore.scripts.readout_training_octave_old import ReadoutTrainerOctave
 
 from config.experiment_config import MODES_CONFIG, FOLDER
 from config.experiment_config import (
@@ -29,13 +29,13 @@ if __name__ == "__main__":
 
         params = {
             "reps": 20_000,
-            "wait_time": 110_000,  # ns
+            "wait_time": 150_000,  # ns
             "readout_pulse": "rr_readout_pulse",  # pulse name used to readout
-            "qubit_pi_pulse": "qubit_constant_pi_36",  # pulse name used to excite qubit
+            "qubit_pi_pulse": "qubit_gaussian_pi_24",  # pulse name used to excite qubit
             "weights_file_path": file_path,
         }
 
-        ro_trainer = ReadoutTrainerOctave(RR, QUBIT, qm, **params)
+        ro_trainer = ReadoutTrainerOctave(RR,QUBIT, qm, **params)
         ro_trainer.train_weights()
 
         ## Make sure to run this script every time the readout pulse is changed!!
