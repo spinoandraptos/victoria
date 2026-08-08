@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     parameters = {
         "wait_time": 20_000,
-        "ro_ampx": 1,
+        "ro_ampx": 2,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -70,8 +70,8 @@ if __name__ == "__main__":
     #     (yoko1, rr) = stage.get("yoko1", "rr")
     #     yoko1.ramp(15e-3, step=1e-4)
     FREQ.name = "resonator_frequency"
-    FREQ.start = -45e6
-    FREQ.stop = -35e6
+    FREQ.start = -65e6
+    FREQ.stop = -50e6
     FREQ.num = 201
 
     ################################### 2D SWEEP #######################################

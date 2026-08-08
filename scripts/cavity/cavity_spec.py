@@ -75,8 +75,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_4000_spec",
-        "qubit_pulse": "qubit_gaussian_pi_4000",
+        "cavity_pulse": "cav_constant_10000_spec",
+        "qubit_pulse": "qubit_constant_pi_120",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -101,8 +101,8 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =70e6
-    FREQ.stop =80e6 
+    FREQ.start =-70e6
+    FREQ.stop =-60e6 
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
@@ -130,26 +130,7 @@ if __name__ == "__main__":
    
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    
-    # cavity = ["charlie"]
 
-    # freq_sweep_ranges = np.arange(start=-100, stop=-10, step = 20)
-    # for cav in cavity:
-    #     if cav == "alice":
-    #         modes["cavity"]="alice"
-    #         pulses["cavity_pulse"]="a_d_large"
-    #     elif cav == "bob":
-    #         modes["cavity"]="bob"
-    #         pulses["cavity_pulse"]="bob_constant"
-    #     elif cav == "charlie":
-    #         modes["cavity"]="charlie"
-    #         pulses["cavity_pulse"]="charlie_constant"
-    #     for i in range(len(freq_sweep_ranges)-1):
-    #         FREQ.name = "cavity_frequency"
-    #         FREQ.start =freq_sweep_ranges[i]*1e6
-    #         FREQ.stop =freq_sweep_ranges[i+1]*1e6
-    #         FREQ.num = 151
-    #         sweeps = [N, FREQ]
     expt = CavitySpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
             # time.sleep(60)

@@ -31,9 +31,9 @@ class CavDisplacementCalSelective(Experiment):
         # qua.reset_phase(self.qubit)
         # qua.reset_frame(self.qubit)
         self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
-        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
-        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
-        self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
+        # self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
+        # self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
+        # self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
         qua.align() 
         self.qubit.play(self.qubit_selective_pi)
         qua.align()
@@ -70,14 +70,14 @@ if __name__ == "__main__":
 
     pulses = {
         "cav_displacement": "cav_constant_20",
-        "qubit_selective_pi": "qubit_gaussian_pi_4000",
+        "qubit_selective_pi": "qubit_constant_pi_120",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1500_000,
+        "wait_time": 1000_000,
         "plot_single_shot": False,
      
 

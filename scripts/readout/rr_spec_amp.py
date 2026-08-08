@@ -68,21 +68,22 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -50e6
-    FREQ.stop = -30e6
-    FREQ.num = 101#101
+    FREQ.start = -65e6
+    FREQ.stop = -50e6
+    FREQ.num = 201#101
 
     ################################### 2D SWEEP #######################################
 
     # RO_AMPX = Sweep(name="ro_ampx", start=0.1, stop=2, num=8)
-    RO_AMPX =  Sweep(
-        name="ro_ampx",
-        # points=[0.05,0.1,0.5, 0.6, 0.7, 0.8, 0.9, 1]
-        # points=[0.1, 0.2, 0.3, 0.5, 1, 1.5]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
-        # points=[0.01, 0.2, 0.5, 0.8, 1.0, 1.2]
-        points=[ 0.1,0.2,0.3,0.4,0.5, 0.6]#0.25,0.5,0.75]
-        # points=[ 0.04,0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
-    ) 
+    # RO_AMPX =  Sweep(
+    #     name="ro_ampx",
+    #     # points=[0.05,0.1,0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    #     points=[0.8,0.9,1.0,1.1,1.2,1.3,1.4]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
+    #     # points=[0.01, 0.2, 0.5, 0.8, 1.0, 1.2]
+    #     # points=[ 0.1,0.2,0.3,0.4,0.5, 0.6]#0.25,0.5,0.75]
+    #     # points=[ 0.04,0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
+    # ) 
+    RO_AMPX = Sweep(name="ro_ampx", start=0.01, stop=1, num=10)
     # QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.7, stop=1.7, num=51)
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]

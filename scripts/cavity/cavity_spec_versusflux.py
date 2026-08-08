@@ -72,15 +72,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_gaussian_1000",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
+        "cavity_pulse": "cav_constant_10000_spec",
+        "qubit_pulse": "qubit_constant_pi_120",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 200_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -93,23 +93,23 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 200
+    N.num = 500
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-150e6
-    FREQ.stop =0e6 
-    FREQ.num = 401
+    FREQ.start =-65e6
+    FREQ.stop =-62e6 
+    FREQ.num = 201
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
     #     name="qb_ampx",
     #     points=[0.0, 1.0],
     # )
-    PHASE.plot = True
-    MAG.plot = True
-    Q.plot = True
-    I.plot = True
+    PHASE.plot = False
+    MAG.plot = False
+    Q.plot = False
+    I.plot = False
     # SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     
 
     # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
-    flux_values = np.linspace(start=-9.5e-3, stop=0e-3, num=9)
+    flux_values = np.linspace(start=-20e-3, stop=20e-3, num=41)
     for index_f in range(len(flux_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")
@@ -137,4 +137,4 @@ if __name__ == "__main__":
             expt.run()
             # expt.run(simulate=True)
             time.sleep(1)  # Sleeps for 1 second; adjust as needed
-    yoko1.ramp(0e-3, step=1e-4)
+    # yoko1.ramp(0e-3, step=1e-4)

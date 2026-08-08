@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #     points=[ 0.08, 0.1, 0.2, 0.25, 0.5,1, 1.5, 2]#0.25,0.5,0.75]
     # ) 
     # QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.7, stop=1.7, num=51)
-    sweeps = [N, RO_AMPX, FREQ]
+    sweeps = [N, FREQ, RO_AMPX]
     # sweeps = [N, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
@@ -101,6 +101,5 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
     expt = RRSpecAmp_2d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
