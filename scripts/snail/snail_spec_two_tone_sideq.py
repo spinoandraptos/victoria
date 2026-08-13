@@ -33,7 +33,7 @@ class SnailSpec_twotone_sideq(Experiment):
         
         qua.update_frequency(self.snail, self.snail_frequency)
 
-        self.snail.play(self.snail_pulse)
+        self.snail.play(self.snail_pulse, ampx=2.)
         qua.align()
         self.qubit.play(self.qubit_pulse)
         qua.align()
@@ -68,21 +68,21 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse":"cav_constant_1000",#"cav_constant_1000",
-        "qubit_pulse": "qubit_gaussian_pi_640",
-        "snail_pulse": "snail_drive_constant_10000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
+        # "cavity_pulse":"cav_constant_1000",#"cav_constant_1000",
+        "qubit_pulse": "qubit_constant_pi_pulse_1200",
+        "snail_pulse": "snail_drive_constant_2000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 120_000,
+        "wait_time": 20_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
         "plot_single_shot": False,
-        "cavity_IF_SET":0e6,
+        
         
     }
 
@@ -91,13 +91,13 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 12500
+    N.num = 1000000
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "snail_frequency"
-    FREQ.start = 0e6
-    FREQ.stop =200e6
+    FREQ.start = -120e6
+    FREQ.stop =-60e6
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(

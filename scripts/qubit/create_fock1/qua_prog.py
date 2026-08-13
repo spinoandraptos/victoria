@@ -6,7 +6,7 @@ from qm import QuantumMachinesManager
 from qm.qua import *
 
 
-# Single QUA script generated at 2026-08-06 10:02:29.567682
+# Single QUA script generated at 2026-08-11 12:21:25.480674
 # QUA library version: 1.3.1
 
 
@@ -21,17 +21,17 @@ with program() as prog:
     with for_(v1,1,(v1<500001),(v1+1)):
         r1 = declare_output_stream()
         save(v1, r1)
-        with for_(v2,-400000000,(v2<-299750000),(v2+500000)):
+        with for_(v2,-50000000,(v2<50250000),(v2+500000)):
             r2 = declare_output_stream()
             save(v2, r2)
             align()
-            play('qubit_gf2_drive'*amp(0.0), 'qubit_GF2')
+            play('qubit_gf2_drive'*amp(1.0), 'qubit_GF2')
             update_frequency('fock_drive', v2, 'Hz', False)
             align('qubit_GF2', 'fock_drive')
             play('fock_drive'*amp(1.0), 'fock_drive')
             align('fock_drive', 'rr')
             measure('readout_pulse'*amp(1.0), 'rr', dual_demod.full("cos", "sin", v3), dual_demod.full("minus_sin", "cos", v4))
-            wait(5000, 'rr')
+            wait(250000, 'rr')
             r3 = declare_output_stream()
             save(v3, r3)
             r4 = declare_output_stream()
@@ -54,7 +54,7 @@ config = {
                 "1": {
                     "type": "MW",
                     "analog_outputs": {
-                        "2": {
+                        "1": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 8,
                             "band": 1,
@@ -62,7 +62,19 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4094900000.0,
+                                    "frequency": 4154600000.0,
+                                },
+                            },
+                        },
+                        "2": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 4,
+                            "band": 1,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 3726000000.0,
                                 },
                             },
                         },
@@ -98,7 +110,7 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7520000000.0,
+                                    "frequency": 7520800000.0,
                                 },
                             },
                         },
@@ -109,7 +121,7 @@ config = {
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7520000000.0,
+                            "downconverter_frequency": 7520800000.0,
                         },
                     },
                 },
@@ -165,7 +177,7 @@ config = {
             },
             "smearing": 0,
             "time_of_flight": 408,
-            "intermediate_frequency": -48600000.0,
+            "intermediate_frequency": -50000000.0,
         },
         "fock_drive": {
             "digitalInputs": {},
@@ -181,10 +193,10 @@ config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 2),
+                "port": ('con1', 1, 1),
                 "upconverter": 1,
             },
-            "intermediate_frequency": -359000000.0,
+            "intermediate_frequency": -50000000.0,
         },
     },
     "pulses": {
@@ -214,13 +226,13 @@ config = {
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.04000000000000001] * 320 + [0.0] * 320,
+            "samples": [0.12] * 320 + [0.0] * 320,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
         "fock_drive.fock_drive_constant_2000.waveform.I": {
             "type": "constant",
-            "sample": 0.2,
+            "sample": 0.39,
         },
         "qubit_GF2.qubitGF2_constant_pi_200.waveform.Q": {
             "type": "constant",
@@ -242,16 +254,16 @@ config = {
     },
     "integration_weights": {
         "rr.rr_readout_pulse.cos": {
-            "cosine": [(0.00079345703125, 64), (0.250732421875, 64), (0.3436279296875, 64), (0.308837890625, 64), (0.13897705078125, 64), (0.091217041015625, 64), (-0.06060791015625, 64), (-0.07135009765625, 64), (0.1973876953125, 64), (0.3499755859375, 64)],
-            "sine": [(0.073211669921875, 64), (0.110626220703125, 64), (0.392333984375, 64), (0.871490478515625, 64), (0.95623779296875, 64), (0.995819091796875, 64), (0.951202392578125, 64), (0.7540283203125, 64), (0.552581787109375, 64), (0.42462158203125, 64)],
+            "cosine": [(1.0, 640)],
+            "sine": [(0.0, 640)],
         },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(-0.073211669921875, 64), (-0.110626220703125, 64), (-0.392333984375, 64), (-0.871490478515625, 64), (-0.95623779296875, 64), (-0.995819091796875, 64), (-0.951202392578125, 64), (-0.7540283203125, 64), (-0.552581787109375, 64), (-0.42462158203125, 64)],
-            "sine": [(0.00079345703125, 64), (0.250732421875, 64), (0.3436279296875, 64), (0.308837890625, 64), (0.13897705078125, 64), (0.091217041015625, 64), (-0.06060791015625, 64), (-0.07135009765625, 64), (0.1973876953125, 64), (0.3499755859375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(1.0, 640)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(0.073211669921875, 64), (0.110626220703125, 64), (0.392333984375, 64), (0.871490478515625, 64), (0.95623779296875, 64), (0.995819091796875, 64), (0.951202392578125, 64), (0.7540283203125, 64), (0.552581787109375, 64), (0.42462158203125, 64)],
-            "sine": [(-0.00079345703125, 64), (-0.250732421875, 64), (-0.3436279296875, 64), (-0.308837890625, 64), (-0.13897705078125, 64), (-0.091217041015625, 64), (0.06060791015625, 64), (0.07135009765625, 64), (-0.1973876953125, 64), (-0.3499755859375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(-1.0, 640)],
         },
     },
     "mixers": {},
@@ -268,7 +280,7 @@ loaded_config = {
                 "1": {
                     "type": "MW",
                     "analog_outputs": {
-                        "2": {
+                        "1": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 8,
                             "band": 1,
@@ -276,7 +288,19 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4094900000.0,
+                                    "frequency": 4154600000.0,
+                                },
+                            },
+                        },
+                        "2": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 4,
+                            "band": 1,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 3726000000.0,
                                 },
                             },
                         },
@@ -312,7 +336,7 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7520000000.0,
+                                    "frequency": 7520800000.0,
                                 },
                             },
                         },
@@ -323,7 +347,7 @@ loaded_config = {
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7520000000.0,
+                            "downconverter_frequency": 7520800000.0,
                         },
                     },
                 },
@@ -379,7 +403,7 @@ loaded_config = {
             },
             "smearing": 0,
             "time_of_flight": 408,
-            "intermediate_frequency": -48600000.0,
+            "intermediate_frequency": -50000000.0,
         },
         "fock_drive": {
             "digitalInputs": {},
@@ -395,10 +419,10 @@ loaded_config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 2),
+                "port": ('con1', 1, 1),
                 "upconverter": 1,
             },
-            "intermediate_frequency": -359000000.0,
+            "intermediate_frequency": -50000000.0,
         },
     },
     "pulses": {
@@ -428,13 +452,13 @@ loaded_config = {
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.04000000000000001] * 320 + [0.0] * 320,
+            "samples": [0.12] * 320 + [0.0] * 320,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
         "fock_drive.fock_drive_constant_2000.waveform.I": {
             "type": "constant",
-            "sample": 0.2,
+            "sample": 0.39,
         },
         "qubit_GF2.qubitGF2_constant_pi_200.waveform.Q": {
             "type": "constant",
@@ -456,16 +480,16 @@ loaded_config = {
     },
     "integration_weights": {
         "rr.rr_readout_pulse.cos": {
-            "cosine": [(0.00079345703125, 64), (0.250732421875, 64), (0.3436279296875, 64), (0.308837890625, 64), (0.13897705078125, 64), (0.091217041015625, 64), (-0.06060791015625, 64), (-0.07135009765625, 64), (0.1973876953125, 64), (0.3499755859375, 64)],
-            "sine": [(0.073211669921875, 64), (0.110626220703125, 64), (0.392333984375, 64), (0.871490478515625, 64), (0.95623779296875, 64), (0.995819091796875, 64), (0.951202392578125, 64), (0.7540283203125, 64), (0.552581787109375, 64), (0.42462158203125, 64)],
+            "cosine": [(1.0, 640)],
+            "sine": [(0.0, 640)],
         },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(-0.073211669921875, 64), (-0.110626220703125, 64), (-0.392333984375, 64), (-0.871490478515625, 64), (-0.95623779296875, 64), (-0.995819091796875, 64), (-0.951202392578125, 64), (-0.7540283203125, 64), (-0.552581787109375, 64), (-0.42462158203125, 64)],
-            "sine": [(0.00079345703125, 64), (0.250732421875, 64), (0.3436279296875, 64), (0.308837890625, 64), (0.13897705078125, 64), (0.091217041015625, 64), (-0.06060791015625, 64), (-0.07135009765625, 64), (0.1973876953125, 64), (0.3499755859375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(1.0, 640)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(0.073211669921875, 64), (0.110626220703125, 64), (0.392333984375, 64), (0.871490478515625, 64), (0.95623779296875, 64), (0.995819091796875, 64), (0.951202392578125, 64), (0.7540283203125, 64), (0.552581787109375, 64), (0.42462158203125, 64)],
-            "sine": [(-0.00079345703125, 64), (-0.250732421875, 64), (-0.3436279296875, 64), (-0.308837890625, 64), (-0.13897705078125, 64), (-0.091217041015625, 64), (0.06060791015625, 64), (0.07135009765625, 64), (-0.1973876953125, 64), (-0.3499755859375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(-1.0, 640)],
         },
     },
     "mixers": {},

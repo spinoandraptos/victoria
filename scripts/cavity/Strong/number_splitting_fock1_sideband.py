@@ -73,9 +73,9 @@ if __name__ == "__main__":
 
     pulses = {
         "qubit_pulse": "qubit_gaussian_pi_2000",
-        "qubit_gf2_pi_pulse": "qubitGF2_constant_pi_24",
+        "qubit_gf2_pi_pulse": "qubitGF2_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
-        "fock_drive": "fock_drive_constant_72",
+        "fock_drive": "fock_drive_constant_172",
     }
 
     ############################## CONTROL PARAMETERS ##################################

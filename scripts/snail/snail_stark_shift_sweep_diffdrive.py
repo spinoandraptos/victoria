@@ -34,7 +34,7 @@ class snail_stark_shift_sweep(Experiment):
         """QUA sequence that defines this Experiment subclass"""
        
         # There are two cavity modes here, please check which mode is used.
-        qua.update_frequency(self.drive, self.drive_frequency)        
+        # qua.update_frequency(self.drive, self.drive_frequency)        
         qua.update_frequency(self.snail, self.snail_frequency)        
         self.drive.play(self.stark_drive, ampx=self.drive_ampx) # fixed freq
         self.snail.play(self.snail_pulse, ampx = self.snail_ampx)

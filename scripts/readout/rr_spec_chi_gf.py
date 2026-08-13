@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "qubit_gf2_drive": "qubitGF2_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -53e6
+    FREQ.start = -60e6
     FREQ.stop = -49e6
     FREQ.num = 201
     

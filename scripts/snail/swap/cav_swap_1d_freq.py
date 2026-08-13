@@ -29,18 +29,18 @@ class CavitySWAP1D_freq(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         qua.reset_phase(self.cavity)
-        # qua.reset_frame(self.cavity)
+       
         qua.reset_phase(self.snail)
         # qua.reset_frame(self.snail)
         qua.update_frequency(self.snail, self.snail_frequency)
         self.cavity.play(self.cavity_drive)
-        qua.wait(72, self.snail)    
-        self.snail.play(self.snail_pulse) # self.snail_ampx duration=int(100)
-        qua.wait(1052, self.qubit)  
-        # qua.align(self.snail, self.qubit)
+        qua.align(self.snail, self.cavity)   
+        self.snail.play(self.snail_pulse, ampx = 1) # self.snail_ampx duration=int(100)
+        
+        qua.align(self.snail, self.qubit)
         self.qubit.play(self.qubit_pulse, ampx = 1)
         qua.align(self.qubit, self.resonator)
-        qua.wait(21, self.resonator)  
+        
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
         )
@@ -66,16 +66,16 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_52",
-        "qubit_pulse": "qubit_gaussian_pi_1200",
+        "cavity_drive": "cav_constant_2000",
+        "qubit_pulse": "qubit_constant_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
-        "snail_pulse": "snail_drive_constant_1000",
+        "snail_pulse": "snail_drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 100_000,
+        "wait_time": 30_000,
         "ro_ampx": 1,
         
     }
@@ -95,16 +95,16 @@ if __name__ == "__main__":
     # FREQ.start = -200e6
     # FREQ.stop = -0.5e6
     # FREQ.num = 101
-    FREQ.start = 0e6
-    FREQ.stop = 200e6
-    FREQ.num = 201
+    FREQ.start =-400e6#-28e6
+    FREQ.stop =100e6#-24e6 
+    FREQ.num = 301
     
-    # SNAIL_AMPX = Sweep(
-    # name="snail_ampx",
-    # points=[
-    #     0.05, 0.08, 0.1
-    # ],
-    # )
+    SNAIL_AMPX = Sweep(
+    name="snail_ampx",
+    points=[
+        0, 0.5, 1
+    ],
+    )
     
     # QD_AMPX = Sweep(name="snail_frequency", points=[0.0, 1.0])
 

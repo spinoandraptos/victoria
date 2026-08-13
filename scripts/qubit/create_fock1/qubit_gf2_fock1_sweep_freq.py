@@ -30,7 +30,7 @@ class qubit_gf2_fock1_sweep_freq(Experiment):
         # qua.update_frequency(self.qubit, self.qubit_frequency)
         qua.align()
         
-        self.qubit_gf2.play(self.qubit_gf2_drive, ampx=0.0)
+        self.qubit_gf2.play(self.qubit_gf2_drive)
         # qua.wait(46,self.drive)
         qua.update_frequency(self.drive, self.drive_frequency)
         # self.qubit_ef.play(self.qubit_ef_drive) 
@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     parameters = {
         
-        "wait_time": 20_000,
+        "wait_time": 1000_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -93,8 +93,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "drive_frequency"
-    FREQ.start = -400e6  # 40e6
-    FREQ.stop = -300e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start = -50e6  # 40e6
+    FREQ.stop = 50e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
@@ -107,11 +107,11 @@ if __name__ == "__main__":
     #     name="d_ampx",
     #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
     #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
-    #     points=[1.0, 1.1, 1.2, 1.3]#0.25,0.5,0.75]
+    #     points=[0., 1.0]#0.25,0.5,0.75]
     # ) 
     # DEL = Sweep(name="time_delay", start=16, stop=160, step=20, dtype=int)
 
-    sweeps = [N, FREQ]#[N,  D_AMPX, FREQ]
+    sweeps = [N,  FREQ]#D_AMPX, 
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass

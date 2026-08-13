@@ -75,16 +75,16 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse":"cav_constant_1000",#"cav_constant_1000",
-        "qubit_pulse": "qubit_gaussian_pi_2000",
-        "snail_pulse": "snail_drive_constant_10000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
+        "cavity_pulse":"cav_constant_400",#"cav_constant_1000",
+        "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
+        "snail_pulse": "snail_drive_constant_2000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 100_000,
+        "wait_time": 30_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -97,13 +97,13 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
+    N.num = 100000
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "snail_frequency"
-    FREQ.start =-250e6
-    FREQ.stop =-150e6
+    FREQ.start =-150e6
+    FREQ.stop =-100e6 
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(

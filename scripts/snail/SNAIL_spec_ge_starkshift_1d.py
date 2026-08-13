@@ -4,12 +4,7 @@ from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
 import numpy as np
 
-from qcore.helpers import Stage
-from config.experiment_config import MODES_CONFIG
-import numpy as np
-import time
-
-class QubitSpec(Experiment):
+class SNAILSpec_ge_Stark_1d(Experiment):
     """Qubit spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -22,18 +17,23 @@ class QubitSpec(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["qubit_frequency"]
+    primary_sweeps = ["snail_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
 
+
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        qua.reset_phase(self.resonator)
-        qua.update_frequency(self.qubit, self.qubit_frequency)
+        # qua.reset_phase(self.resonator)
+        qua.update_frequency(self.snail, self.snail_frequency)
         #qua.update_frequency(self.resonator, self.resonator_frequency)
-        self.qubit.play(self.qubit_drive, ampx=self.qubit_drive_ampx)
+        qua.align()
+        self.drive.play(self.stark_drive, ampx=self.stark_ampx) # fixed freq
+        self.snail.play(self.snail_pulse, ampx=2.)
+        qua.align()
+        self.qubit.play(self.qubit_drive)
         qua.align()
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -49,8 +49,10 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
+        "drive": "snail_stark_drive",
         "qubit": "qubit",
         "resonator": "rr",
+        "snail": "snail_drive",
     }
 
     ################################### PULSE MAP ######################################
@@ -58,15 +60,17 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_drive": 'qubit_gaussian_pulse_60',#"qubit_constant_pi_400",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "stark_drive": "snail_stark_drive_constant_2000",
+        "qubit_drive": "qubit_constant_pi_pulse_1200",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
+        "snail_pulse": "snail_drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 40000,
-        "ro_ampx": 1,
+        "wait_time": 30_000,
+        "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
 
@@ -77,33 +81,40 @@ if __name__ == "__main__":
     # set number of repetitions for this E xperiment run
     N.num = 500000
 
-    # with Stage(configpath=MODES_CONFIG, remote=True) as stage:
-    #     (yoko1, rr) = stage.get("yoko1", "rr")
-    #     yoko1.ramp(5e-3, step=1e-4)
-
     # set the qubit frequency sweep for this Experiment run
-    FREQ.name = "qubit_frequency"
-    FREQ.start =0e6  # 40e6
-    FREQ.stop = 300e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
-    FREQ.num = 201
+    FREQ.name = "snail_frequency"
+    FREQ.start = -110e6
+    FREQ.stop =-70e6
+    FREQ.num = 71
+    
+    # Q_AMPX = Sweep(
+    #     name="q_ampx",
+    #     # points=[0.01, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5]#0.25,0.5,0.75]
+    #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
+    #     #points=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0 ]#0.25,0.5,0.75]
+    # )
+    STARK_AMPX = Sweep(name="stark_ampx", start=0, stop=1, num=9)
     
 
-    sweeps = [N, FREQ]
+    PHASE.plot = True
+    MAG.plot = True
+    Q.plot = True
+    I.plot = True
+    # SINGLE_SHOT.plot = False
+    
+    sweeps = [N, STARK_AMPX, FREQ]
+    #SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
 
-    PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    PHASE.plot = True
-    I.plot = True
-    Q.plot = True
-    MAG.plot = True
-
     I.fitfn = "gaussian"
     Q.fitfn = "gaussian"
     MAG.fitfn = "gaussian"
+    PHASE.fitfn = "gaussian"
+    
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    expt = QubitSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = SNAILSpec_ge_Stark_1d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run(simulate=False) #simulate=False

@@ -69,15 +69,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_20",
-        "qubit_selective_pi": "qubit_constant_pi_120",
+        "cav_displacement": "cav_constant_400",
+        "qubit_selective_pi": "qubit_constant_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1000_000,
+        "wait_time": 50_000,
         "plot_single_shot": False,
      
 
@@ -88,10 +88,10 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 1500
+    N.num = 100000
 
     # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0.1, stop=1.5, step=0.02)
+    CAV_AMP = Sweep(name="cav_ampx", start=0.1, stop=1, step=0.02)
 
  
     

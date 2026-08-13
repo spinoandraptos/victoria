@@ -70,14 +70,14 @@ if __name__ == "__main__":
 
     pulses = {
         "fock_drive": "fock_drive_constant_2000",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "qubit_gf2_drive": "qubitGF2_constant_pi_200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 20_000,
+        "wait_time": 2000_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=12, stop=240, step=4, dtype=int)
+    DEL = Sweep(name="length_drive", start=12, stop=2000, step=40, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6

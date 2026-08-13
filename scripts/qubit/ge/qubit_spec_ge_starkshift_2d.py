@@ -4,7 +4,7 @@ from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR
 from qcore import Experiment, qua, Sweep
 import numpy as np
 
-class QubitSpec_ge_Stark(Experiment):
+class QubitSpec_ge_Stark_2d(Experiment):
     """Qubit spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -31,7 +31,7 @@ class QubitSpec_ge_Stark(Experiment):
         #qua.update_frequency(self.resonator, self.resonator_frequency)
         qua.align()
         self.drive.play(self.stark_drive, ampx=self.q_ampx) # fixed freq
-        self.qubit.play(self.qubit_drive, ampx=self.qubit_drive_ampx)
+        self.qubit.play(self.qubit_drive, ampx=1)
         qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -47,8 +47,8 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "drive": "drive",
-        "qubit": "qubit_GF2",
+        "drive": "fock_drive",
+        "qubit": "qubit",
         "resonator": "rr",
     }
 
@@ -57,15 +57,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "stark_drive": "drive_constant_SS",
-        "qubit_drive": "qubitGF2_gaussian_pi_24",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
+        "stark_drive": "fock_drive_constant_1200",
+        "qubit_drive": "qubit_constant_pi_pulse_1200",#"qubit_constant_pulse",#"qubit_constant_pi_1500",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 200_000,
+        "wait_time": 40_000,
         "ro_ampx": 1.0,
         "qubit_drive_ampx": 1,
     }
@@ -79,8 +79,8 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_ge_frequency"
-    FREQ.start =-100e6  # 40e6
-    FREQ.stop = 50e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
+    FREQ.start =202e6  # 40e6
+    FREQ.stop = 209e6  # 60e6 #the 60e6 is from the lo used to generate ef pulse
     FREQ.num = 201
 
     
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     #     #points=[0.1, 0.2, 0.3, 0.4, 0.5]
     #     #points=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0 ]#0.25,0.5,0.75]
     # )
-    Q_AMPX = Sweep(name="q_ampx", start=0, stop=2.0, num=21)
+    Q_AMPX = Sweep(name="q_ampx", start=0, stop=2, num=11)
     
 
     sweeps = [N, FREQ, Q_AMPX]
@@ -121,5 +121,5 @@ if __name__ == "__main__":
     datasets = [I, Q, MAG, PHASE]
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    expt = QubitSpec_ge_Stark(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = QubitSpec_ge_Stark_2d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run(simulate=False) #simulate=False
