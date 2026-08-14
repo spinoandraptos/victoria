@@ -11,7 +11,7 @@ import numpy as np
 import time
 
 
-class NumberSplitting_FOCK1(Experiment):
+class NumberSplitting_FOCK1_Sideband(Experiment):
     """Number splitting"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -24,7 +24,7 @@ class NumberSplitting_FOCK1(Experiment):
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
 
-    primary_sweeps = ["fock_drive_frequency"]
+    primary_sweeps = ["qubit_frequency"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -33,16 +33,19 @@ class NumberSplitting_FOCK1(Experiment):
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
 
-        # GF transition
-        self.qubit_gf2.play(self.qubit_gf2_pi_pulse, ampx= self.drive_ampx)
-        qua.align(self.qubit_gf2, self.drive)
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        # # qua.wait(46,self.drive)
+        # # qua.update_frequency(self.drive) 
+        # # self.qubit_ef.play(self.qubit_ef_drive) 
+        # qua.align(self.qubit_gf2, self.drive)
+                
+        # self.drive.play(self.fock_drive)
+        # # self.qubit.play(self.qubit_pulse)
+        # # self.qubit.play(self.qubit_pulse)
         
-        # Sideband drive to exchange excitation
-        qua.update_frequency(self.drive, self.fock_drive_frequency)
-        self.drive.play(self.fock_drive, ampx= self.drive_ampx) # fixed freq #, ampx=2.0 max
-        qua.align(self.drive, self.qubit)
-        
-        # Bring qubit back to ground
+        # qua.align(self.qubit, self.drive)
+        # # Bring qubit back to ground
+        # qua.update_frequency(self.qubit, self.qubit_frequency)
         self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
 
@@ -59,11 +62,11 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        # "cavity": "cavity",#"cav",
+        "cavity": "cavity",#"cav",
         "qubit": "qubit",
         "resonator": "rr",
-        "qubit_gf2": "qubit_GF2",
         "drive": "fock_drive",
+        "qubit_gf2": "qubit_GF2",
         
     }
 
@@ -72,33 +75,30 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "qubit_pulse": "qubit_gaussian_pi_2000",
-        "qubit_gf2_pi_pulse": "qubitGF2_constant_pi_200",
+        "cavity_pulse": "cav_gaussian_1000",
+        "qubit_pulse": "qubit_constant_pi_pulse_2000",
         "readout_pulse": "rr_readout_pulse",
-        "fock_drive": "fock_drive_constant_172",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_48",
+        "fock_drive": "fock_drive_constant_200"
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 100_000,#6e6,
+        "wait_time": 1_000_000,#6e6,
         "ro_ampx": 1,
         # "plot_single_shot": True,
         "drive_ampx": 1
     }
 
-    ######################## SWEEP (INDEPENDENT) VARIABLES #############################
-    # must include an outermost averaging Sweep named "N"
-    # must include all primary sweeps defined by the Experiment subclass
-
     # set number of repetitions for this Experiment run
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    FREQ.name = "fock_drive_frequency"
-    FREQ.start = -100e6
-    FREQ.stop = 100e6
-    FREQ.num = 301
+    FREQ.name = "qubit_frequency"
+    FREQ.start = 20e6
+    FREQ.stop = 60e6
+    FREQ.num = 101
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
@@ -124,5 +124,5 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = NumberSplitting_FOCK1(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = NumberSplitting_FOCK1_Sideband(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
