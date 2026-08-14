@@ -27,7 +27,6 @@ class CavitySpec_versus_flux(Experiment):
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
-
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         #qua.reset_phase(self.cavity)
@@ -36,10 +35,10 @@ class CavitySpec_versus_flux(Experiment):
         
         # There are two cavity modes here, please check which mode is used.
         qua.update_frequency(self.cavity, self.cavity_frequency)
-        self.cavity.play(self.cavity_pulse, ampx = 1)# 0.05)#self.cav_ampx)
+        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
         qua.align(self.cavity, self.qubit)
         # qua.wait(32, self.qubit)
-        self.qubit.play(self.qubit_pulse)
+        # self.qubit.play(self.qubit_pulse)
         qua.align(self.qubit, self.resonator)
         # qua.align()
         self.resonator.measure(
@@ -72,17 +71,17 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_400",
-        "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
+        "cavity_pulse": "cav_constant_10000_spec",
+        "qubit_pulse": "qubit_constant_2000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 30_000,
+        "wait_time": 50_000,
         "ro_ampx": 1,
-        # "cav_ampx": 0.254,
+        "cav_ampx": 0.75,
         "fetch_interval": 1,
         "plot_single_shot": False,
         
@@ -93,14 +92,14 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 2000
+    N.num = 20000
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-100e6
-    FREQ.stop =150e6 
-    FREQ.num = 301
+    FREQ.start =0e6
+    FREQ.stop =50e6 
+    FREQ.num = 51
     # I.fitfn = "gaussian"
     # Q.fitfn = "gaussian"
     # MAG.fitfn = "gaussian"
@@ -127,12 +126,12 @@ if __name__ == "__main__":
     
 
     # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
-    flux_values = np.linspace(start=17e-3, stop=22e-3, num=13)
+    flux_values = np.linspace(start=-6e-3, stop=6e-3, num=13)
     for index_f in range(len(flux_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")
             yoko_target = flux_values[index_f]
-            yoko1.ramp(yoko_target, step=0.05e-3)
+            yoko1.ramp(yoko_target, step=0.1e-3)
             expt = CavitySpec_versus_flux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
             expt.run()
             # expt.run(simulate=True)

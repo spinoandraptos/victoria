@@ -6,7 +6,7 @@ from qm import QuantumMachinesManager
 from qm.qua import *
 
 
-# Single QUA script generated at 2026-08-12 17:18:57.277483
+# Single QUA script generated at 2026-08-13 18:17:14.458173
 # QUA library version: 1.3.1
 
 
@@ -54,18 +54,6 @@ config = {
                 "1": {
                     "type": "MW",
                     "analog_outputs": {
-                        "1": {
-                            "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 4,
-                            "band": 1,
-                            "delay": 20,
-                            "shareable": False,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 3750000000.0,
-                                },
-                            },
-                        },
                         "2": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
@@ -74,35 +62,35 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4154600000.0,
-                                },
-                            },
-                        },
-                        "3": {
-                            "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": -11,
-                            "band": 3,
-                            "delay": 20,
-                            "shareable": False,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 7520800000.0,
+                                    "frequency": 2479300000.0,
                                 },
                             },
                         },
                         "4": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
-                            "band": 2,
-                            "delay": 0,
+                            "band": 1,
+                            "delay": 20,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6660000000.0,
+                                    "frequency": 3000000000.0,
                                 },
                             },
                         },
                         "5": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 8,
+                            "band": 1,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 2800000000.0,
+                                },
+                            },
+                        },
+                        "6": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
                             "band": 2,
@@ -114,26 +102,26 @@ config = {
                                 },
                             },
                         },
-                        "6": {
+                        "7": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 8,
+                            "full_scale_power_dbm": 4,
                             "band": 2,
                             "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5250000000.0,
+                                    "frequency": 5699000000.0,
                                 },
                             },
                         },
                     },
                     "analog_inputs": {
                         "1": {
-                            "band": 3,
+                            "band": 2,
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7520800000.0,
+                            "downconverter_frequency": 5699000000.0,
                         },
                     },
                 },
@@ -162,10 +150,10 @@ config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 6),
+                "port": ('con1', 1, 5),
                 "upconverter": 1,
             },
-            "intermediate_frequency": 207000000.0,
+            "intermediate_frequency": 21100000.0,
         },
         "rr": {
             "digitalInputs": {},
@@ -181,7 +169,7 @@ config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 3),
+                "port": ('con1', 1, 7),
                 "upconverter": 1,
             },
             "MWOutput": {
@@ -189,13 +177,13 @@ config = {
             },
             "smearing": 0,
             "time_of_flight": 408,
-            "intermediate_frequency": -50000000.0,
+            "intermediate_frequency": -56700000.0,
         },
         "cavity": {
             "digitalInputs": {},
             "digitalOutputs": {},
             "outputs": {},
-            "operations": {'cav_displacement': 'cavity.cav_constant_400'},
+            "operations": {'cav_displacement': 'cavity.cav_constant_10000_spec'},
             "hold_offset": {
                 "duration": 0,
             },
@@ -205,15 +193,15 @@ config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 4),
+                "port": ('con1', 1, 5),
                 "upconverter": 1,
             },
-            "intermediate_frequency": -20700000.0,
+            "intermediate_frequency": 22700000.0,
         },
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 960,
+            "length": 640,
             "waveforms": {'Q': 'rr.rr_readout_pulse.waveform.Q', 'I': 'rr.rr_readout_pulse.waveform.I'},
             "integration_weights": {'minus_sin': 'rr.rr_readout_pulse.minus_sin', 'sin': 'rr.rr_readout_pulse.sin', 'cos': 'rr.rr_readout_pulse.cos'},
             "operation": "measurement",
@@ -224,29 +212,25 @@ config = {
             "integration_weights": {},
             "operation": "control",
         },
-        "cavity.cav_constant_400": {
-            "length": 400,
-            "waveforms": {'Q': 'cavity.cav_constant_400.waveform.Q', 'I': 'cavity.cav_constant_400.waveform.I'},
+        "cavity.cav_constant_10000_spec": {
+            "length": 10000,
+            "waveforms": {'Q': 'cavity.cav_constant_10000_spec.waveform.Q', 'I': 'cavity.cav_constant_10000_spec.waveform.I'},
             "integration_weights": {},
             "operation": "control",
         },
     },
     "waveforms": {
-        "cavity.cav_constant_400.waveform.I": {
-            "type": "constant",
-            "sample": 0.03900000000000001,
-        },
         "rr.rr_readout_pulse.waveform.Q": {
             "type": "constant",
             "sample": 0.0,
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.12] * 640 + [0.0] * 320,
+            "samples": [0.34400000000000003] * 320 + [0.0] * 320,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
-        "cavity.cav_constant_400.waveform.Q": {
+        "cavity.cav_constant_10000_spec.waveform.Q": {
             "type": "constant",
             "sample": 0.0,
         },
@@ -254,9 +238,13 @@ config = {
             "type": "constant",
             "sample": 0.0,
         },
+        "cavity.cav_constant_10000_spec.waveform.I": {
+            "type": "constant",
+            "sample": 0.2,
+        },
         "qubit.qubit_constant_pi_pulse_1200.waveform.I": {
             "type": "constant",
-            "sample": 0.04000000000000001,
+            "sample": 0.003631750710961717,
         },
     },
     "digital_waveforms": {
@@ -266,16 +254,16 @@ config = {
     },
     "integration_weights": {
         "rr.rr_readout_pulse.cos": {
-            "cosine": [(0.00018310546875, 64), (-0.064971923828125, 64), (-0.00360107421875, 64), (0.2052001953125, 64), (0.526153564453125, 64), (0.799774169921875, 64), (0.88348388671875, 64), (0.50750732421875, 64), (-0.017364501953125, 64), (-0.249725341796875, 64), (-0.304351806640625, 64), (-0.131500244140625, 64), (0.03558349609375, 64), (0.03033447265625, 64), (-0.1029052734375, 64)],
-            "sine": [(-0.044708251953125, 64), (-0.246246337890625, 64), (-0.4915771484375, 64), (-0.7159423828125, 64), (-0.7757568359375, 64), (-0.600311279296875, 64), (-0.20538330078125, 64), (0.277191162109375, 64), (0.414886474609375, 64), (0.240875244140625, 64), (0.04022216796875, 64), (-0.050811767578125, 64), (0.034271240234375, 64), (0.14019775390625, 64), (0.237579345703125, 64)],
+            "cosine": [(1.0, 640)],
+            "sine": [(0.0, 640)],
         },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(0.044708251953125, 64), (0.246246337890625, 64), (0.4915771484375, 64), (0.7159423828125, 64), (0.7757568359375, 64), (0.600311279296875, 64), (0.20538330078125, 64), (-0.277191162109375, 64), (-0.414886474609375, 64), (-0.240875244140625, 64), (-0.04022216796875, 64), (0.050811767578125, 64), (-0.034271240234375, 64), (-0.14019775390625, 64), (-0.237579345703125, 64)],
-            "sine": [(0.00018310546875, 64), (-0.064971923828125, 64), (-0.00360107421875, 64), (0.2052001953125, 64), (0.526153564453125, 64), (0.799774169921875, 64), (0.88348388671875, 64), (0.50750732421875, 64), (-0.017364501953125, 64), (-0.249725341796875, 64), (-0.304351806640625, 64), (-0.131500244140625, 64), (0.03558349609375, 64), (0.03033447265625, 64), (-0.1029052734375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(1.0, 640)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(-0.044708251953125, 64), (-0.246246337890625, 64), (-0.4915771484375, 64), (-0.7159423828125, 64), (-0.7757568359375, 64), (-0.600311279296875, 64), (-0.20538330078125, 64), (0.277191162109375, 64), (0.414886474609375, 64), (0.240875244140625, 64), (0.04022216796875, 64), (-0.050811767578125, 64), (0.034271240234375, 64), (0.14019775390625, 64), (0.237579345703125, 64)],
-            "sine": [(-0.00018310546875, 64), (0.064971923828125, 64), (0.00360107421875, 64), (-0.2052001953125, 64), (-0.526153564453125, 64), (-0.799774169921875, 64), (-0.88348388671875, 64), (-0.50750732421875, 64), (0.017364501953125, 64), (0.249725341796875, 64), (0.304351806640625, 64), (0.131500244140625, 64), (-0.03558349609375, 64), (-0.03033447265625, 64), (0.1029052734375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(-1.0, 640)],
         },
     },
     "mixers": {},
@@ -292,18 +280,6 @@ loaded_config = {
                 "1": {
                     "type": "MW",
                     "analog_outputs": {
-                        "1": {
-                            "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 4,
-                            "band": 1,
-                            "delay": 20,
-                            "shareable": False,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 3750000000.0,
-                                },
-                            },
-                        },
                         "2": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
@@ -312,35 +288,35 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4154600000.0,
-                                },
-                            },
-                        },
-                        "3": {
-                            "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": -11,
-                            "band": 3,
-                            "delay": 20,
-                            "shareable": False,
-                            "upconverters": {
-                                "1": {
-                                    "frequency": 7520800000.0,
+                                    "frequency": 2479300000.0,
                                 },
                             },
                         },
                         "4": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
-                            "band": 2,
-                            "delay": 0,
+                            "band": 1,
+                            "delay": 20,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6660000000.0,
+                                    "frequency": 3000000000.0,
                                 },
                             },
                         },
                         "5": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 8,
+                            "band": 1,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 2800000000.0,
+                                },
+                            },
+                        },
+                        "6": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 4,
                             "band": 2,
@@ -352,26 +328,26 @@ loaded_config = {
                                 },
                             },
                         },
-                        "6": {
+                        "7": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 8,
+                            "full_scale_power_dbm": 4,
                             "band": 2,
                             "delay": 0,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5250000000.0,
+                                    "frequency": 5699000000.0,
                                 },
                             },
                         },
                     },
                     "analog_inputs": {
                         "1": {
-                            "band": 3,
+                            "band": 2,
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7520800000.0,
+                            "downconverter_frequency": 5699000000.0,
                         },
                     },
                 },
@@ -400,10 +376,10 @@ loaded_config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 6),
+                "port": ('con1', 1, 5),
                 "upconverter": 1,
             },
-            "intermediate_frequency": 207000000.0,
+            "intermediate_frequency": 21100000.0,
         },
         "rr": {
             "digitalInputs": {},
@@ -419,7 +395,7 @@ loaded_config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 3),
+                "port": ('con1', 1, 7),
                 "upconverter": 1,
             },
             "MWOutput": {
@@ -427,13 +403,13 @@ loaded_config = {
             },
             "smearing": 0,
             "time_of_flight": 408,
-            "intermediate_frequency": -50000000.0,
+            "intermediate_frequency": -56700000.0,
         },
         "cavity": {
             "digitalInputs": {},
             "digitalOutputs": {},
             "outputs": {},
-            "operations": {'cav_displacement': 'cavity.cav_constant_400'},
+            "operations": {'cav_displacement': 'cavity.cav_constant_10000_spec'},
             "hold_offset": {
                 "duration": 0,
             },
@@ -443,15 +419,15 @@ loaded_config = {
                 "duration": 4,
             },
             "MWInput": {
-                "port": ('con1', 1, 4),
+                "port": ('con1', 1, 5),
                 "upconverter": 1,
             },
-            "intermediate_frequency": -20700000.0,
+            "intermediate_frequency": 22700000.0,
         },
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 960,
+            "length": 640,
             "waveforms": {'Q': 'rr.rr_readout_pulse.waveform.Q', 'I': 'rr.rr_readout_pulse.waveform.I'},
             "integration_weights": {'minus_sin': 'rr.rr_readout_pulse.minus_sin', 'sin': 'rr.rr_readout_pulse.sin', 'cos': 'rr.rr_readout_pulse.cos'},
             "operation": "measurement",
@@ -462,29 +438,25 @@ loaded_config = {
             "integration_weights": {},
             "operation": "control",
         },
-        "cavity.cav_constant_400": {
-            "length": 400,
-            "waveforms": {'Q': 'cavity.cav_constant_400.waveform.Q', 'I': 'cavity.cav_constant_400.waveform.I'},
+        "cavity.cav_constant_10000_spec": {
+            "length": 10000,
+            "waveforms": {'Q': 'cavity.cav_constant_10000_spec.waveform.Q', 'I': 'cavity.cav_constant_10000_spec.waveform.I'},
             "integration_weights": {},
             "operation": "control",
         },
     },
     "waveforms": {
-        "cavity.cav_constant_400.waveform.I": {
-            "type": "constant",
-            "sample": 0.03900000000000001,
-        },
         "rr.rr_readout_pulse.waveform.Q": {
             "type": "constant",
             "sample": 0.0,
         },
         "rr.rr_readout_pulse.waveform.I": {
             "type": "arbitrary",
-            "samples": [0.12] * 640 + [0.0] * 320,
+            "samples": [0.34400000000000003] * 320 + [0.0] * 320,
             "is_overridable": False,
             "max_allowed_error": 1.0,
         },
-        "cavity.cav_constant_400.waveform.Q": {
+        "cavity.cav_constant_10000_spec.waveform.Q": {
             "type": "constant",
             "sample": 0.0,
         },
@@ -492,9 +464,13 @@ loaded_config = {
             "type": "constant",
             "sample": 0.0,
         },
+        "cavity.cav_constant_10000_spec.waveform.I": {
+            "type": "constant",
+            "sample": 0.2,
+        },
         "qubit.qubit_constant_pi_pulse_1200.waveform.I": {
             "type": "constant",
-            "sample": 0.04000000000000001,
+            "sample": 0.003631750710961717,
         },
     },
     "digital_waveforms": {
@@ -504,16 +480,16 @@ loaded_config = {
     },
     "integration_weights": {
         "rr.rr_readout_pulse.cos": {
-            "cosine": [(0.00018310546875, 64), (-0.064971923828125, 64), (-0.00360107421875, 64), (0.2052001953125, 64), (0.526153564453125, 64), (0.799774169921875, 64), (0.88348388671875, 64), (0.50750732421875, 64), (-0.017364501953125, 64), (-0.249725341796875, 64), (-0.304351806640625, 64), (-0.131500244140625, 64), (0.03558349609375, 64), (0.03033447265625, 64), (-0.1029052734375, 64)],
-            "sine": [(-0.044708251953125, 64), (-0.246246337890625, 64), (-0.4915771484375, 64), (-0.7159423828125, 64), (-0.7757568359375, 64), (-0.600311279296875, 64), (-0.20538330078125, 64), (0.277191162109375, 64), (0.414886474609375, 64), (0.240875244140625, 64), (0.04022216796875, 64), (-0.050811767578125, 64), (0.034271240234375, 64), (0.14019775390625, 64), (0.237579345703125, 64)],
+            "cosine": [(1.0, 640)],
+            "sine": [(0.0, 640)],
         },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(0.044708251953125, 64), (0.246246337890625, 64), (0.4915771484375, 64), (0.7159423828125, 64), (0.7757568359375, 64), (0.600311279296875, 64), (0.20538330078125, 64), (-0.277191162109375, 64), (-0.414886474609375, 64), (-0.240875244140625, 64), (-0.04022216796875, 64), (0.050811767578125, 64), (-0.034271240234375, 64), (-0.14019775390625, 64), (-0.237579345703125, 64)],
-            "sine": [(0.00018310546875, 64), (-0.064971923828125, 64), (-0.00360107421875, 64), (0.2052001953125, 64), (0.526153564453125, 64), (0.799774169921875, 64), (0.88348388671875, 64), (0.50750732421875, 64), (-0.017364501953125, 64), (-0.249725341796875, 64), (-0.304351806640625, 64), (-0.131500244140625, 64), (0.03558349609375, 64), (0.03033447265625, 64), (-0.1029052734375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(1.0, 640)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(-0.044708251953125, 64), (-0.246246337890625, 64), (-0.4915771484375, 64), (-0.7159423828125, 64), (-0.7757568359375, 64), (-0.600311279296875, 64), (-0.20538330078125, 64), (0.277191162109375, 64), (0.414886474609375, 64), (0.240875244140625, 64), (0.04022216796875, 64), (-0.050811767578125, 64), (0.034271240234375, 64), (0.14019775390625, 64), (0.237579345703125, 64)],
-            "sine": [(-0.00018310546875, 64), (0.064971923828125, 64), (0.00360107421875, 64), (-0.2052001953125, 64), (-0.526153564453125, 64), (-0.799774169921875, 64), (-0.88348388671875, 64), (-0.50750732421875, 64), (0.017364501953125, 64), (0.249725341796875, 64), (0.304351806640625, 64), (0.131500244140625, 64), (-0.03558349609375, 64), (-0.03033447265625, 64), (0.1029052734375, 64)],
+            "cosine": [(0.0, 640)],
+            "sine": [(-1.0, 640)],
         },
     },
     "mixers": {},

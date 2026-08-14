@@ -70,8 +70,8 @@ if __name__ == "__main__":
     #     (yoko1, rr) = stage.get("yoko1", "rr")
     #     yoko1.ramp(15e-3, step=1e-4)
     FREQ.name = "resonator_frequency"
-    FREQ.start = -55e6
-    FREQ.stop = -45e6
+    FREQ.start = -70e6
+    FREQ.stop = -40e6
     FREQ.num = 201
 
     ################################### 2D SWEEP #######################################
