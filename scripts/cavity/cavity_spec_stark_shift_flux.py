@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_400",
+        "cavity_pulse": "cav_gaussian_pulse_1600",
         "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
         "stark_drive": "snail_stark_drive_constant_2000",
         "readout_pulse": "rr_readout_pulse",
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 30_000,
+        "wait_time": 100_000,
         "ro_ampx": 1,
         # "cav_ampx": 1,
         "fetch_interval": 1,
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 30000
+    N.num = 60000
 
     # set the qubit frequency sweep for this Experiment run
     Q_AMPX = Sweep(name="stark_ampx", start=0, stop=2.5, num=9)
@@ -144,9 +144,9 @@ if __name__ == "__main__":
 
     # expt = Cavity_Spec_stark_shift_2D_Flux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run()
-    flux_values = np.linspace(start=1.6e-3, stop=2.5e-3, num=10)
-    freqs_start = [-100e6, -90e6, -70e6, -70e6, -60e6, 0e6, 10e6, 30e6, 40e6, 50e6]
-    freqs_end = [-60e6, -70e6, 10e6, -20e6, -30e6, 50e6, 70e6, 80e6, 90e6, 100e6]
+    flux_values = np.linspace(start=0.8e-3, stop=1.5e-3, num=8)
+    freqs_start = [-180e6, -170e6, -160e6, -150e6, -150e6, -140e6, -130e6, -120e6]
+    freqs_end = [-150e6, -140e6, -130e6, -120e6, -110e6, -100e6, -90e6, -80e6]
     for index_f in range(len(flux_values)):
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")
@@ -160,4 +160,23 @@ if __name__ == "__main__":
             # expt.run(simulate=True)
             time.sleep(1)
         # time.sleep(60)
+    
+    flux_values = np.linspace(start=2.5e-3, stop=2.5e-3, num=1)
+    freqs_start = [60e6]
+    freqs_end = [100e6]
+    for index_f in range(len(flux_values)):
+        with Stage(configpath=MODES_CONFIG, remote=True) as stage:
+            (yoko1,) = stage.get("yoko1")
+            yoko_target = flux_values[index_f]
+            yoko1.ramp(yoko_target, step=0.1e-3)
+            FREQ.start = freqs_start[index_f]
+            FREQ.stop = freqs_end[index_f]
+            sweeps = [N, FREQ, Q_AMPX]
+            expt = Cavity_Spec_stark_shift_2D_Flux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+            expt.run()
+            # expt.run(simulate=True)
+            time.sleep(1)
+        # time.sleep(60)
+    # yoko1.ramp(0, step=0.1e-3)
+    
     yoko1.ramp(0, step=0.1e-3)

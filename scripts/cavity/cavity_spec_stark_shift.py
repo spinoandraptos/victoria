@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_400",
+        "cavity_pulse": "cav_gaussian_pulse_1600",
         "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
         "stark_drive": "snail_stark_drive_constant_2000",
         "readout_pulse": "rr_readout_pulse",
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 20000
+    N.num = 200000
 
     # set the qubit frequency sweep for this Experiment run
     Q_AMPX = Sweep(name="stark_ampx", start=0, stop=2.5, num=9)
@@ -107,8 +107,8 @@ if __name__ == "__main__":
 
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-50e6
-    FREQ.stop =50e6
+    FREQ.start =-100e6
+    FREQ.stop =-60e6
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
@@ -119,12 +119,12 @@ if __name__ == "__main__":
     sweeps = [N, FREQ, Q_AMPX]
     
     PHASE.plot = False
-    MAG.plot = False
-    Q.plot = True
+    MAG.plot = True
+    Q.plot = False
     I.plot = True
     SINGLE_SHOT.plot = False
     I.plot_args["plot_type"] = "image"
-    Q.plot_args["plot_type"] = "image"
+    MAG.plot_args["plot_type"] = "image"
     
     
     #SINGLE_SHOT.plot_args["plot_type"] = "image"

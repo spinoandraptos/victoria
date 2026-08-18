@@ -69,15 +69,15 @@ if __name__ == "__main__":
 
     pulses = {
         # "cavity_pulse":"cav_constant_1000",#"cav_constant_1000",
-        "qubit_pulse": "qubit_constant_pi_pulse_1200",
-        "snail_pulse": "snail_drive_constant_2000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
+        "qubit_pulse": "qubit_constant_pi_pulse_1000",
+        "snail_pulse": "snail_drive_constant_10000",#"snail_drive_constant_pi",#"snail_drive_constant_10000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 20_000,
+        "wait_time": 10_000,
         "ro_ampx": 1,
         "cav_ampx": 1,
         "fetch_interval": 1,
@@ -96,8 +96,8 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "snail_frequency"
-    FREQ.start = -120e6
-    FREQ.stop =-60e6
+    FREQ.start =000e6
+    FREQ.stop =400e6 
     FREQ.num = 101
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
     # QB_AMPX = Sweep(
