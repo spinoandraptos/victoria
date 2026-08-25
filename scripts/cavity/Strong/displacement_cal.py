@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_gaussian_pulse_1600",
+        "cav_displacement": "cav_constant_40",
         "qubit_selective_pi": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 300_000,
+        "wait_time": 500_000,
         "plot_single_shot": False,
      
 

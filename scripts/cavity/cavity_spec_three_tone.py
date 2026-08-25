@@ -1,15 +1,18 @@
+""" """
+""" """
 import sys
 
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
-from qm import qua as qm_qua
-import numpy as np
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, MODES_CONFIG, RR
 from qcore import Experiment, qua, Sweep
+from qm import qua as qm_qua
 from qcore.helpers import Stage
-
+from config.experiment_config import MODES_CONFIG
+import numpy as np
 import time
 
-class CavitySpec_versus_flux(Experiment):
+
+class CavitySpecThreeTone(Experiment):
     """Cavity spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -27,6 +30,7 @@ class CavitySpec_versus_flux(Experiment):
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
     # attributes accessed via 'self' must be defined in 'if __name__ == "__main__"' code
+
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
         #qua.reset_phase(self.cavity)
@@ -34,8 +38,11 @@ class CavitySpec_versus_flux(Experiment):
        
         
         # There are two cavity modes here, please check which mode is used.
-        qua.update_frequency(self.cavity, self.cavity_frequency)
-        self.cavity.play(self.cavity_pulse, ampx = 1) #self.cav_ampx
+        qua.update_frequency(self.Malaysia_cavity, self.cavity_frequency)
+        self.Malaysia_cavity.play(self.Malaysia_cavity_pulse)
+        
+        qua.align(self.Malaysia_cavity, self.qubit)
+        self.cavity.play(self.cavity_pulse)
         qua.align(self.cavity, self.qubit)
         # qua.wait(32, self.qubit)
         self.qubit.play(self.qubit_pulse)
@@ -61,6 +68,7 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
+        "Malaysia_cavity": "fock_drive",
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
@@ -71,7 +79,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_15000",
+        "Malaysia_cavity_pulse": "three_tone_cav_constant_10000",
+        "cavity_pulse": "cav_gaussian_pulse_1600",
         "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -79,9 +88,9 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 300_000,
+        "wait_time": 500_000,
         "ro_ampx": 1,
-        "cav_ampx": 0.75,
+        "cav_ampx": 0.05,
         "fetch_interval": 1,
         "plot_single_shot": False,
         
@@ -92,48 +101,42 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 1000
+    N.num = 1500000
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-50.2e6
-    FREQ.stop = -49.8e6
-    FREQ.num = 101
-    I.fitfn = "gaussian"
-    Q.fitfn = "gaussian"
-    MAG.fitfn = "gaussian"
-    PHASE.fitfn = "gaussian"
-    
-    PHASE.plot = False
-    MAG.plot = False
-    Q.plot = False
-    I.plot = False
-    # SINGLE_SHOT.plot = False
+    FREQ.start =-15e6
+    FREQ.stop =-5e6 
+    FREQ.num = 201
+    # FREQ.start =-200e6
+    # FREQ.stop =100e6 
+    # FREQ.num = 1201
+    #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
+    # Q_AMPX = Sweep(name="cav_ampx", start=0, stop=1, num=5)
+    PHASE.plot = True
+    MAG.plot = True
+    Q.plot = True
+    I.plot = True
+    SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
+    # sweeps = [N, Q_AMPX, FREQ]
     #SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
-
+    I.fitfn = "gaussian"
+    Q.fitfn = "gaussian"
+    MAG.fitfn = "gaussian"
+    PHASE.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
     
    
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
-    
 
-    # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
-    flux_values = np.linspace(start=-15e-3, stop=15e-3, num=12)
-    for index_f in range(len(flux_values)): 
-        with Stage(configpath=MODES_CONFIG, remote=True) as stage:
-            (yoko1,) = stage.get("yoko1")
-            yoko_target = flux_values[index_f]
-            yoko1.ramp(yoko_target, step=0.1e-3)
-            expt = CavitySpec_versus_flux(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-            expt.run()
-            # expt.run(simulate=True)
-            time.sleep(1)  # Sleeps for 1 second; adjust as needed
-    # yoko1.ramp(0e-3, step=1e-4)
+    expt = CavitySpecThreeTone(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run()
+            # time.sleep(60)

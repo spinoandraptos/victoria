@@ -1,12 +1,7 @@
 """ """
 """ """
 import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, SINGLE_SHOT
 from qm import qua as qm_qua
@@ -80,18 +75,18 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement":"cav_constant_84", #"cav_gaussian_pulse_100",
-        "qubit_pi_pulse": "qubit_gaussian_pi_24",
-        "qubit_selective_pi": "qubit_gaussian_pi_2000",
+        "cav_displacement":"cav_constant_400", #"cav_gaussian_pulse_100",
+        "qubit_pi_pulse": "qubit_gaussian_pi_pulse_24",
+        "qubit_selective_pi": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 300_000,
         # "plot_single_shot": True,
-        "qubit_in_e": False,
+        "qubit_in_e": True,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES ############ #################

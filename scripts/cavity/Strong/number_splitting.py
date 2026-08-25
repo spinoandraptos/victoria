@@ -35,7 +35,7 @@ class NumberSplitting(Experiment):
         # Generate state in the cavity
      
         
-        self.cavity.play(self.cavity_pulse, ampx = 0)#, ampx = self.cavity_drive_ampx)
+        self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
         qua.align(self.cavity, self.qubit)
         # Selective pi pulse
         qua.update_frequency(self.qubit, self.qubit_frequency)
@@ -65,15 +65,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_200",
-        "qubit_pulse": "qubit_constant_pi_pulse_2000",
+        "cavity_pulse": "cav_constant_400",
+        "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 2000_000,#6e6,
+        "wait_time": 600_000,#6e6,
         "ro_ampx": 1,
         # "plot_single_shot": True,
         "qubit_drive_ampx": 1
@@ -88,16 +88,16 @@ if __name__ == "__main__":
 
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "qubit_frequency"
-    FREQ.start = 38e6
-    FREQ.stop = 50e6
-    FREQ.num = 101
+    FREQ.start = 47e6
+    FREQ.stop = 52e6
+    FREQ.num = 81
 
     # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
     # sweeps = [N, FREQ]
-    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0]) #needs to be floating point numbers 
+    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 0.25, 0.5, ]) #needs to be floating point numbers 
     # sweeps = [N, QD_AMPX, FREQ]
-    sweeps = [N, FREQ]
+    sweeps = [N, QD_AMPX, FREQ]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass

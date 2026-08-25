@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     modes = {
         "resonator": "rr",
-        "drive": "drive"
+        "drive": "snail_stark_drive"
     }
 
     ################################### PULSE MAP ######################################
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     pulses = {
         "readout_pulse": "rr_readout_pulse",
-        "stark_drive": "drive_constant_1000",
+        "stark_drive": "snail_stark_drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################

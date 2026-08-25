@@ -34,8 +34,8 @@ class ECD_coherent(Experiment):
         qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
         ###################### state prep  #####################
-        self.cavity.play(self.cav_disp_state, ampx=1, phase=0.0)  # 0.1 , ampx=1, phase=0.0
-        amp_big=2.0
+        self.cavity.play(self.cav_disp_state, ampx=1.75, phase=0.0)  # 0.1 , ampx=1, phase=0.0
+        
         
         # self.qubit.play(self.qubit_pi2)
         # qua.align()
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
-        "qubit_gf2": "qubit_GF2",
+        # "qubit_gf2": "qubit_GF2",
     }
 
     ################################### PULSE MAP ######################################
@@ -107,18 +107,18 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_48_ecd",
-        "cav_disp": "cav_constant_48_ecd",
-        "qubit_pi2": "qubit_gaussian_pi2_24",
-        "qubit_pi": "qubit_gaussian_pi_24",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
+        "cav_disp_state": "cav_constant_40",
+        "cav_disp": "cav_constant_40",
+        "qubit_pi2": "qubit_gaussian_pi2_pulse_24",
+        "qubit_pi": "qubit_gaussian_pi_pulse_24",
+        # "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 800_000,
+        "wait_time": 600_000,
         "ro_ampx": 1,
         "fetch_interval": 5,
         "tomo_phase": 0,
@@ -136,8 +136,8 @@ if __name__ == "__main__":
     N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
-    CAV_AMPX = Sweep(name="ampx_x", start=-1, stop=1, step=0.1)
-    CAV_AMPX2 = Sweep(name="ampx_y", start=-1, stop=1, step=0.1)
+    CAV_AMPX = Sweep(name="ampx_x", start=-1.5, stop=1.5, step=0.1)
+    CAV_AMPX2 = Sweep(name="ampx_y", start=-1.5, stop=1.5, step=0.1)
 
     sweeps = [N, CAV_AMPX, CAV_AMPX2]
 

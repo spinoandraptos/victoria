@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     modes = {
         "resonator": "rr",
-        "drive": "drive"
+        "drive": "snail_stark_drive"
     }
 
     ################################### PULSE MAP ######################################
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     pulses = {
         "readout_pulse": "rr_readout_pulse",
-        "stark_drive": "drive_constant_500",
+        "stark_drive": "snail_stark_drive_constant_2000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -80,8 +80,8 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -48e6
-    FREQ.stop = -42e6
+    FREQ.start = -55e6
+    FREQ.stop = -45e6
     FREQ.num = 101#101
 
     ################################### 2D SWEEP #######################################
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     datasets = [I, Q, MAG, PHASE]
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
     
-    flux_values = np.linspace(start=-6e-3, stop=-12e-3, num=13)
+    flux_values = np.linspace(start=4e-3, stop=-4e-3, num=16)
 
     for index_f in range(len(flux_values)):
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:

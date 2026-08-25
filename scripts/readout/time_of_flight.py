@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # NOTE expts streaming raw adc data e.g. time of flight do not support >= 2D sweeps
 
     # set number of repetitions for this Experiment run
-    N.num = 25_000
+    N.num = 50_000
     sweeps = [N]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

@@ -14,8 +14,8 @@ if __name__ == "__main__":
         (opx1000, yoko1, qubit, rr, cav, qubit_EF, qubit_GF2, snail_drive,fock_drive,snail_stark_drive) = stage.get("opx1000", "yoko1", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "snail_drive","fock_drive","snail_stark_drive")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.47e9+50e6+0.8e6#7.415e9+50e6+0.5e6 
-        rr_IF = -49.8e6
+        rr_LO = 7.61e9+50e6+2.9e6-0.05e6 #7.415e9+50e6+0.5e6 
+        rr_IF = -50e6
         # rr_LO = 7.773e9+50e6#7.415e9+50e6+0.5e6 
         # rr_IF = -49.7e6
         
@@ -25,16 +25,23 @@ if __name__ == "__main__":
         # rr_LO = 3.7e9+50e6#5.6118e9+50e6 #fock
         # rr_IF = -50e6#124e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        qubit_LO = 5.25e9#5.6e9+50e6-400e6#+50e6+800e6#5.7e9+50e6-150E6
-        qubit_IF = 207e6
+        qubit_LO = 4.8e9-250e6-250e6-14e6-300e3#5.6e9+50e6-400e6#+50e6+800e6#5.7e9+50e6-150E6
+        qubit_IF = 50e6
         
         # qubit_LO =  6.659e9+50e6#6.659e9+50e6+1e8 #-800e6-800e6-800e6#5.6118e9+50e6
         # qubit_IF = 9.8e7#-2.9e8#5.9e7 #-2.643e8#124.15e6+1e3#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        cav_LO = 6.61e9 + 50e6
+        cav_LO = 2.9e9 + 50e6 + 25.2e6-94e3+9.51e3+52e3/2
+        cav_IF = -50e6 # at 3.5mA
+        # cav_IF = -33.7e6 # at 5mA
+        # cav_IF = -34.0e6 # at 4.5mA
+        #cav_IF = -34.56e6 # at 4mA
+        # cav_IF = -36.8e6 # at 3mA
+        # cav_IF = -40.2e6 # at 2.5mA
+        # cav_IF = -45.1e6 # at 2.2mA
+        # cav_IF = -47.7e6 # at 2.1mA
+        # cav_IF = -51.6e6 # at 2mA
         # cav_IF = -33.3e6 # at 6mA
-        # cav_IF = -34.6e6 # at 4mA
-        cav_IF = -26e6 # at 1.5mA
         #cav_IF = -26e6 #-94.6e6#-6.3762e7#-1.365e8#-6.1813e7 #-1.365e8#-1.0608e8#-9.7255e7#-1.365e8#-6.1813e7#-93e6-380e3+60e3 #-52.6e6
         
         qubitEF_IF = 22e6 #-118e6# -76e6
@@ -43,8 +50,11 @@ if __name__ == "__main__":
         # drive_LO = 3.7e9+50e6#5.6118e9+50e6 #fock
         # drive_IF = 124e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        fock_drive_LO = 4.1046e9+50e6 #3e9-800e6#2.4e9#5.6118e9+50e6 #fock
-        fock_drive_IF = -50e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        # fock_drive_LO = 4.1046e9+50e6 #3e9-800e6#2.4e9#5.6118e9+50e6 #fock
+        # fock_drive_IF = -50e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
+        #three tnoe cavity spec Malaysia
+        fock_drive_LO = 2.897e9+50e6
+        fock_drive_IF = -9.88e6
         
         # drive_LO = 7.6556e9+50e6#7.415e9+50e6+0.5e6 
         # drive_IF = -45.6e6
@@ -91,7 +101,7 @@ if __name__ == "__main__":
                                         "band":1,
                                     },
                                     3: {
-                                        "full_scale_power_dbm": -11, #16
+                                        "full_scale_power_dbm": -2, #16
                                         "upconverters": {1: {"frequency": rr_LO}},
                                         "band":3,
                                     },
@@ -99,13 +109,13 @@ if __name__ == "__main__":
                                     4: {
                                         "full_scale_power_dbm": 4, #only in increments of 3s -11
                                         "upconverters": {1: {"frequency":  cav_LO}},
-                                        "band":2,
+                                        "band":1,
                                     },
-                                    5: {
-                                        "full_scale_power_dbm": 4, 
-                                        "upconverters": {1: {"frequency": snail_drive_LO}},
-                                        "band":2,
-                                    },
+                                    # 5: {
+                                    #     "full_scale_power_dbm": 4, 
+                                    #     "upconverters": {1: {"frequency": snail_drive_LO}},
+                                    #     "band":2,
+                                    # },
                                     
                                     6: {
                                         "full_scale_power_dbm": 8, #4 for rrB
@@ -180,10 +190,10 @@ if __name__ == "__main__":
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
                 length=64*10,#64*8,#400,#
-                I_ampx=0.6,#0.05*0.7*.8*.8*.6, #0.03
+                I_ampx=0.0675,#0.05*0.7*.8*.8*.6, #0.03
                 pad=64*10,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
-                weights=r"C:\Users\qcrew\Desktop\Juncheng\victoria\config\weights\20260817_095646_weights.npz",
+                # weights=r"C:\Users\qcrew\Desktop\Juncheng\victoria\config\weights\20260817_095646_weights.npz",
             ),
             # ConstantReadoutPulse(
             #     name="rr_readout_pulse",
@@ -208,6 +218,20 @@ if __name__ == "__main__":
 
         qubit.operations = [
             GaussianPulse(
+                name="qubit_gaussian_pi_pulse_24",
+                sigma=6,
+                chop=4,
+                I_ampx=1.0*0.5/0.84,
+                Q_ampx=0.0,
+            ),
+            GaussianPulse(
+                name="qubit_gaussian_pi2_pulse_24",
+                sigma=6,
+                chop=4,
+                I_ampx=1.0*0.5/0.84/2,
+                Q_ampx=0.0,
+            ),
+            GaussianPulse(
                 name="qubit_gaussian_pulse_60",
                 sigma=15,
                 chop=4,
@@ -225,11 +249,11 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_pulse_1200",
                 sigma=300,
                 chop=4,
-                I_ampx=0.095*.5/.58*.5/.54*.5/.45,
+                I_ampx=1.0*0.5/0.84*24/1200*0.5/0.44*0.5/0.487*0.5/0.482,
                 Q_ampx=0.0,
             ),
             ConstantPulse(
-                name="qubit_constant_pulse",
+                name="qubit_constant_pulse_1000",
                 length=1000,
                 I_ampx=1,#0.247/10000*52,
                 
@@ -237,19 +261,19 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="qubit_constant_pulse_10000",
                 length=10000,
-                I_ampx=1,#0.247/10000*52,
+                I_ampx=0.08,#0.247/10000*52,
                 
             ),
             ConstantPulse(
                 name="qubit_constant_pi_pulse_1000",
                 length=1000,
-                I_ampx=0.05*0.5/0.386*2,#0.247/10000*52,
+                I_ampx=1.0*0.5/0.84,#0.247/10000*52,
                 
             ),
             ConstantPulse(
                 name="qubit_constant_pi_pulse_1200",
                 length=1200,
-                I_ampx=0.2,#0.247/10000*52,
+                I_ampx=1.0*0.5/0.84*24/1200*0.5/0.44*0.5/0.487*0.5/0.482/2,#0.247/10000*52,
                 
             ),
             ConstantPulse(
@@ -304,7 +328,7 @@ if __name__ == "__main__":
                 name="cav_gaussian_pulse_1600",
                 sigma=400,
                 chop=4,
-                I_ampx=1.1/9/1.5,
+                I_ampx=1.1/9/1.5/3*1.5*1/1.2,
                 Q_ampx=0.0,
             ),
             GaussianPulse(
@@ -315,19 +339,19 @@ if __name__ == "__main__":
             ),
           
             ConstantPulse(
-                name="cav_constant_400",
-                length=400,
+                name="cav_constant_40",
+                length=40,
                 I_ampx=1,#.195,
             ),
             ConstantPulse(
                 name="cav_constant_200",
                 length=200,
-                I_ampx=2,
+                I_ampx=0.1,
             ),
             ConstantPulse(
                 name="cav_constant_4000",
                 length=4000,
-                I_ampx=1.95,
+                I_ampx=0.1,
             ),
             ConstantPulse(
                 name="cav_constant_2000",
@@ -347,7 +371,12 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="cav_constant_10000",
                 length=10000,
-                I_ampx=1.95,
+                I_ampx=0.05,
+            ),
+            ConstantPulse(
+                name="cav_constant_15000",
+                length=15000,
+                I_ampx=0.03*.8,
             ),
             ConstantPulse(
                 name="cav_constant_200_low_power",
@@ -370,7 +399,13 @@ if __name__ == "__main__":
         )
 
         qubit_EF.operations = [
-
+            GaussianPulse(
+                name="qubit_gaussian_pi_pulse_24",
+                sigma=6,
+                chop=4,
+                I_ampx=1.0*0.5/0.84,
+                Q_ampx=0.0,
+            ),
             GaussianPulse(
                 name="qubitEF_gaussian_pi_16",
                 sigma=4,
@@ -522,6 +557,16 @@ if __name__ == "__main__":
                 length=172,
                 I_ampx=1,#0.247/10000*52,
             ),
+            ConstantPulse(
+                name="three_tone_cav_constant_2000",
+                length=2000,
+                I_ampx=1,#0.247/10000*52,
+            ),
+            # ConstantPulse(
+            #     name="three_tone_cav_constant_1000",
+            #     length=1600,
+            #     I_ampx=0.04,#0.247/10000*52,
+            # ),
         ]
         
         snail_drive.configure(
