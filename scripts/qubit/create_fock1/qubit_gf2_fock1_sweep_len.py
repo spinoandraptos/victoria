@@ -69,8 +69,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "fock_drive": "fock_drive_constant_200",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_48",
+        "fock_drive": "fock_drive_constant_2000",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_96",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     N.num = 500000
 
     # set the qubit frequency sweep for this Experiment run
-    DEL = Sweep(name="length_drive", start=12, stop=400, step=4, dtype=int)
+    DEL = Sweep(name="length_drive", start=12, stop=500, step=4, dtype=int)
     # DEL = Sweep(name="length_drive", start=16, stop=64, step=8, dtype=int)
     # FREQ2.name = "drive_frequency"
     # FREQ2.start =-60e6  # 40e6

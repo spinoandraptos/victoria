@@ -91,9 +91,9 @@ if __name__ == "__main__":
 
     pulses = {
         # "qubitA_drive": "qubitAGF_gaussian_pi_pulse",
-        "qubit_snap_pulse": "qubit_gaussian_pi_8000",
-        "cavity_pulse": "cav_constant_20",
-        "qubit_pulse": "qubit_gaussian_pi2_24",
+        # "qubit_snap_pulse": "qubit_gaussian_pi_8000",
+        "cavity_pulse": "cav_constant_200",
+        "qubit_pulse": "qubit_gaussian_pi2_pulse_24",
         # "qubitEF_drive": "qubitEF_constant_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 1.5e6,
         "ro_ampx": 1,
-        "delay": 914,
+        "delay": 1100,
         "fetch_interval": 1,
         "plot_single_shot": False,
         # "cavity_drive_I": 0.0,

@@ -1,30 +1,25 @@
 """ """
-""" """
+
 import sys
-from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, SINGLE_SHOT, RR
 
+# sys.path.append("C:/Users/admin/Desktop/qcore-yabba/yabba-main/")
+from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE, RR, SINGLE_SHOT
 from qcore import Experiment, qua, Sweep
+from qcore import Dataset
 from qm import qua as qm_qua
-from qcore.helpers import Stage
-from config.experiment_config import MODES_CONFIG
-import numpy as np
-import time
 
-
-class NumberSplitting(Experiment):
-    """Number splitting"""
+class Wigner_1d(Experiment):
+    """Ramsey revival"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
     # these Datasets form the "raw" experimental data and will be streamed by the OPX
     # they must be specified at experiment runtime
-
     primary_datasets = ["I", "Q"]
 
     ############################## DEFINE PRIMARY SWEEPS ###############################
     # these Sweeps are uniquely associated with the Experiment subclass
     # these Sweeps must be specified at experiment runtime
-
-    primary_sweeps = ["qubit_frequency"]
+    primary_sweeps = ["cavity_drive_Q"]
 
     ############################ DEFINE THE PULSE SEQUENCE #############################
     # ensure that you import 'qua' from 'qcore' and not from 'qm' library
@@ -32,19 +27,43 @@ class NumberSplitting(Experiment):
 
     def sequence(self):
         """QUA sequence that defines this Experiment subclass"""
-        # Generate state in the cavity
-     
+        qua.reset_phase()
         
-        self.cavity.play(self.cavity_pulse, ampx = self.cavity_drive_ampx)
-        qua.align(self.cavity, self.qubit)
-        # Selective pi pulse
-        qua.update_frequency(self.qubit, self.qubit_frequency)
-        self.qubit.play(self.qubit_pulse)
+        #create coherent state
+        # self.cavity.play(self.cavity_pulse)
+        #         # self.qubitB.play(self.qubitB_grape_8)
+        
+        # fock1 
+        # self.qubit_gf2.play(self.qubit_gf2_drive)
+        # qua.align(self.qubit_gf2, self.drive)
+        # self.drive.play(self.fock_drive)
+            
+          
+        
+                
         qua.align()
-        # Measurement
-        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual")
+
+        self.cavity.play(self.cavity_pulse, ampx=(self.cavity_drive_I, -self.cavity_drive_Q, self.cavity_drive_Q, self.cavity_drive_I), phase=0.0)  # displacement in I direction
+        # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
+        # self.cavity.play(self.cavity_pulse, ampx = self.cavity_ampx)
+        qua.align(self.cavity,self.qubit)
+
+
+        self.qubit.play(self.qubit_pulse) # pi/2
+        qua.wait(self.delay, self.qubit)  # wait
+        self.qubit.play(self.qubit_pulse) # pi/2
+        qua.align()
+
+        # self.qubitEF.play(self.qubitEF_drive)
+        # qua.align(self.qubitEF, self.resonator)
+
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx,  demod_type="dual")
+
         qua.wait(self.wait_time, self.resonator)
 
+        if self.plot_single_shot:  # assign state to G or E
+            qm_qua.assign(self.single_shot,qm_qua.Cast.to_fixed(self.I > self.readout_pulse.threshold),)
+        
 
 if __name__ == "__main__":
     """ """
@@ -54,10 +73,13 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        "cavity": "cavity",#"cav",
-        "qubit": "qubit",
-        "resonator": "rr",
+        "qubit_gf2": "qubit_GF2",
+        "drive": "fock_drive",
         
+        "cavity": "cavity",
+        "qubit": "qubit",
+        # "qubitEF":'qubit_EF',
+        "resonator": "rr",
     }
 
     ################################### PULSE MAP ######################################
@@ -65,18 +87,24 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
+        "fock_drive": "fock_drive_constant_fock1_180",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_96",
+        
         "cavity_pulse": "cav_constant_200",
-        "qubit_pulse": "qubit_constant_pi_pulse_6000",
+        "qubit_pulse": "qubit_gaussian_pi2_pulse_24",
+        # "qubitEF_drive": "qubitEF_constant_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 600_000,#6e6,
+        "wait_time": 1.0e6,
         "ro_ampx": 1,
-        # "plot_single_shot": True,
-        "qubit_drive_ampx": 1
+        "delay": 1100,
+        "fetch_interval": 1,
+        "plot_single_shot": False,
+        "cavity_drive_I": 0.0,
     }
 
     ######################## SWEEP (INDEPENDENT) VARIABLES #############################
@@ -84,38 +112,38 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 500000
+    N.num = 10000
 
     # set the qubit frequency sweep for this Experiment run
-    FREQ.name = "qubit_frequency"
-    FREQ.start = 47e6
-    FREQ.stop = 52e6
-    FREQ.num = 81
+    # DELAY = Sweep(
+    #     name="delay",
+    #     dtype=int,
+    #     start=4,
+    #     stop=1000,
+    #     step=16,
+    # )
+    
+    CAVITY_AMPX = Sweep(name="cavity_drive_Q", start=-2, stop=2, num = 101)
 
-    # QD_AMPX = Sweep(name="qubit_drive_ampx", points=[0.0, 1.0])
 
-    # sweeps = [N, FREQ]
-    QD_AMPX = Sweep(name="cavity_drive_ampx", points= [0.0, 1, 2, ]) #needs to be floating point numbers 
-    # sweeps = [N, QD_AMPX, FREQ]
-    sweeps = [N, QD_AMPX, FREQ]
+    sweeps = [N, CAVITY_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass
+    # MAG.fitfn = "gaussian"
 
     PHASE.datafn_args = {"delay": 2.792e-7, "freq": RR.int_freq}
-    PHASE.plot = True
+    MAG.plot = True
     I.plot = True
     Q.plot = True
-    MAG.plot = True
-
+    PHASE.plot = True,
     I.fitfn = "gaussian"
     Q.fitfn = "gaussian"
+    PHASE.fitfn = "gaussian"
     MAG.fitfn = "gaussian"
     datasets = [I, Q, MAG, PHASE]
-    # SINGLE_SHOT.fitfn = 'double_gaussian'
-    #SINGLE_SHOT.plot_args = {"plot_err": False}
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = NumberSplitting(FOLDER, modes, pulses, sweeps, datasets, **parameters)
-    expt.run()
+    expt = Wigner_1d(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt.run(simulate = False)

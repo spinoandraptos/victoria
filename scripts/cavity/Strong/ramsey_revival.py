@@ -74,8 +74,8 @@ if __name__ == "__main__":
     pulses = {
         # "qubitA_drive": "qubitAGF_gaussian_pi_pulse",
         # "driveA_pulse": "driveA_constant_ramp_pulse_short",
-        "cavity_pulse": "cav_gaussian_pulse_100",
-        "qubit_pulse": "qubit_constant_pi2_24",
+        "cavity_pulse": "cav_constant_200",
+        "qubit_pulse": "qubit_gaussian_pi2_pulse_24",
         # "qubitEF_drive": "qubitEF_constant_pi_16",
         "readout_pulse": "rr_readout_pulse",
     }
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 1500_000,
+        "wait_time": 600_000,
         "ro_ampx": 1,
         # "cavity_ampx": 1,
         "fetch_interval": 1,
@@ -102,8 +102,8 @@ if __name__ == "__main__":
         name="delay",
         dtype=int,
         start=4,
-        stop=5000,
-        step=16,
+        stop=6000,
+        step=60,
     )
     
     CAVITY_AMPX = Sweep(name="cavity_ampx", points=[0.5, 0.7])

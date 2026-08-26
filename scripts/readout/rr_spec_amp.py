@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #     # points=[ 0.1,0.2,0.3,0.4,0.5, 0.6]#0.25,0.5,0.75]
     #     # points=[ 0.04,0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
     # ) 
-    RO_AMPX = Sweep(name="ro_ampx", start=0.01, stop=0.2, num=9)
+    RO_AMPX = Sweep(name="ro_ampx", start=0.1, stop=2, num=9)
     # QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.7, stop=1.7, num=51)
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]

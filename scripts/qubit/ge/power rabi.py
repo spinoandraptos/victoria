@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     pulses = {
         
-        "qubit_drive": "qubit_gaussian_pi_pulse_24",
+        "qubit_drive": "qubit_constant_pi_pulse_6000",
         "readout_pulse": "rr_readout_pulse",
     }
 

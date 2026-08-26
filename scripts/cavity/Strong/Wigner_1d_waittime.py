@@ -115,7 +115,7 @@ if __name__ == "__main__":
     parameters = {
         "wait_time": 600_000,
         "ro_ampx": 1,
-        "delay": 1212,
+        "delay": 1210,
         "fetch_interval": 1,
         "plot_single_shot": False,
         "cavity_drive_I": 0.0,
@@ -137,10 +137,19 @@ if __name__ == "__main__":
     #     step=16,
     # )
     
+    DELAY =  Sweep(
+        name="delay",
+        # points=[0.05,0.1,0.5, 0.6, 0.7, 0.8, 0.9, 1]
+        points=[610, 1250,1300]#0.25,0.5,0.75] #[0.01,0.05, 0.08,0.1, 0.2, 0.3, 0.4]
+        # points=[0.01, 0.2, 0.5, 0.8, 1.0, 1.2]
+        # points=[ 0.1,0.2,0.3,0.4,0.5, 0.6]#0.25,0.5,0.75]
+        # points=[ 0.04,0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
+    ) 
+    
     CAVITY_AMPX = Sweep(name="cavity_drive_Q", start=-2, stop=2, num = 51)
 
 
-    sweeps = [N, CAVITY_AMPX]
+    sweeps = [N, DELAY, CAVITY_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################
     # must include all primary datasets defined by the Experiment subclass

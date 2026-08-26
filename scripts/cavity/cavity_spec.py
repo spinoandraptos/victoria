@@ -39,7 +39,7 @@ class CavitySpec(Experiment):
         
         # There are two cavity modes here, please check which mode is used.
         qua.update_frequency(self.cavity, self.cavity_frequency)
-        self.cavity.play(self.cavity_pulse, ampx = self.cav_ampx)
+        self.cavity.play(self.cavity_pulse, ampx = 1) #self.cav_ampx
         qua.align(self.cavity, self.qubit)
         # qua.wait(32, self.qubit)
         self.qubit.play(self.qubit_pulse)
@@ -75,15 +75,15 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_pulse": "cav_constant_15000",
-        "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
+        "cavity_pulse": "cav_constant_2000",
+        "qubit_pulse": "qubit_constant_pi_pulse_6000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 300_000,
+        "wait_time": 500_000,
         "ro_ampx": 1,
         # "cav_ampx": 0.75,
         "fetch_interval": 1,
@@ -101,22 +101,22 @@ if __name__ == "__main__":
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-50.5e6
-    FREQ.stop = -49.5e6
-    FREQ.num = 81
+    FREQ.start =48e6
+    FREQ.stop = 52e6
+    FREQ.num = 101
     # FREQ.start =-200e6
     # FREQ.stop =100e6 
     # FREQ.num = 1201
     #PULSE_LENGTH = Sweep(name="cav_pulse_length", start=16, stop=400, step=16, dtype=int)
-    Q_AMPX = Sweep(name="cav_ampx", start=0.6, stop=1, num=3)
+    Q_AMPX = Sweep(name="cav_ampx", start=0.5, stop=1, num=3)
     PHASE.plot = True
     MAG.plot = True
     Q.plot = True
     I.plot = True
     SINGLE_SHOT.plot = False
     
-    # sweeps = [N, FREQ]
-    sweeps = [N, Q_AMPX, FREQ]
+    sweeps = [N, FREQ]
+    # sweeps = [N, Q_AMPX, FREQ]
     #SINGLE_SHOT.plot_args["plot_type"] = "image"
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

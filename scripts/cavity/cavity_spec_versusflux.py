@@ -79,7 +79,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ############# #####################
 
     parameters = {
-        "wait_time": 300_000,
+        "wait_time": 500_000,
         "ro_ampx": 1,
         "cav_ampx": 0.75,
         "fetch_interval": 1,
@@ -92,23 +92,23 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 1000
+    N.num = 2000
 
     # set the qubit frequency sweep for this Experiment run
     
     FREQ.name = "cavity_frequency"
-    FREQ.start =-50.2e6
-    FREQ.stop = -49.8e6
+    FREQ.start =35e6
+    FREQ.stop =65e6
     FREQ.num = 101
     I.fitfn = "gaussian"
     Q.fitfn = "gaussian"
     MAG.fitfn = "gaussian"
     PHASE.fitfn = "gaussian"
     
-    PHASE.plot = False
-    MAG.plot = False
-    Q.plot = False
-    I.plot = False
+    PHASE.plot = True
+    MAG.plot = True
+    Q.plot = True
+    I.plot = True
     # SINGLE_SHOT.plot = False
     
     sweeps = [N, FREQ]
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     
 
     # flux_values = np.linspace(start=-20e-3, stop=20e-3, num=801)
-    flux_values = np.linspace(start=-15e-3, stop=15e-3, num=12)
+    flux_values = np.linspace(start=0e-3, stop=15e-3, num=7)
     for index_f in range(len(flux_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
             (yoko1,) = stage.get("yoko1")
