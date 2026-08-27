@@ -38,10 +38,8 @@ class RabiGF2(Experiment):
         # qua.reset_frame(self.qubit)
         # qua.align()
         """QUA sequence that defines this Experiment subclass"""
-        # self.drive.play(self.stark_drive)
         self.qubit_gf2.play(self.qubit_gf2_drive, ampx=self.qubit_pulse_amplitude)
-        # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
-     
+
         qua.align(self.qubit_gf2, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -62,7 +60,6 @@ if __name__ == "__main__":
     # value: name of the Mode as defined by the user in modes.yml
 
     modes = {
-        # "drive": "drive",
         "qubit_gf2": "qubit_GF2",
         "resonator": "rr",
     }
@@ -72,8 +69,7 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        # "stark_drive": "drive_constant_pi_300",
-        "qubit_gf2_drive": "qubitGF2_gaussian_pi_96",
+        "qubit_gf2_drive": "qubitGF2_gaussian_pi_pulse_60",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -81,7 +77,6 @@ if __name__ == "__main__":
 
     parameters = {
         "wait_time":150_000,
-        # "initialize_wait_time": 5000,
         "ro_ampx": 1,
         "plot_single_shot": False,
     }
@@ -94,7 +89,7 @@ if __name__ == "__main__":
     N.num = 100_000
 
     # set the qubit amplitude sweep for this Experiment run
-    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.4, stop=1.4, num=61)
+    QD_AMPX = Sweep(name="qubit_pulse_amplitude", start=-1.5, stop=1.5, num=51)
     sweeps = [N, QD_AMPX]
 
     ######################## DATASET (DEPENDENT) VARIABLES #############################

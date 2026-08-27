@@ -61,14 +61,14 @@ if __name__ == "__main__":
 
     pulses = {
         
-        "qubit_drive": "qubit_constant_pi_pulse_6000",
+        "qubit_drive": "qubit_constant_pulse_1000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":150_000,
+        "wait_time":100_000,
         # "initialize_wait_time": 5000,
         "ro_ampx": 1,
         "plot_single_shot": False,

@@ -14,7 +14,7 @@ if __name__ == "__main__":
         (opx1000, yoko1, qubit, rr, cav, qubit_EF, qubit_GF2, snail_drive,fock_drive,snail_stark_drive) = stage.get("opx1000", "yoko1", "qubit", "rr", "cavity", "qubit_EF", "qubit_GF2", "snail_drive","fock_drive","snail_stark_drive")
         u = unit(coerce_to_integer=True)
         
-        rr_LO = 7.638e9+50e6+0.8e6+0.1e6#7.415e9+50e6+0.5e6 
+        rr_LO = 7.60e9+50e6+0.6e6#7.415e9+50e6+0.5e6 
         rr_IF = -50e6
         # rr_LO = 7.773e9+50e6#7.415e9+50e6+0.5e6 
         # rr_IF = -49.7e6
@@ -25,14 +25,14 @@ if __name__ == "__main__":
         # rr_LO = 3.7e9+50e6#5.6118e9+50e6 #fock
         # rr_IF = -50e6#124e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        qubit_LO = 5.743e9-50e6-11.1e6+700e3#5.6e9+50e6-400e6#+50e6+800e6#5.7e9+50e6-150E6
+        qubit_LO = 5.8e9-50e6-4.1e6+0.7e6-.1e6#5.6e9+50e6-400e6#+50e6+800e6#5.7e9+50e6-150E6
         qubit_IF = 50e6
         
         # qubit_LO =  6.659e9+50e6#6.659e9+50e6+1e8 #-800e6-800e6-800e6#5.6118e9+50e6
         # qubit_IF = 9.8e7#-2.9e8#5.9e7 #-2.643e8#124.15e6+1e3#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
         
-        cav_LO = 6.61e9 + 77.2e6-100e6+21e6-4e6+1e6-0.2e6
-        cav_IF = 50e6 #-94.6e6#-6.3762e7#-1.365e8#-6.1813e7 #-1.365e8#-1.0608e8#-9.7255e7#-1.365e8#-6.1813e7#-93e6-380e3+60e3 #-52.6e6
+        cav_LO = 6.61e9 +50e6-14e6-2.2e6+1e6-0.7e6
+        cav_IF = -50e6 #-94.6e6#-6.3762e7#-1.365e8#-6.1813e7 #-1.365e8#-1.0608e8#-9.7255e7#-1.365e8#-6.1813e7#-93e6-380e3+60e3 #-52.6e6
         # cav_IF = -33.7e6 # at 5mA
         # cav_IF = -34.0e6 # at 4.5mA
         #cav_IF = -34.56e6 # at 4mA
@@ -44,8 +44,8 @@ if __name__ == "__main__":
         # cav_IF = -33.3e6 # at 6mA
         #cav_IF = -26e6 #-94.6e6#-6.3762e7#-1.365e8#-6.1813e7 #-1.365e8#-1.0608e8#-9.7255e7#-1.365e8#-6.1813e7#-93e6-380e3+60e3 #-52.6e6
         
-        qubitEF_IF = -141.6e6 #-118e6# -76e6
-        qubitGF2_IF = -42.6e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
+        qubitEF_IF = -108e6 #-118e6# -76e6
+        qubitGF2_IF = -37e6#59.5e6 #3.2e6 no stark shift #stark shift 59.5e6
         
         # drive_LO = 3.7e9+50e6#5.6118e9+50e6 #fock
         # drive_IF = 124e6#-40e6 #-55.95e6 #-43.8e6# -76e6  -92e6#
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                                     },
                                     
                                     4: {
-                                        "full_scale_power_dbm": 7, #only in increments of 3s -11
+                                        "full_scale_power_dbm": 13, #only in increments of 3s -11
                                         "upconverters": {1: {"frequency":  cav_LO}},
                                         "band":1,
                                     },
@@ -179,29 +179,21 @@ if __name__ == "__main__":
                 I_ampx=0.23,
                 Q_ampx=0.0,
             ),
-            # ConstantReadoutPulse(
-            #         name="rr_readout_pulse",
-            #         length=64*12,#64*8,#400,#
-            #         I_ampx=1,#0.05*0.7*.8*.8*.6, #0.03
-            #         pad=64*10,#300,#64*12, #1200, #
-            #         digital_marker=DigitalWaveform("ADC_ON"),
-            #         # weights="C:\\Users\\qcrew\\Desktop\\Juncheng\\victoria\\config\\weights\\20260724_161936_weights.npz",
-            #     ),
             ConstantReadoutPulse(
                 name="rr_readout_pulse",
                 length=64*10,#64*8,#400,#
-                I_ampx=0.04375,#0.05*0.7*.8*.8*.6, #0.03
+                I_ampx=0.0475,#0.04375*0.875,
                 pad=64*10,#300,#64*12, #1200, #
                 digital_marker=DigitalWaveform("ADC_ON"),
-                weights=r"C:\Users\qcrew\Desktop\Juncheng\victoria\config\weights\20260825_140509_weights.npz",
+                # weights=r"C:\Users\qcrew\Desktop\Juncheng\victoria\config\weights\20260826_171900_weights.npz",
             ),
             # ConstantReadoutPulse(
             #     name="rr_readout_pulse",
-            #     length=64*20,#64*8,#400,#
-            #     I_ampx=0.1, #0.03
-            #     pad=64*20,#300,#64*12, #1200, #
+            #     length=64*40,#64*8,#400,#
+            #     I_ampx=0.04375*0.875/4,#0.05*0.7*.8*.8*.6, #0.03
+            #     pad=64*40,#300,#64*12, #1200, #
             #     digital_marker=DigitalWaveform("ADC_ON"),
-            #     # weights="C:\\Users\\qcrew\\Desktop\\Juncheng\\victoria\\config\\weights\\20260702_102842_weights.npz",
+            #     # weights=r"C:\Users\qcrew\Desktop\Juncheng\victoria\config\weights\20260825_140509_weights.npz",
             # ),
         ]
         
@@ -221,14 +213,14 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_pulse_24",
                 sigma=6,
                 chop=4,
-                I_ampx=1.0*0.5/0.84/.353*.5,
+                I_ampx=1.0*0.5/0.84/.353*.5*0.5/0.872*0.5/0.53,
                 Q_ampx=.01,
             ),
             GaussianPulse(
                 name="qubit_gaussian_pi2_pulse_24",
                 sigma=6,
                 chop=4,
-                I_ampx=1.0*0.5/0.84/.353*.5/2,
+                I_ampx=1.0*0.5/0.84/.353*.5*0.5/0.872*0.5/0.53/2,
                 Q_ampx=.01,
             ),
             GaussianPulse(
@@ -249,19 +241,27 @@ if __name__ == "__main__":
                 name="qubit_gaussian_pi_pulse_1200",
                 sigma=300,
                 chop=4,
-                I_ampx=1.0*0.5/0.84*24/1200*0.5/0.44*0.5/0.487*0.5/0.482/.344*.5/.657*.5,
+                I_ampx=0.00912144548*0.5/0.45,
                 Q_ampx=0.0,
+            ),
+            GaussianPulse(
+                name="qubit_gaussian_pi_pulse_5200",
+                sigma=1300,
+                chop=4,
+                I_ampx=0.00233883217*0.5/0.4*0.5/0.43,
+                Q_ampx=0.01,
             ),
             ConstantPulse(
                 name="qubit_constant_pulse_1000",
                 length=1000,
-                I_ampx=1,#0.247/10000*52,
+                I_ampx=0.5*0.5/7*.5/2.7*.5/.441,#0.247/10000*52,
                 
             ),
             ConstantPulse(
-                name="qubit_constant_pulse_10000",
-                length=10000,
-                I_ampx=0.08,#0.247/10000*52,
+                name="qubit_constant_pi_pulse_5200",
+                length=5200,
+                I_ampx=0.00339946536,#0.247/10000*52,
+                Q_ampx=0.01
                 
             ),
             ConstantPulse(
@@ -351,14 +351,19 @@ if __name__ == "__main__":
             ),
           
             ConstantPulse(
-                name="cav_constant_40",
-                length=40,
+                name="cav_constant_80",
+                length=80,
                 I_ampx=1,#.195,
             ),
             ConstantPulse(
                 name="cav_constant_200",
                 length=200,
-                I_ampx=1/1.6*2,
+                I_ampx=1/1.6*.7,
+            ),
+            ConstantPulse(
+                name="cav_constant_1000",
+                length=1000,
+                I_ampx=1/1.6*.7/5,
             ),
             ConstantPulse(
                 name="cav_constant_4000",
@@ -383,7 +388,7 @@ if __name__ == "__main__":
             ConstantPulse(
                 name="cav_constant_10000",
                 length=10000,
-                I_ampx=0.05,
+                I_ampx=1,
             ),
             ConstantPulse(
                 name="cav_constant_15000",
@@ -412,11 +417,11 @@ if __name__ == "__main__":
 
         qubit_EF.operations = [
             GaussianPulse(
-                name="qubit_gaussian_pi_pulse_24",
+                name="qubitEF_gaussian_pi_pulse_24",
                 sigma=6,
                 chop=4,
-                I_ampx=1.0*0.5/0.84,
-                Q_ampx=0.0,
+                I_ampx=1.0*0.5/0.84/.353*.5*0.5/0.872*0.5/0.53*0.5/0.75,
+                Q_ampx=.01,
             ),
             GaussianPulse(
                 name="qubitEF_gaussian_pi_16",
@@ -464,6 +469,27 @@ if __name__ == "__main__":
                 length=200,
                 I_ampx=1.5,#0.247/10000*52,
                 
+            ),
+            GaussianPulse(
+                name="qubitGF2_gaussian_pi_pulse_24",
+                sigma=6,
+                chop=4,
+                I_ampx=1.0,
+                Q_ampx=.01,
+            ),
+            GaussianPulse(
+                name="qubitGF2_gaussian_pi_pulse_48",
+                sigma=12,
+                chop=4,
+                I_ampx=1.0,
+                Q_ampx=0,
+            ),
+            GaussianPulse(
+                name="qubitGF2_gaussian_pi_pulse_60",
+                sigma=15,
+                chop=4,
+                I_ampx=1.0,
+                Q_ampx=0,
             ),
             GaussianPulse(
                 name="qubitGF2_gaussian_pi_16",

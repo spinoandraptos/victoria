@@ -75,16 +75,16 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement":"cav_constant_400", #"cav_gaussian_pulse_100",
+        "cav_displacement":"cav_constant_80", #"cav_gaussian_pulse_100",
         "qubit_pi_pulse": "qubit_gaussian_pi_pulse_24",
-        "qubit_selective_pi": "qubit_gaussian_pi_pulse_1200",
+        "qubit_selective_pi": "qubit_constant_pulse_1000",
         "readout_pulse": "rr_readout_pulse",
     }
 
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 300_000,
+        "wait_time": 800_000,
         # "plot_single_shot": True,
         "qubit_in_e": True,
     }
