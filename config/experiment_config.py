@@ -14,9 +14,12 @@ MODES_CONFIG = FOLDER + "config/modes.yml"
 ######################## CONFIGURE STAGED RESOURCES IF NEEDED ##########################
 # print("YAY")
 with Stage(MODES_CONFIG, remote=True) as stage:
-    # QUBIT, RR, CAVITY, SNAIL, CAVITY_M, QUBIT_EF= stage.get("qubit", "rr", "cavity", "snail", "cavity_m", "qubit_ef")
-    QUBIT, RR, CAVITY, qubit_EF, DRIVE, qubit_GF2= stage.get("qubit", "rr", "cavity", "qubit_EF", "drive", "qubit_GF2")
+    QUBIT, RR, SA = stage.get("qubit", "rr", "sa")
+    LO_QUBIT, LO_RR = stage.get(
+        "lo_qubit", "lo_rr"
+    )
 (READOUT_PULSE,) = RR.get_operations("rr_readout_pulse")
+
 
 ################## DEFINE REUSABLE SWEEP (INDEPENDENT) VARIABLES #######################
 
@@ -31,12 +34,6 @@ N = Sweep(
 
 # linspace Frequency sweep
 FREQ = Sweep(
-    name="freq",
-    dtype=int,
-    units="Hz",
-)
-
-FREQ2 = Sweep(
     name="freq",
     dtype=int,
     units="Hz",
@@ -71,8 +68,8 @@ Q = Dataset(
 
 ADC = Dataset(
     name="adc",
-    stream=RR.ports["out1"][1],  # out for old
-    save=True,
+    stream=RR.ports["out"],  # out for old
+    save=False,
     plot=True,
     plot_args={
         "plot_type": "line",

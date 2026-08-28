@@ -1,17 +1,28 @@
 """ Readout integration weights training for single-shot readout """
 
+""" Readout integration weights training for single-shot readout """
+import sys
+# The directory containing the 'config' folder
+FOLDER = "C:/Users/qcrew/Documents/eunice/"
+
+# Add the FOLDER itself to sys.path, not the file path
+if FOLDER not in sys.path:
+    sys.path.insert(0, FOLDER)
+""" Readout integration weights training for single-shot readout """
+
+import sys
+
 import datetime
 from pathlib import Path
 
 from qcore import Stage
 from qcore.instruments import QM
-from qcore.scripts.readout_training_octave import ReadoutTrainerOctave
+from qcore.scripts.readout_training_octave_old import ReadoutTrainerOctave
 
 from config.experiment_config import MODES_CONFIG
 from config.experiment_config import (
     RR,
     QUBIT,
-    qubit_EF
 )
 
 if __name__ == "__main__":
@@ -25,10 +36,10 @@ if __name__ == "__main__":
         
         params = {
             "reps": 10_000,
-            "wait_time": 110_000,  # ns
+            "wait_time": 4e5,  # ns
             "readout_pulse": "rr_readout_pulse",  # pulse name used to readout
-            "qubit_pi_pulse": "qubit_gaussian_pi_16",  # pulse name used to excite qubit
+            "qubit_pi_pulse": "qubit_constant_pi_20",  # pulse name used to excite qubit
         }
  
-        ro_trainer = ReadoutTrainerOctave(RR, QUBIT, qubit_EF, qm, **params)
+        ro_trainer = ReadoutTrainerOctave(RR, QUBIT, qm, **params)
         threshold, data = ro_trainer.calculate_threshold()

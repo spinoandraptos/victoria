@@ -1,10 +1,4 @@
-import sys
-# The directory containing the 'config' folder
-FOLDER = "C:/Users/qcrew/Documents/eunice/"
 
-# Add the FOLDER itself to sys.path, not the file path
-if FOLDER not in sys.path:
-    sys.path.insert(0, FOLDER)
 
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
@@ -35,9 +29,7 @@ class RRSpec_crosskerr(Experiment):
         qua.update_frequency(self.resonator, self.resonator_frequency)
         self.cavity.play(self.cav_displacement, ampx=self.cav_ampx)  # create a coherent state
         qua.align() 
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -48,13 +40,13 @@ if __name__ == "__main__":
     # key: name of the Mode as defined by the Experiment subclass
     # value: name of the Mode as defined by the user in modes.yml
 
-    modes = {"resonator": "rr", "cavity": "cavity"}
+    modes = {"resonator": "rr", "cavity": "cav"}
 
     ################################### PULSE MAP ######################################
     # key: name of the Pulse as defined by the Experiment subclass
     # value: name of the Pulse as defined by the user in modes.yml
 
-    pulses = {"readout_pulse": "rr_readout_pulse", "cav_displacement": "cav_constant_64",}
+    pulses = {"readout_pulse": "rr_readout_pulse", "cav_displacement": "cav_constant_pulse_100000",}
 
     ############################## CONTROL PARAMETERS ##################################
 
@@ -74,13 +66,13 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -55e6
-    FREQ.stop = -45e6
-    FREQ.num = 101
+    FREQ.start = -60e6
+    FREQ.stop = -40e6
+    FREQ.num = 201
 
     ################################### 2D SWEEP #######################################
     # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0, stop=0.2, step=0.2)
+    CAV_AMP = Sweep(name="cav_ampx", start=0, stop=1, step=1)
     sweeps = [N, CAV_AMP, FREQ]
     # sweeps = [N, FREQ]
 

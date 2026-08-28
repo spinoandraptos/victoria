@@ -1,12 +1,11 @@
 """ """
 import sys
-
 from config.experiment_config import FOLDER, N, FREQ, I, Q, MAG, PHASE
 
 from qcore import Experiment, qua, Sweep
 
 
-class RRSpecAmp(Experiment):
+class RRSpec(Experiment):
     """Readout resonator spectroscopy"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -29,9 +28,7 @@ class RRSpecAmp(Experiment):
         """QUA sequence that defines this Experiment subclass"""
         #qua.reset_phase(self.resonator)
         qua.update_frequency(self.resonator, self.resonator_frequency)
-        self.resonator.measure(
-            self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
-        )
+        self.resonator.measure(self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx)
         qua.wait(self.wait_time, self.resonator)
 
 
@@ -53,7 +50,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 5_000,
+        "wait_time": 10_000,
         # "ro_ampx": 1,
     }
 
@@ -68,17 +65,15 @@ if __name__ == "__main__":
  
     # set the qubit frequency sweep for this Experiment run
     FREQ.name = "resonator_frequency"
-    FREQ.start = -52e6
-    FREQ.stop = -48e6
+    FREQ.start = -60e6
+    FREQ.stop = -40e6
     FREQ.num = 101
 
     ################################### 2D SWEEP #######################################
 
     RO_AMPX = Sweep(
         name="ro_ampx",
-        points=[0.01, 0.015, 0.02, 0.025, 0.03]#0.25,0.5,0.75]
-        # points=[0.2, 0.4, 0.6, 0.8, 1.0]
-        # points=[0.01, 0.02, 0.03, 0.04, 0.05, 0.1]#0.25,0.5,0.75]
+        points=[0.1, 0.4,0.5, 0.6,0.7,0.8,0.9, 1]#0.25,0.5,0.75]
     ) 
     sweeps = [N, RO_AMPX, FREQ]
     # sweeps = [N, FREQ]
@@ -101,5 +96,5 @@ if __name__ == "__main__":
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
     # expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, current_value=1.23e-3, **parameters)
-    expt = RRSpecAmp(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = RRSpec(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     expt.run()
