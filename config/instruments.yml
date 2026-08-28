@@ -1,18 +1,21 @@
 # - !<GS200>
 #   id: 91x336839
 #   name: yoko1
-- !<LMS>
-  id: 25334
-  name: lo_qubit
-- !<LMS>
-  id: 25330
-  name: lo_rr
+# - !<LMS>
+#   id: 25334
+#   name: lo_qubit
+# - !<LMS>
+#   id: 25330
+#   name: lo_rr
 - !<SA124>
  id: 19184645
- name: sa
+ name: sa_snail
 - !<SA124>
  id: 20234154
- name: sa_cav
+ name: sa_readout
+- !<APUASYN20>
+ id: 915-0M1040000-0081
+ name: anapico #apuasyn20
 # - !<LMS>
 #   id: 25331
 #   name: lo_cav

@@ -1,9 +1,15 @@
-from Pyro5.api import Proxy
+import qcore
+from qcore.helpers import yamlizer
+import inspect
 
-opx = Proxy("PYRO:opx1000@localhost:9090")
+print("Registered custom YAML constructors:\n")
 
-# Force the connection and binding immediately
-opx._pyroBind() 
-
-# Now check the representation
-print(f"INSTRUMENTS: { {'opx1000': opx} }")
+# Safe loop handling potential None keys
+for tag, constructor in yamlizer.yaml.SafeLoader.yaml_constructors.items():
+    print(f"🎯 Found Match!")
+    print(f"Tag Name:   {tag}")
+    print(f"Target:     {constructor}")
+    try:
+        print(f"File Path:  {inspect.getfile(constructor)}\n")
+    except Exception:
+        print(f"File Path:  Could not extract path directly.\n")
