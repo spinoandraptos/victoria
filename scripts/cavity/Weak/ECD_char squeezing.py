@@ -6,7 +6,7 @@ from qcore import Experiment, qua, Sweep
 from ECD_functions import V_cat, Char_2D_singledisplacement, ECD
 
 
-class ECD_coherent(Experiment):
+class ECD_char_squeezing2D(Experiment):
     """Char_2D_singledisplacement"""
 
     ############################# DEFINE PRIMARY DATASETS ##############################
@@ -33,8 +33,12 @@ class ECD_coherent(Experiment):
         # qua.reset_frame(self.cavity, self.qubit)
         qua.reset_phase(self.cavity)
         qua.reset_frame(self.cavity)
+        
+        self.snail.play(self.snail_drive)
+        qua.align()
+                
         ###################### state prep  #####################
-        self.cavity.play(self.cav_disp_state, ampx=1.75, phase=0.0)  # 0.1 , ampx=1, phase=0.0
+        # self.cavity.play(self.cav_disp_state, ampx=1.75, phase=0.0)  # 0.1 , ampx=1, phase=0.0
         
         
         # self.qubit.play(self.qubit_pi2)
@@ -62,7 +66,7 @@ class ECD_coherent(Experiment):
         #     delay=self.delay,
         #     # qubit_phase=0.25,
         # )
-        qua.align()
+        # qua.align()
         # self.qubit.play(self.qubit_pi)  # remove this if creating even cat
         # qua.align()
 
@@ -99,6 +103,7 @@ if __name__ == "__main__":
         "cavity": "cavity",
         "qubit": "qubit",
         "resonator": "rr",
+        "snail": "snail_drive"
         # "qubit_gf2": "qubit_GF2",
     }
 
@@ -107,12 +112,11 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_disp_state": "cav_constant_40",
-        "cav_disp": "cav_constant_40",
+        "cav_disp": "cav_constant_40",  # "cav_gaussian_40",
         "qubit_pi2": "qubit_gaussian_pi2_pulse_24",
         "qubit_pi": "qubit_gaussian_pi_pulse_24",
-        # "qubit_gf2_drive": "qubitGF2_gaussian_pi_24",
         "readout_pulse": "rr_readout_pulse",
+        "snail_drive": "snail_drive_constant_1000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -133,11 +137,11 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 10000
+    N.num = 1000000
 
     # set the qubit frequency sweep for this Experiment run
-    CAV_AMPX = Sweep(name="ampx_x", start=-1, stop=1, step=0.1)
-    CAV_AMPX2 = Sweep(name="ampx_y", start=-1, stop=1, step=0.1)
+    CAV_AMPX = Sweep(name="ampx_x", start=-1.5, stop=1.5, step=0.1)
+    CAV_AMPX2 = Sweep(name="ampx_y", start=-1.5, stop=1.5, step=0.1)
 
     sweeps = [N, CAV_AMPX, CAV_AMPX2]
 
@@ -157,6 +161,6 @@ if __name__ == "__main__":
 
     ######################## INITIALIZE AND RUN EXPERIMENT #############################
 
-    expt = ECD_coherent(FOLDER, modes, pulses, sweeps, datasets, **parameters)
+    expt = ECD_char_squeezing2D(FOLDER, modes, pulses, sweeps, datasets, **parameters)
     # expt.run(simulate=True)
     expt.run()

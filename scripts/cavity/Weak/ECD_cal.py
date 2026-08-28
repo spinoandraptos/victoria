@@ -95,7 +95,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time": 600_000,
+        "wait_time": 200_000,
         "ro_ampx": 1,
         "fetch_interval": 5,
         "tomo_phase": 0,

@@ -75,8 +75,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cavity_drive": "cav_constant_2000",
-        "qubit_pulse": "qubit_constant_pi_pulse_1200",
+        "cavity_drive": "cav_constant_40",
+        "qubit_pulse": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
         "snail_pulse": "snail_drive_constant_2000",
     }
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     ############################## CONTROL PARAMETERS ##################################
 
     parameters = {
-        "wait_time":40_000, #30000,
+        "wait_time":400_000, #500_000, #30000,
         "ro_ampx": 1,
     }
 
@@ -93,12 +93,12 @@ if __name__ == "__main__":
     # must include all primary sweeps defined by the Experiment subclass
 
     # set number of repetitions for this Experiment run
-    N.num = 4000
+    N.num = 3000
 
     # set the qubit frequency sweep for this Experiment run
 
     # DEL = Sweep(name="time_delay", start=16, stop=1200000, step=8000, dtype=int)
-    DEL = Sweep(name="length_snail", start=16, stop=2000, step=8, dtype=int)
+    DEL = Sweep(name="length_snail", start=16, stop=4000, step=16, dtype=int)
     # SNAIL_AMPX = Sweep(
     #     name="snail_ampx",
     #     points=[
@@ -113,6 +113,10 @@ if __name__ == "__main__":
     # PHASE.fitfn = "exp_decay_sine"
     # I.fitfn = "exp_decay_sine"
     # Q.fitfn = "exp_decay_sine"
+    # PHASE.plot = True
+    # MAG.plot = True
+    # Q.plot = True
+    # I.plot = True
     PHASE.plot = False
     MAG.plot = False
     Q.plot = False
@@ -128,8 +132,8 @@ if __name__ == "__main__":
 
     
     # expt.run()
-    # IF_values = np.linspace(start=11.3e6-6e6, stop=11.3e6+6e6, num=121)
-    IF_values = np.linspace(start=-100e6, stop=0e6, num=121)
+    IF_values = np.linspace(start=-73.6e6-2e6, stop=-73.6e6+2e6, num=25) #np.linspace(start=-123e6, stop=-121e6, num=51)
+    # IF_values = np.linspace(start=-100e6, stop=0e6, num=121)
 
     for index_f in range(len(IF_values)): 
         with Stage(configpath=MODES_CONFIG, remote=True) as stage:
@@ -137,7 +141,7 @@ if __name__ == "__main__":
             snail_drive.configure(
                 name="snail_drive",
                 lo_name="opx1000",
-                ports={"I": [1,2]},
+                ports={"I": [1,7]},
                 upconverter = 1,
                 int_freq=IF_values[index_f],
                 rf_switch=None,

@@ -29,8 +29,8 @@ class Rabi(Experiment):
         qua.reset_frame(self.qubit)
         """QUA sequence that defines this Experiment subclass"""
 
-        self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         # self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
+        self.qubit.play(self.qubit_drive, ampx=self.qubit_pulse_amplitude)
         qua.align(self.qubit, self.resonator)
         self.resonator.measure(
             self.readout_pulse, (self.I, self.Q), ampx=self.ro_ampx, demod_type="dual"
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     pulses = {
         
-        "qubit_drive": "qubit_constant_pulse_1000",
+        "qubit_drive": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 

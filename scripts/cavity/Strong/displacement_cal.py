@@ -69,8 +69,8 @@ if __name__ == "__main__":
     # value: name of the Pulse as defined by the user in modes.yml
 
     pulses = {
-        "cav_displacement": "cav_constant_80",
-        "qubit_selective_pi": "qubit_constant_pulse_1000",
+        "cav_displacement": "cav_constant_40",
+        "qubit_selective_pi": "qubit_gaussian_pi_pulse_1200",
         "readout_pulse": "rr_readout_pulse",
     }
 
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     N.num = 100000
 
     # set the delay sweep
-    CAV_AMP = Sweep(name="cav_ampx", start=0.1, stop=1.3, step=0.08)
+    CAV_AMP = Sweep(name="cav_ampx", start=0.1, stop=1.3, step=0.04)
 
  
     

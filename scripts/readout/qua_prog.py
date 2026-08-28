@@ -6,7 +6,7 @@ from qm import QuantumMachinesManager
 from qm.qua import *
 
 
-# Single QUA script generated at 2026-08-27 10:07:41.102270
+# Single QUA script generated at 2026-08-28 14:51:00.431328
 # QUA library version: 1.3.1
 
 
@@ -15,28 +15,35 @@ from qm.qua import *
 
 with program() as prog:
     v1 = declare(int, )
-    v2 = declare(int, )
-    v3 = declare(fixed, )
+    v2 = declare(fixed, )
+    v3 = declare(int, )
     v4 = declare(fixed, )
+    v5 = declare(fixed, )
     with for_(v1,1,(v1<100001),(v1+1)):
         r1 = declare_output_stream()
         save(v1, r1)
-        with for_(v2,-53000000,(v2<-48980000),(v2+40000)):
+        with for_(v2,0.0,(v2<1.5),(v2+1.0)):
             r2 = declare_output_stream()
             save(v2, r2)
-            update_frequency('rr', v2, 'Hz', False)
-            measure('readout_pulse'*amp(1), 'rr', dual_demod.full("cos", "sin", v3), dual_demod.full("minus_sin", "cos", v4))
-            wait(5000, 'rr')
-            r3 = declare_output_stream()
-            save(v3, r3)
-            r4 = declare_output_stream()
-            save(v4, r4)
+            with for_(v3,-53000000,(v3<-47975000),(v3+50000)):
+                r3 = declare_output_stream()
+                save(v3, r3)
+                update_frequency('rr', v3, 'Hz', False)
+                play('cav_displacement'*amp(v2), 'cavity')
+                align()
+                measure('readout_pulse'*amp(1), 'rr', dual_demod.full("cos", "sin", v4), dual_demod.full("minus_sin", "cos", v5))
+                wait(125000, 'rr')
+                r4 = declare_output_stream()
+                save(v4, r4)
+                r5 = declare_output_stream()
+                save(v5, r5)
     with stream_processing():
-        r2.buffer(101).save("resonator_frequency")
-        r3.buffer(101).save_all("I")
-        r3.buffer(101).average().save("I_avg")
-        r4.buffer(101).save_all("Q")
-        r4.buffer(101).average().save("Q_avg")
+        r2.buffer(2).save("cav_ampx")
+        r3.buffer(101).save("resonator_frequency")
+        r4.buffer(2, 101).save_all("I")
+        r4.buffer(2, 101).average().save("I_avg")
+        r5.buffer(2, 101).save_all("Q")
+        r5.buffer(2, 101).average().save("Q_avg")
 
 config = {
     "controllers": {
@@ -69,7 +76,7 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4461000000.0,
+                                    "frequency": 2947000000.0,
                                 },
                             },
                         },
@@ -81,31 +88,43 @@ config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7650600000.0,
+                                    "frequency": 7662850000.0,
                                 },
                             },
                         },
                         "4": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 13,
-                            "band": 2,
-                            "delay": 0,
+                            "full_scale_power_dbm": 4,
+                            "band": 1,
+                            "delay": 20,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6644800000.0,
+                                    "frequency": 2975141510.0,
                                 },
                             },
                         },
-                        "6": {
+                        "5": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 8,
-                            "band": 2,
-                            "delay": 0,
+                            "band": 1,
+                            "delay": 20,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5746600000.0,
+                                    "frequency": 4286300000.0,
+                                },
+                            },
+                        },
+                        "7": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 4,
+                            "band": 1,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 3675000000.0,
                                 },
                             },
                         },
@@ -116,7 +135,7 @@ config = {
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7650600000.0,
+                            "downconverter_frequency": 7662850000.0,
                         },
                     },
                 },
@@ -152,28 +171,61 @@ config = {
                 "port": ('con1', 1, 1),
             },
             "smearing": 0,
-            "time_of_flight": 396,
+            "time_of_flight": 408,
+            "intermediate_frequency": -50700000.0,
+        },
+        "cavity": {
+            "digitalInputs": {},
+            "digitalOutputs": {},
+            "outputs": {},
+            "operations": {'cav_displacement': 'cavity.cav_constant_1000'},
+            "hold_offset": {
+                "duration": 0,
+            },
+            "sticky": {
+                "analog": False,
+                "digital": False,
+                "duration": 4,
+            },
+            "MWInput": {
+                "port": ('con1', 1, 4),
+                "upconverter": 1,
+            },
             "intermediate_frequency": -50000000.0,
         },
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 1280,
+            "length": 640,
             "waveforms": {'Q': 'rr.rr_readout_pulse.waveform.Q', 'I': 'rr.rr_readout_pulse.waveform.I'},
             "integration_weights": {'minus_sin': 'rr.rr_readout_pulse.minus_sin', 'sin': 'rr.rr_readout_pulse.sin', 'cos': 'rr.rr_readout_pulse.cos'},
             "operation": "measurement",
         },
+        "cavity.cav_constant_1000": {
+            "length": 1000,
+            "waveforms": {'Q': 'cavity.cav_constant_1000.waveform.Q', 'I': 'cavity.cav_constant_1000.waveform.I'},
+            "integration_weights": {},
+            "operation": "control",
+        },
     },
     "waveforms": {
+        "cavity.cav_constant_1000.waveform.I": {
+            "type": "constant",
+            "sample": 0.37000000000000005,
+        },
+        "rr.rr_readout_pulse.waveform.I": {
+            "type": "arbitrary",
+            "samples": [0.027000000000000003] * 320 + [0.0] * 320,
+            "is_overridable": False,
+            "max_allowed_error": 1.0,
+        },
         "rr.rr_readout_pulse.waveform.Q": {
             "type": "constant",
             "sample": 0.0,
         },
-        "rr.rr_readout_pulse.waveform.I": {
-            "type": "arbitrary",
-            "samples": [0.009500000000000001] * 640 + [0.0] * 640,
-            "is_overridable": False,
-            "max_allowed_error": 1.0,
+        "cavity.cav_constant_1000.waveform.Q": {
+            "type": "constant",
+            "sample": 0.0,
         },
     },
     "digital_waveforms": {
@@ -183,16 +235,16 @@ config = {
     },
     "integration_weights": {
         "rr.rr_readout_pulse.cos": {
-            "cosine": [(1.0, 1280)],
-            "sine": [(0.0, 1280)],
+            "cosine": [(1.0, 640)],
+            "sine": [(0.0, 640)],
         },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(0.0, 1280)],
-            "sine": [(1.0, 1280)],
+            "cosine": [(0.0, 640)],
+            "sine": [(1.0, 640)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(0.0, 1280)],
-            "sine": [(-1.0, 1280)],
+            "cosine": [(0.0, 640)],
+            "sine": [(-1.0, 640)],
         },
     },
     "mixers": {},
@@ -229,7 +281,7 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 4461000000.0,
+                                    "frequency": 2947000000.0,
                                 },
                             },
                         },
@@ -241,31 +293,43 @@ loaded_config = {
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 7650600000.0,
+                                    "frequency": 7662850000.0,
                                 },
                             },
                         },
                         "4": {
                             "sampling_rate": 1000000000.0,
-                            "full_scale_power_dbm": 13,
-                            "band": 2,
-                            "delay": 0,
+                            "full_scale_power_dbm": 4,
+                            "band": 1,
+                            "delay": 20,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 6644800000.0,
+                                    "frequency": 2975141510.0,
                                 },
                             },
                         },
-                        "6": {
+                        "5": {
                             "sampling_rate": 1000000000.0,
                             "full_scale_power_dbm": 8,
-                            "band": 2,
-                            "delay": 0,
+                            "band": 1,
+                            "delay": 20,
                             "shareable": False,
                             "upconverters": {
                                 "1": {
-                                    "frequency": 5746600000.0,
+                                    "frequency": 4286300000.0,
+                                },
+                            },
+                        },
+                        "7": {
+                            "sampling_rate": 1000000000.0,
+                            "full_scale_power_dbm": 4,
+                            "band": 1,
+                            "delay": 20,
+                            "shareable": False,
+                            "upconverters": {
+                                "1": {
+                                    "frequency": 3675000000.0,
                                 },
                             },
                         },
@@ -276,7 +340,7 @@ loaded_config = {
                             "shareable": False,
                             "gain_db": 0,
                             "sampling_rate": 1000000000.0,
-                            "downconverter_frequency": 7650600000.0,
+                            "downconverter_frequency": 7662850000.0,
                         },
                     },
                 },
@@ -312,28 +376,61 @@ loaded_config = {
                 "port": ('con1', 1, 1),
             },
             "smearing": 0,
-            "time_of_flight": 396,
+            "time_of_flight": 408,
+            "intermediate_frequency": -50700000.0,
+        },
+        "cavity": {
+            "digitalInputs": {},
+            "digitalOutputs": {},
+            "outputs": {},
+            "operations": {'cav_displacement': 'cavity.cav_constant_1000'},
+            "hold_offset": {
+                "duration": 0,
+            },
+            "sticky": {
+                "analog": False,
+                "digital": False,
+                "duration": 4,
+            },
+            "MWInput": {
+                "port": ('con1', 1, 4),
+                "upconverter": 1,
+            },
             "intermediate_frequency": -50000000.0,
         },
     },
     "pulses": {
         "rr.rr_readout_pulse": {
-            "length": 1280,
+            "length": 640,
             "waveforms": {'Q': 'rr.rr_readout_pulse.waveform.Q', 'I': 'rr.rr_readout_pulse.waveform.I'},
             "integration_weights": {'minus_sin': 'rr.rr_readout_pulse.minus_sin', 'sin': 'rr.rr_readout_pulse.sin', 'cos': 'rr.rr_readout_pulse.cos'},
             "operation": "measurement",
         },
+        "cavity.cav_constant_1000": {
+            "length": 1000,
+            "waveforms": {'Q': 'cavity.cav_constant_1000.waveform.Q', 'I': 'cavity.cav_constant_1000.waveform.I'},
+            "integration_weights": {},
+            "operation": "control",
+        },
     },
     "waveforms": {
+        "cavity.cav_constant_1000.waveform.I": {
+            "type": "constant",
+            "sample": 0.37000000000000005,
+        },
+        "rr.rr_readout_pulse.waveform.I": {
+            "type": "arbitrary",
+            "samples": [0.027000000000000003] * 320 + [0.0] * 320,
+            "is_overridable": False,
+            "max_allowed_error": 1.0,
+        },
         "rr.rr_readout_pulse.waveform.Q": {
             "type": "constant",
             "sample": 0.0,
         },
-        "rr.rr_readout_pulse.waveform.I": {
-            "type": "arbitrary",
-            "samples": [0.009500000000000001] * 640 + [0.0] * 640,
-            "is_overridable": False,
-            "max_allowed_error": 1.0,
+        "cavity.cav_constant_1000.waveform.Q": {
+            "type": "constant",
+            "sample": 0.0,
         },
     },
     "digital_waveforms": {
@@ -343,16 +440,16 @@ loaded_config = {
     },
     "integration_weights": {
         "rr.rr_readout_pulse.cos": {
-            "cosine": [(1.0, 1280)],
-            "sine": [(0.0, 1280)],
+            "cosine": [(1.0, 640)],
+            "sine": [(0.0, 640)],
         },
         "rr.rr_readout_pulse.sin": {
-            "cosine": [(0.0, 1280)],
-            "sine": [(1.0, 1280)],
+            "cosine": [(0.0, 640)],
+            "sine": [(1.0, 640)],
         },
         "rr.rr_readout_pulse.minus_sin": {
-            "cosine": [(0.0, 1280)],
-            "sine": [(-1.0, 1280)],
+            "cosine": [(0.0, 640)],
+            "sine": [(-1.0, 640)],
         },
     },
     "mixers": {},

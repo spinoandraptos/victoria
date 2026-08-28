@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     modes = {
         "resonator": "rr",
-        "drive": "snail_stark_drive"
+        "drive": "snail_drive"
     }
 
     ################################### PULSE MAP ######################################
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     pulses = {
         "readout_pulse": "rr_readout_pulse",
-        "stark_drive": "snail_stark_drive_constant_2000",
+        "stark_drive": "snail_drive_constant_3000",
     }
 
     ############################## CONTROL PARAMETERS ##################################
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     DRIVE_AMPX = Sweep(
         name="drive_ampx",
-        points=[0.0, 0.5, 1,  1.5, 2.0]#0.25,0.5,0.75]
+        points=[0.0, 1,]#0.25,0.5,0.75]
     ) 
     sweeps = [N, DRIVE_AMPX, FREQ]
 
